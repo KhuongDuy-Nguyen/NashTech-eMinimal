@@ -1,8 +1,11 @@
 package com.eminimal.backend.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
-
+@Entity
 public class Product {
+    @Id
     private String productID;
     private String productName ;
     private String productDesc ;
