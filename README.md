@@ -1,12 +1,10 @@
-<h1 align="center">eMinimal</h1>
-
-<p align="center">Assignment 1 by Group 3 - The Rookies batch 6</p>
+<h1 align="center">eMinimal - shopping website</h1>
+<p align="center"><img src='./assets/images/logo-eMinimal.jpg'></p>
 
 ## Giới thiệu
 
-![eMinimal](./assets/images/logo-eMinimal.jpg)
-
-> eMinimal là một trang web mua sắm nội thất được thiết kế bằng ReactJS và dựa trên các mẫu có sẵn trên [dribble](https://dribbble.com/).
+> - eMinimal là một trang web mua sắm nội thất được thiết kế bằng ReactJS và dựa trên các mẫu có sẵn trên [dribble](https://dribbble.com/).
+> - Các mẫu thiết kế được sử dụng đều được đặt trong [thư mục template](./assets/images/template).
 
 ## Công nghệ sử dụng
 
