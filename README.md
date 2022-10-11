@@ -4,7 +4,7 @@
 ## Giới thiệu
 
 > - eMinimal là một trang web mua sắm nội thất được thiết kế bằng ReactJS và dựa trên các mẫu có sẵn trên [dribble](https://dribbble.com/).
-> - Các mẫu thiết kế được sử dụng đều được đặt trong [thư mục template](./assets/images/template).
+> - Các mẫu thiết kế có sử dụng đều được đặt trong [đây](./assets/images/template).
 
 ## Công nghệ sử dụng
 
