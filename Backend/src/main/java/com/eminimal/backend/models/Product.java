@@ -1,3 +1,5 @@
+package com.eminimal.backend.models;
+
 import java.util.Date;
 
 public class Product {

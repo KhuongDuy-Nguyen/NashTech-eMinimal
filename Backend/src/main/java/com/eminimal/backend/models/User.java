@@ -1,3 +1,5 @@
+package com.eminimal.backend.models;
+
 public class User {
     private String userID;
     private String userName;

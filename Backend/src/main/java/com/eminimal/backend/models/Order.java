@@ -1,14 +1,16 @@
+package com.eminimal.backend.models;
+
 public class Order {
     private String orderID;
-    private int ammount;
+    private int amount;
     private float price;
     private String productID;
     private String userID;
 
     public Order() {}
 
-    public Order(int ammount, float price, String productID, String userID) {
-        this.ammount = ammount;
+    public Order(int amount, float price, String productID, String userID) {
+        this.amount = amount;
         this.price = price;
         this.productID = productID;
         this.userID = userID;
@@ -18,12 +20,12 @@ public class Order {
         return orderID;
     }
 
-    public int getAmmount() {
-        return ammount;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setAmmount(int ammount) {
-        this.ammount = ammount;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public float getPrice() {
@@ -54,7 +56,7 @@ public class Order {
     public java.lang.String toString() {
         return "Order{" +
                 "orderID='" + orderID + '\'' +
-                ", ammount=" + ammount +
+                ", amount=" + amount +
                 ", price=" + price +
                 ", productID='" + productID + '\'' +
                 ", userID='" + userID + '\'' +

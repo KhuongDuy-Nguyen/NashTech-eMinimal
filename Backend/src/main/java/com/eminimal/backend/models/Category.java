@@ -1,3 +1,5 @@
+package com.eminimal.backend.models;
+
 public class Category {
     private String categoryID;
     private String categoryName;
