@@ -1,4 +1,6 @@
-# eMinimal
+<h1 align="center">eMinimal</h1>
+
+<p align="center">Assignment 1 by Group 3 - The Rookies batch 6</p>
 
 ## Giới thiệu
 
