@@ -15,10 +15,18 @@
 
 ## Mô hình thiết kế
 
-- Usecase Diagram
+> - Usecase tổng quát
 
 ![Usecase Diagram](./assets/images/diagrams/Usecase.png)
 
-- Database Diagram
+> - Usecase đăng nhập
+
+![Usecase Diagram](./assets/images/diagrams/Usecase-Login.png)
+
+> - ERD Diagram
+
+![ERD Diagram](./assets/images/diagrams/ERD.png)
+
+> - Database Diagram
 
 ![Database Diagram](./assets/images/diagrams/Database.png)
