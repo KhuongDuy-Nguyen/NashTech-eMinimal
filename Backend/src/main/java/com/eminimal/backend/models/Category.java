@@ -1,43 +1,35 @@
 package com.eminimal.backend.models;
 
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Objects;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Category {
-    private String categoryID;
+    @Id
+    private UUID categoryID;
+
     private String categoryName;
     private String categoryDesc;
 
-    public Category() {}
-
-    public Category(String categoryName, String categoryDesc) {
-        this.categoryName = categoryName;
-        this.categoryDesc = categoryDesc;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Category category = (Category) o;
+        return categoryID != null && Objects.equals(categoryID, category.categoryID);
     }
 
-    public String getCategoryID() {
-        return categoryID;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getCategoryDesc() {
-        return categoryDesc;
-    }
-
-    public void setCategoryDesc(String categoryDesc) {
-        this.categoryDesc = categoryDesc;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "Category{" +
-                "categoryID='" + categoryID + '\'' +
-                ", categoryName='" + categoryName + '\'' +
-                ", categoryDesc='" + categoryDesc + '\'' +
-                '}';
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
