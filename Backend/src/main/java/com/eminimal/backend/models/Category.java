@@ -20,5 +20,8 @@ public class Category {
     private String categoryName;
     private String categoryDesc;
 
-
+    public Category(String categoryName, String categoryDesc) {
+        this.categoryName = categoryName;
+        this.categoryDesc = categoryDesc;
+    }
 }
