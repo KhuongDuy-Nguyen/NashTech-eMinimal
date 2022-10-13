@@ -10,6 +10,8 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "productID"))
 public class Product {
@@ -28,22 +30,7 @@ public class Product {
     private Date dateSale ;
 
     @ManyToOne
-    private Category categoryID;
+    private Category categories;
 
-    public Product() {}
-
-    public Product(String productName, String productDesc, String productImage, float productCost, int productSale, int productRating, int productAmount, Date dateCreate, Date dateUpdate, Date dateSale, Category categoryID) {
-        this.productName = productName;
-        this.productDesc = productDesc;
-        this.productImage = productImage;
-        this.productCost = productCost;
-        this.productSale = productSale;
-        this.productRating = productRating;
-        this.productAmount = productAmount;
-        this.dateCreate = dateCreate;
-        this.dateUpdate = dateUpdate;
-        this.dateSale = dateSale;
-        this.categoryID = categoryID;
-    }
 
 }
