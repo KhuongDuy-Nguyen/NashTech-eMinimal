@@ -27,6 +27,6 @@
 
 ![ERD Diagram](./assets/images/diagrams/ERD.png)
 
-> - Database Diagram
+> - Table Diagram
 
 ![Database Diagram](./assets/images/diagrams/Database.png)
