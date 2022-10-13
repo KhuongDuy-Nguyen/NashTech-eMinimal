@@ -14,34 +14,28 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "orderID"))
 public class Order {
     @Id
-    private UUID orderID;
+    private UUID orderID = UUID.randomUUID();
 
     private int amount;
     private float price;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "productID")
     private List<Product> product = new ArrayList<>();
 
-
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "userID")
-    private User userID;
+    private List<User> userID = new ArrayList<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Order order = (Order) o;
-        return orderID != null && Objects.equals(orderID, order.orderID);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public Order() { }
+    public Order(int amount, float price, List<Product> product, List<User> userID) {
+        this.amount = amount;
+        this.price = price;
+        this.product = product;
+        this.userID = userID;
     }
 
     @Override

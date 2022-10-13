@@ -1,22 +1,20 @@
 package com.eminimal.backend.models;
 
+import ch.qos.logback.classic.db.names.ColumnName;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "productID"))
 public class Product {
     @Id
-    private UUID productID;
+    private UUID productID = UUID.randomUUID();
 
     private String productName ;
     private String productDesc ;
@@ -28,18 +26,24 @@ public class Product {
     private Date dateCreate ;
     private Date dateUpdate ;
     private Date dateSale ;
-    private String categoryID;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Product product = (Product) o;
-        return productID != null && Objects.equals(productID, product.productID);
+    @ManyToOne
+    private Category categoryID;
+
+    public Product() {}
+
+    public Product(String productName, String productDesc, String productImage, float productCost, int productSale, int productRating, int productAmount, Date dateCreate, Date dateUpdate, Date dateSale, Category categoryID) {
+        this.productName = productName;
+        this.productDesc = productDesc;
+        this.productImage = productImage;
+        this.productCost = productCost;
+        this.productSale = productSale;
+        this.productRating = productRating;
+        this.productAmount = productAmount;
+        this.dateCreate = dateCreate;
+        this.dateUpdate = dateUpdate;
+        this.dateSale = dateSale;
+        this.categoryID = categoryID;
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

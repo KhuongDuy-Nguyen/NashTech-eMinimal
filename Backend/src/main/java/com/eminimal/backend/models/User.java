@@ -3,10 +3,7 @@ package com.eminimal.backend.models;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,10 +11,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@Table(name = "User", uniqueConstraints = {@UniqueConstraint(columnNames = {"userID","userName", "userEmail"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"userID","userName", "userEmail"})})
 public class User {
     @Id
-    private UUID userID;
+    private UUID userID = UUID.randomUUID();
+
     private String userName;
     private String userPassword;
     private String userImage;
@@ -26,18 +24,23 @@ public class User {
     private String userEmail;
     private String userAddress;
     private String userCountry;
+
+    @Column(columnDefinition = "boolean  default false")
     private boolean userActive;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return userID != null && Objects.equals(userID, user.userID);
+    public User() { }
+
+    public User(String userName, String userPassword, String userImage, String userRole, String userPhone, String userEmail, String userAddress, String userCountry, boolean userActive) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userImage = userImage;
+        this.userRole = userRole;
+        this.userPhone = userPhone;
+        this.userEmail = userEmail;
+        this.userAddress = userAddress;
+        this.userCountry = userCountry;
+        this.userActive = userActive;
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+
 }

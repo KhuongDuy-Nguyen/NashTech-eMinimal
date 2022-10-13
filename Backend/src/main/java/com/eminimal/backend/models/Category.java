@@ -3,8 +3,7 @@ package com.eminimal.backend.models;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,24 +11,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "categoryID"))
 public class Category {
     @Id
-    private UUID categoryID;
+    private UUID categoryID = UUID.randomUUID();
 
     private String categoryName;
     private String categoryDesc;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Category category = (Category) o;
-        return categoryID != null && Objects.equals(categoryID, category.categoryID);
-    }
+    public Category() {}
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public Category(String categoryName, String categoryDesc) {
+        this.categoryName = categoryName;
+        this.categoryDesc = categoryDesc;
     }
 }
