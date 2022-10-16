@@ -3,7 +3,6 @@ package com.eminimal.backend.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "categoryID"))
 public class Category {
+
     @Id
     private UUID categoryID = UUID.randomUUID();
 
