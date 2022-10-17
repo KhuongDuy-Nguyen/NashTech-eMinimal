@@ -24,5 +24,4 @@ public class Order {
     @ToString.Exclude
     private Collection<Product> products;
 
-
 }

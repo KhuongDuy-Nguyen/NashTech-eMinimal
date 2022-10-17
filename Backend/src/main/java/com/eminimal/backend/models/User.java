@@ -31,5 +31,9 @@ public class User {
     @ManyToOne
     private Order orders;
 
-
+    public User(String userName, String userPassword, String userEmail) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+    }
 }
