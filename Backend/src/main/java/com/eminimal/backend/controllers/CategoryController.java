@@ -1,7 +1,8 @@
 package com.eminimal.backend.controllers;
 
+import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
-import com.eminimal.backend.services.CategoryService;
+import com.eminimal.backend.services.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,41 +15,41 @@ import java.util.UUID;
 public class CategoryController {
 
     @Autowired
-    private CategoryService service;
+    private CategoryServiceImpl service;
 
-//    Get Information
-    @GetMapping("")
+    //    Get category
+    @GetMapping("/all")
     List<Category> findAll(){
-        return service.getAllCategory();
+        return service.findAll();
     }
 
-//    @GetMapping("/{id}")
-//    Optional<Category> findAllByID(@PathVariable UUID id){
-//        return service.getCategoryById(id);
-//    }
-
-    @GetMapping("/{name}")
-    Optional<Category> getAllByName(@PathVariable String name){
-        return service.getCategoryByName(name);
+    @GetMapping("/id={id}")
+    Optional<Category> findAllByID(@PathVariable UUID id ){
+        return service.findById(id);
     }
 
+    @GetMapping("/")
+    List<Category> getAllByName(@RequestParam String name){
+        return service.findByName(name);
+    }
 
-//    Create new category
+    //    Create new category
     @PostMapping("")
-    Category newCategory(@RequestBody Category newCategory){
-        return service.saveCategory(newCategory);
+    void newCategory(@RequestBody Category newCategory){
+        service.save(newCategory);
     }
 
-//    Remove category
+    //    Remove category
     @DeleteMapping("/{id}")
     void deleteCategory(@PathVariable UUID id){
-        service.removeCategoryById(id);
+        service.deleteById(id);
     }
 
-//    Update category
+    //    Update category
     @PutMapping("/{id}")
-    Category replaceCategory(@PathVariable UUID id, @RequestBody Category newCategory){
-        return service.updateCategory(id, newCategory);
+    void replaceCategory(@PathVariable UUID id, @RequestBody Category newCategory){
+        service.updateCategory(id, newCategory);
+
     }
 
 }
