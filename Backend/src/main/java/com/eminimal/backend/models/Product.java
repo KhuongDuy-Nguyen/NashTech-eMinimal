@@ -1,9 +1,6 @@
 package com.eminimal.backend.models;
 
-import ch.qos.logback.classic.db.names.ColumnName;
 import lombok.*;
-import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -25,12 +22,19 @@ public class Product {
     private int productSale ;
     private int productRating ;
     private int productAmount ;
-    private Date dateCreate ;
+    private Date dateCreate = new Date();
     private Date dateUpdate ;
     private Date dateSale ;
 
     @ManyToOne
     private Category categories;
 
-
+    public Product(String productName, String productDesc, String productImage, float productCost, int productAmount, Category categories) {
+        this.productName = productName;
+        this.productDesc = productDesc;
+        this.productImage = productImage;
+        this.productCost = productCost;
+        this.productAmount = productAmount;
+        this.categories = categories;
+    }
 }
