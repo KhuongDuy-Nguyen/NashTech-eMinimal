@@ -9,14 +9,14 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * A DTO for the {@link com.eminimal.backend.models.User} entity
+ * A DTO for the {@link com.eminimal.backend.models.Users} entity
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class UserDto implements Serializable {
-    private UUID userID = UUID.randomUUID();
+public class UsersDto implements Serializable {
+    private UUID userId = UUID.randomUUID();
     private String userName;
     private String userPassword;
     private String userImage;
@@ -26,5 +26,4 @@ public class UserDto implements Serializable {
     private String userAddress;
     private String userCountry;
     private boolean userActive;
-    private OrderDto orders;
 }

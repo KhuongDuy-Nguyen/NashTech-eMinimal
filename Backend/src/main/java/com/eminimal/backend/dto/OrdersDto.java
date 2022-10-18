@@ -6,19 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.UUID;
 
 /**
- * A DTO for the {@link com.eminimal.backend.models.Order} entity
+ * A DTO for the {@link com.eminimal.backend.models.Orders} entity
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class OrderDto implements Serializable {
+public class OrdersDto implements Serializable {
     private UUID orderID = UUID.randomUUID();
     private int amount;
     private float price;
-    private Collection<ProductDto> products;
 }
