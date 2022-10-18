@@ -17,12 +17,16 @@ public class Users {
     @Column(name = "user_id")
     private UUID userId = UUID.randomUUID();
 
+    @Column(name = "user_name")
     private String userName;
     private String userPassword;
     private String userImage;
     private String userRole;
     private String userPhone;
+
+    @Column(name = "user_email")
     private String userEmail;
+
     private String userAddress;
     private String userCountry;
 
