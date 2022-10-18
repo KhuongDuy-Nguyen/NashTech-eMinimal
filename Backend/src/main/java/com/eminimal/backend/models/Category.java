@@ -10,10 +10,11 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "categoryID"))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "category_id"))
 public class Category {
 
     @Id
+    @Column(name = "category_id")
     private UUID categoryID = UUID.randomUUID();
 
     private String categoryName;

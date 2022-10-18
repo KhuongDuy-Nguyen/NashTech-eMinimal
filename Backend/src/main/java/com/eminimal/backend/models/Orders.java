@@ -1,7 +1,6 @@
 package com.eminimal.backend.models;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,9 +11,10 @@ import java.util.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "orderID"))
-public class Order {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "order_id"))
+public class Orders {
     @Id
+    @Column(name = "order_id")
     private UUID orderID = UUID.randomUUID();
 
     private int amount;

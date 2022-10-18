@@ -11,10 +11,11 @@ import java.util.UUID;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"userID","userName", "userEmail"})})
-public class User {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","user_name", "user_email"})})
+public class Users {
     @Id
-    private UUID userID = UUID.randomUUID();
+    @Column(name = "user_id")
+    private UUID userId = UUID.randomUUID();
 
     private String userName;
     private String userPassword;
@@ -29,9 +30,9 @@ public class User {
     private boolean userActive;
 
     @ManyToOne
-    private Order orders;
+    private Orders orders;
 
-    public User(String userName, String userPassword, String userEmail) {
+    public Users(String userName, String userPassword, String userEmail) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
