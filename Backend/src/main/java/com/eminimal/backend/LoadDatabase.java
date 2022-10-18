@@ -2,7 +2,7 @@ package com.eminimal.backend;
 
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.User;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.CategoryRepository;
 import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.repository.UserRepository;
@@ -12,8 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
-
 @Configuration
 public class LoadDatabase {
 
@@ -22,9 +20,10 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(CategoryRepository categoryRepository, ProductRepository productRepository, UserRepository userRepository){
         return args -> {
+            userRepository.deleteAll();
             productRepository.deleteAll();
             categoryRepository.deleteAll();
-            userRepository.deleteAll();
+
 
 //          Insert Category
             log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
@@ -63,7 +62,7 @@ public class LoadDatabase {
                             "...",
                             15.2f,
                             99,
-                            categoryRepository.findCategoriesByCategoryName("Sofas")
+                             categoryRepository.findCategoriesByCategoryName("Sofas")
                     ))
             );
 
@@ -73,7 +72,7 @@ public class LoadDatabase {
                             "...",
                             15.2f,
                             99,
-                            categoryRepository.findCategoriesByCategoryName("Sofas")
+                             categoryRepository.findCategoriesByCategoryName("Sofas")
                     ))
             );
 
@@ -83,7 +82,7 @@ public class LoadDatabase {
                         "...",
                         30f,
                         99,
-                        categoryRepository.findCategoriesByCategoryName("Lighting")
+                         categoryRepository.findCategoriesByCategoryName("Lighting")
                 ))
             );
 
@@ -93,7 +92,7 @@ public class LoadDatabase {
                             "...",
                             30f,
                             99,
-                            categoryRepository.findCategoriesByCategoryName("Lighting")
+                             categoryRepository.findCategoriesByCategoryName("Lighting")
                     ))
             );
 
@@ -103,7 +102,7 @@ public class LoadDatabase {
                             "...",
                             30f,
                             99,
-                            categoryRepository.findCategoriesByCategoryName("Lighting")
+                             categoryRepository.findCategoriesByCategoryName("Lighting")
                     ))
             );
 
@@ -113,12 +112,12 @@ public class LoadDatabase {
                             "...",
                             30f,
                             99,
-                            categoryRepository.findCategoriesByCategoryName("Lighting")
+                             categoryRepository.findCategoriesByCategoryName("Lighting")
                     ))
             );
 
             log.info("Inserting --> " + userRepository.save(
-                    new User(
+                    new Users(
                             "admin",
                             "123",
                             "admin@gmail.com"
