@@ -1,10 +1,7 @@
 package com.eminimal.backend.services.impl;
 
-import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.repository.CategoryRepository;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,26 +17,6 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
 
     @Autowired
     private CategoryRepository repository;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-////   Covert to DTO
-//    private CategoryDto covertEntityToDto(Category category){
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-//        CategoryDto categoryDto = new CategoryDto();
-//        categoryDto = modelMapper.map(category, CategoryDto.class);
-//        return categoryDto;
-//    }
-//
-////  Covert to Entity
-//    private Category covertDtoToEntity(CategoryDto categoryDto){
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-//        Category category = new Category();
-//        category = modelMapper.map(categoryDto, Category.class);
-//        return category;
-//    }
-
 
 //  Find product
     @Override

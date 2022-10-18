@@ -1,7 +1,6 @@
 package com.eminimal.backend.models;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.UUID;
 

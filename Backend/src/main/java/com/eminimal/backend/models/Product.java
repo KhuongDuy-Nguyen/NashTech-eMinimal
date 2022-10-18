@@ -10,9 +10,12 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "productID"))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "product_id"))
 public class Product {
+
+
     @Id
+    @Column(name = "product_id")
     private UUID productID = UUID.randomUUID();
 
     private String productName ;
@@ -23,8 +26,8 @@ public class Product {
     private int productRating ;
     private int productAmount ;
     private Date dateCreate = new Date();
-    private Date dateUpdate ;
-    private Date dateSale ;
+    private Date dateUpdate;
+    private Date dateSale;
 
     @ManyToOne
     private Category categories;

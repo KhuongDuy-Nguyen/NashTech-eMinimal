@@ -3,7 +3,6 @@ package com.eminimal.backend.controllers;
 import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.services.impl.CategoryServiceImpl;
-import io.swagger.annotations.ApiResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,8 +76,6 @@ public class CategoryController {
         service.deleteById(id);
         io.swagger.v3.oas.models.responses.ApiResponse apiResponse = new io.swagger.v3.oas.models.responses.ApiResponse();
         apiResponse.setDescription("Remove successfully");
-//        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Post deleted successfully", HttpStatus.OK);
-
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
