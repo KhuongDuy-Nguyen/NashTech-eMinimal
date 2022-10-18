@@ -6,7 +6,9 @@ import com.eminimal.backend.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,21 +24,21 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
     @Autowired
     private ModelMapper modelMapper;
 
-//   Covert to DTO
-    private CategoryDto covertEntityToDto(Category category){
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto = modelMapper.map(category, CategoryDto.class);
-        return categoryDto;
-    }
-
-//  Covert to Entity
-    private Category covertDtoToEntity(CategoryDto categoryDto){
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        Category category = new Category();
-        category = modelMapper.map(categoryDto, Category.class);
-        return category;
-    }
+////   Covert to DTO
+//    private CategoryDto covertEntityToDto(Category category){
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+//        CategoryDto categoryDto = new CategoryDto();
+//        categoryDto = modelMapper.map(category, CategoryDto.class);
+//        return categoryDto;
+//    }
+//
+////  Covert to Entity
+//    private Category covertDtoToEntity(CategoryDto categoryDto){
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+//        Category category = new Category();
+//        category = modelMapper.map(categoryDto, Category.class);
+//        return category;
+//    }
 
 
 //  Find product
@@ -47,20 +49,19 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
 
 
     @Override
-    public Optional<Category> findById(UUID uuid) {
-        return repository.findById(uuid);
+    public Optional<Category> findById(UUID id) {
+        return Optional.ofNullable(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't found category with id " + id)));
     }
 
     @Override
     public List<Category> findByName(String name){
-        System.out.println(repository.findCategoryByCategoryName(name));
         return repository.findCategoryByCategoryName(name);
     }
 
 //  Create new product
     @Override
-    public void save(Category category) {
-        repository.save(category);
+    public Category save(Category category) {
+        return repository.save(category);
     }
 
 //  Delete product
@@ -72,8 +73,8 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
 
 //  Update product
     @Override
-    public void updateCategory(UUID id, Category newCategory) {
-        Category categoryDB = repository.findById(id).get();
+    public Category updateCategory(UUID id, Category newCategory) {
+        Category categoryDB = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Invalid user id:" + id));
 
         if (Objects.nonNull(newCategory.getCategoryName()) && !"".equalsIgnoreCase(newCategory.getCategoryName())) {
             categoryDB.setCategoryName(newCategory.getCategoryName());
@@ -82,6 +83,6 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
         if (Objects.nonNull(newCategory.getCategoryDesc()) && !"".equalsIgnoreCase(newCategory.getCategoryDesc())) {
             categoryDB.setCategoryDesc(newCategory.getCategoryDesc());
         }
-        repository.save(categoryDB);
+        return repository.save(categoryDB);
     }
 }

@@ -3,12 +3,16 @@ package com.eminimal.backend.controllers;
 import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.services.impl.CategoryServiceImpl;
+import io.swagger.annotations.ApiResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequestMapping("/category")
 @RestController
@@ -17,39 +21,65 @@ public class CategoryController {
     @Autowired
     private CategoryServiceImpl service;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     //    Get category
     @GetMapping("/all")
-    List<Category> findAll(){
-        return service.findAll();
+    List<CategoryDto> findAll(){
+        return service.findAll().stream().map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/id={id}")
-    Optional<Category> findAllByID(@PathVariable UUID id ){
-        return service.findById(id);
+    ResponseEntity<CategoryDto> findAllByID(@PathVariable UUID id ){
+        Category category = service.findById(id).get();
+
+        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        return ResponseEntity.ok().body(categoryDto);
     }
 
     @GetMapping("/")
-    List<Category> getAllByName(@RequestParam String name){
-        return service.findByName(name);
+    ResponseEntity<CategoryDto> getAllByName(@RequestParam String name){
+        List<Category> category = service.findByName(name);
+        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        return ResponseEntity.ok().body(categoryDto);
     }
 
     //    Create new category
     @PostMapping("")
-    void newCategory(@RequestBody Category newCategory){
-        service.save(newCategory);
-    }
+    ResponseEntity<CategoryDto> newCategory(@RequestBody CategoryDto categoryDto){
+//        DTO -> entity
+        Category categoryRequest = modelMapper.map(categoryDto, Category.class);
+        Category category = service.save(categoryRequest);
 
-    //    Remove category
-    @DeleteMapping("/{id}")
-    void deleteCategory(@PathVariable UUID id){
-        service.deleteById(id);
+//        Entity -> DTO
+        CategoryDto categoryResponse = modelMapper.map(category, CategoryDto.class);
+
+        return new ResponseEntity<>(categoryResponse, HttpStatus.CREATED);
     }
 
     //    Update category
     @PutMapping("/{id}")
-    void replaceCategory(@PathVariable UUID id, @RequestBody Category newCategory){
-        service.updateCategory(id, newCategory);
+    ResponseEntity<CategoryDto> replaceCategory(@PathVariable UUID id, @RequestBody CategoryDto categoryDto){
+        Category categoryRequest = modelMapper.map(categoryDto, Category.class);
+        Category category = service.updateCategory(id, categoryRequest);
 
+//        Entity -> DTO
+        CategoryDto categoryResponse = modelMapper.map(category, CategoryDto.class);
+
+        return ResponseEntity.ok().body(categoryResponse);
+
+    }
+
+    //    Remove category
+    @DeleteMapping("/{id}")
+    ResponseEntity<io.swagger.v3.oas.models.responses.ApiResponse> deleteCategory(@PathVariable UUID id){
+        service.deleteById(id);
+        io.swagger.v3.oas.models.responses.ApiResponse apiResponse = new io.swagger.v3.oas.models.responses.ApiResponse();
+        apiResponse.setDescription("Remove successfully");
+//        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Post deleted successfully", HttpStatus.OK);
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
 }
