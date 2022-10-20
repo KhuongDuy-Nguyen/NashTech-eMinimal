@@ -10,7 +10,7 @@ public interface ProductService {
     //  Find product
     List<Product> findAll();
 
-    Optional<Product> findById(UUID uuid);
+    Product findById(UUID uuid);
 
     Optional<Product> findProductByProductName(String name);
 

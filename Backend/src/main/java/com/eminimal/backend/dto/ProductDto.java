@@ -28,4 +28,5 @@ public class ProductDto implements Serializable {
     private Date dateCreate = new Date();
     private Date dateUpdate;
     private Date dateSale;
+    private CategoryDto categories;
 }

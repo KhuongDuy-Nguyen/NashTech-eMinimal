@@ -23,19 +23,18 @@ public class ProductServiceImpl implements com.eminimal.backend.services.Product
     }
 
     @Override
-    public Optional<Product> findById(UUID uuid) {
-        return repository.findById(uuid);
+    public Product findById(UUID uuid) {
+        return repository.findByProductID(uuid);
     }
 
     @Override
     public Optional<Product> findProductByProductName(String name) {
-        return repository.findProductByProductName(name);
+        return Optional.ofNullable(repository.findByProductName(name));
     }
 
 //  Create product
     @Override
     public <S extends Product> S save(S entity) {
-        Category category = entity.getCategories();
         return repository.save(entity);
     }
 
@@ -50,7 +49,6 @@ public class ProductServiceImpl implements com.eminimal.backend.services.Product
     public Product updateProduct(UUID id, Product newProduct){
         Product product =  repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't found product with id:" + id));
 
-        product.setProductID(id);
         product.setProductName(newProduct.getProductName());
         product.setProductDesc(newProduct.getProductDesc());
         product.setProductImage(newProduct.getProductImage());
@@ -60,7 +58,6 @@ public class ProductServiceImpl implements com.eminimal.backend.services.Product
         product.setProductRating(newProduct.getProductRating());
         product.setProductAmount(newProduct.getProductAmount());
 
-        product.setDateCreate(newProduct.getDateCreate());
         product.setDateUpdate(new Date());
         product.setDateSale(newProduct.getDateSale());
 
