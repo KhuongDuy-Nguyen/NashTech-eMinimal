@@ -35,86 +35,41 @@ public class LoadDatabase {
             log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
             log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
 
-//          Insert Product
-            log.info("Inserting --> " + productRepository.save(
-                  new Product("Sofa hien dai 1",
-                          "Day la chiec sofa cuc xin",
-                          "...",
-                          15.2f,
-                          99,
-                          categoryRepository.findCategoriesByCategoryName("Sofas")
-                  ))
-            );
+            log.info("Inserting --> " + productRepository.save(new Product(
+                    "Ghe xoay 1",
+                    "Day la ghe xoay",
+                    "...",
+                    12.5f,
+                    99,
+                    categoryRepository.findByCategoryName("Sofas")
+            )));
 
-            log.info("Inserting --> " + productRepository.save(
-                    new Product("Sofa hien dai 2",
-                            "Day la chiec sofa cuc xin",
-                            "...",
-                            15.2f,
-                            99,
-                            categoryRepository.findCategoriesByCategoryName("Sofas")
-                    ))
-            );
+            log.info("Inserting --> " + productRepository.save(new Product(
+                    "Ghe xoay 2",
+                    "Day la ghe xoay",
+                    "...",
+                    12.5f,
+                    99,
+                    categoryRepository.findByCategoryName("Sofas")
+            )));
 
-            log.info("Inserting --> " + productRepository.save(
-                    new Product("Sofa hien dai 3",
-                            "Day la chiec sofa cuc xin",
-                            "...",
-                            15.2f,
-                            99,
-                             categoryRepository.findCategoriesByCategoryName("Sofas")
-                    ))
-            );
+            log.info("Inserting --> " + productRepository.save(new Product(
+                    "Ghe xoay 3",
+                    "Day la ghe xoay",
+                    "...",
+                    12.5f,
+                    99,
+                    categoryRepository.findByCategoryName("Beds")
+            )));
 
-            log.info("Inserting --> " + productRepository.save(
-                    new Product("Sofa hien dai 4",
-                            "Day la chiec sofa cuc xin",
-                            "...",
-                            15.2f,
-                            99,
-                             categoryRepository.findCategoriesByCategoryName("Sofas")
-                    ))
-            );
-
-            log.info("Inserting --> " + productRepository.save(
-                new Product("Den trang tri hinh con gau 1",
-                        "Day la den trang tri cuc cute",
-                        "...",
-                        30f,
-                        99,
-                         categoryRepository.findCategoriesByCategoryName("Lighting")
-                ))
-            );
-
-            log.info("Inserting --> " + productRepository.save(
-                    new Product("Den trang tri hinh con gau 2",
-                            "Day la den trang tri cuc cute",
-                            "...",
-                            30f,
-                            99,
-                             categoryRepository.findCategoriesByCategoryName("Lighting")
-                    ))
-            );
-
-            log.info("Inserting --> " + productRepository.save(
-                    new Product("Den trang tri hinh con gau 3",
-                            "Day la den trang tri cuc cute",
-                            "...",
-                            30f,
-                            99,
-                             categoryRepository.findCategoriesByCategoryName("Lighting")
-                    ))
-            );
-
-            log.info("Inserting --> " + productRepository.save(
-                    new Product("Den trang tri hinh con gau 4",
-                            "Day la den trang tri cuc cute",
-                            "...",
-                            30f,
-                            99,
-                             categoryRepository.findCategoriesByCategoryName("Lighting")
-                    ))
-            );
+            log.info("Inserting --> " + productRepository.save(new Product(
+                    "Ghe xoay 4",
+                    "Day la ghe xoay",
+                    "...",
+                    12.5f,
+                    99,
+                    categoryRepository.findByCategoryName("Beds")
+            )));
 
             log.info("Inserting --> " + userRepository.save(
                     new Users(
