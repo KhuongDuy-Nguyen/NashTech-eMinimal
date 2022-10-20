@@ -11,9 +11,9 @@ public interface CategoryService {
     //  Find product
     List<Category> findAll();
 
-    Optional<Category> findById(UUID uuid);
+    Category findById(UUID uuid);
 
-    List<Category> findByName(String name);
+    Optional<Category> findByName(String name);
 
     //  Create new product
     Category save(Category category);

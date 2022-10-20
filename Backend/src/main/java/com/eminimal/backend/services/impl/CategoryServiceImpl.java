@@ -26,13 +26,13 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
 
 
     @Override
-    public Optional<Category> findById(UUID id) {
-        return Optional.ofNullable(repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't found category with id " + id)));
+    public Category findById(UUID id) {
+        return repository.findByCategoryID(id);
     }
 
     @Override
-    public List<Category> findByName(String name){
-        return repository.findCategoryByCategoryName(name);
+    public Optional<Category> findByName(String name){
+        return Optional.ofNullable(repository.findByCategoryName(name));
     }
 
 //  Create new product
@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements com.eminimal.backend.services.Catego
 //  Update product
     @Override
     public Category updateCategory(UUID id, Category newCategory) {
-        Category categoryDB = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Invalid user id:" + id));
+        Category categoryDB = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Invalid category id:" + id));
 
         if (Objects.nonNull(newCategory.getCategoryName()) && !"".equalsIgnoreCase(newCategory.getCategoryName())) {
             categoryDB.setCategoryName(newCategory.getCategoryName());
