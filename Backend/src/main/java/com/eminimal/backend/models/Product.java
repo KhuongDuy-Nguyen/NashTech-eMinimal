@@ -12,8 +12,6 @@ import java.util.*;
 @ToString
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "product_id"))
 public class Product {
-
-
     @Id
     @Column(name = "product_id")
     private UUID productID = UUID.randomUUID();
@@ -40,4 +38,5 @@ public class Product {
         this.productAmount = productAmount;
         this.categories = categories;
     }
+
 }
