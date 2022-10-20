@@ -33,8 +33,6 @@ public class Users {
     @Column(columnDefinition = "boolean default false")
     private boolean userActive;
 
-    @ManyToOne
-    private Orders orders;
 
     public Users(String userName, String userPassword, String userEmail) {
         this.userName = userName;
