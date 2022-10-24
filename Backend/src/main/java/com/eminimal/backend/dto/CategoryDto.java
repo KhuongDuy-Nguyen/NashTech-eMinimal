@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CategoryDto implements Serializable {
-    private UUID categoryID = UUID.randomUUID();
+    private String categoryID;
     private String categoryName;
     private String categoryDesc;
 }
