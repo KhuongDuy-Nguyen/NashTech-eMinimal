@@ -1,5 +1,6 @@
 package com.eminimal.backend.models;
 
+import com.eminimal.backend.models.users.Users;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ public class Cart {
 
     @Id
     @Column(name = "cart_id")
-    private UUID cartID =  UUID.randomUUID();
+    private String cartID =  UUID.randomUUID().toString();
 
     private int cartQuantity;
     private float price;

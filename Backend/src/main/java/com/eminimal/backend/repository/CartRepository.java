@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface CartRepository extends JpaRepository<Cart, UUID> {
-    Cart findByCartID(UUID id);
-    Cart findByCartUsers_UserId(UUID userID);
+public interface CartRepository extends JpaRepository<Cart, String> {
+    Cart findByCartID(String id);
+    Cart findByCartUsers_UserId(String userID);
 
 }
