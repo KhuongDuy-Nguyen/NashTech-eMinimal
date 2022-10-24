@@ -15,8 +15,6 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UsersRepository repository;
-
-
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 //  Find account
