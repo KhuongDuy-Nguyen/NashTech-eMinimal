@@ -2,6 +2,7 @@ package com.eminimal.backend.controllers;
 
 import com.eminimal.backend.dto.UsersDto;
 import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.services.impl.users.UserAuth;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,10 +27,9 @@ public class AuthController {
     ModelMapper modelMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody Users users) throws Exception {
+    public ResponseEntity<UsersToken> authenticateUser(@Valid @RequestBody Users users) throws Exception {
 //        Users users = modelMapper.map(usersDto, Users.class);
-        String token = auth.login(users);
-        return new ResponseEntity<>("Token: " + auth.login(users), HttpStatus.OK);
+        return new ResponseEntity<>(auth.login(users), HttpStatus.OK);
     }
 
     @PostMapping("/register")

@@ -3,6 +3,7 @@ package com.eminimal.backend.services.impl.users;
 import com.eminimal.backend.jwt.JwtTokenProvider;
 import com.eminimal.backend.models.users.CustomUserDetails;
 import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.repository.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class UserAuth {
         return userRepository.save(users);
     }
 
-    public String login(Users users) throws Exception {
+    public UsersToken login(Users users) throws Exception {
         // Xác thực từ username và password.
         logger.info("users: " + users);
 
@@ -53,7 +54,9 @@ public class UserAuth {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // Trả về jwt cho người dùng.
-            return tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+            String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+
+            return new UsersToken(jwt, "Bearer");
 
         }catch (AuthenticationException e){
             throw new Exception("Invalid username and password");
