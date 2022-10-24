@@ -1,11 +1,9 @@
 package com.eminimal.backend;
 
-import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.CategoryRepository;
 import com.eminimal.backend.repository.ProductRepository;
-import com.eminimal.backend.repository.UserRepository;
+import com.eminimal.backend.repository.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -18,22 +16,24 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(CategoryRepository categoryRepository, ProductRepository productRepository, UserRepository userRepository){
+    CommandLineRunner initDatabase(CategoryRepository categoryRepository,
+                                   ProductRepository productRepository,
+                                   UsersRepository usersRepository){
         return args -> {
-            userRepository.deleteAll();
+            usersRepository.deleteAll();
             productRepository.deleteAll();
             categoryRepository.deleteAll();
 
 
 //          Insert Category
-            log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri")));
-
-            log.info("Inserting --> " + categoryRepository.save(new Category("Beds", "Tong hop cac loai giuong")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Lamp", "Tong hop cac loai den")));
-
-            log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
+//            log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
+//            log.info("Inserting --> " + categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri")));
+//
+//            log.info("Inserting --> " + categoryRepository.save(new Category("Beds", "Tong hop cac loai giuong")));
+//            log.info("Inserting --> " + categoryRepository.save(new Category("Lamp", "Tong hop cac loai den")));
+//
+//            log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
+//            log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 1",
@@ -71,13 +71,13 @@ public class LoadDatabase {
                     categoryRepository.findByCategoryName("Beds")
             )));
 
-            log.info("Inserting --> " + userRepository.save(
-                    new Users(
-                            "admin",
-                            "123",
-                            "admin@gmail.com"
-                    ))
-            );
+//            log.info("Inserting --> " + rolesRepository.save(new UsersRole(
+//                    "Guest"
+//            )));
+//
+//            log.info("Inserting --> " + rolesRepository.save(new UsersRole(
+//                    "Admin"
+//            )));
 
         };
     }
