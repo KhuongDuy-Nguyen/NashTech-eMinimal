@@ -1,4 +1,4 @@
-package com.eminimal.backend.services;
+package com.eminimal.backend.services.interfaces;
 
 import com.eminimal.backend.models.Cart;
 
@@ -10,16 +10,16 @@ public interface CartService {
     List<Cart> findAll();
 
     //    Find all cart with user ID
-    Cart findById(UUID userID);
+    Cart findById(String userID);
 
     //  Add item in order
-    Cart save(UUID usersID, UUID productID);
+    Cart save(String usersID, String productID);
 
     //    Update cart
-    Cart updateCart(UUID id, Cart newCart);
+    Cart updateCart(String id, Cart newCart);
 
     //  Delete item in order
-    void deleteProductById(UUID cartID, UUID productID);
+    void deleteProductById(String cartID, String productID);
 
-    void deleteCartById(UUID id);
+    void deleteCartById(String id);
 }
