@@ -11,11 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
 public class CartController {
 
     @Autowired
@@ -33,13 +32,13 @@ public class CartController {
     }
 
     @PostMapping("/user")
-    CartDto findByUserId(@RequestParam UUID userID){
+    CartDto findByUserId(@RequestParam String userID){
         return modelMapper.map(service.findById(userID), CartDto.class);
     }
 
 //   Crete new cart
     @PostMapping("")
-    CartDto save(@RequestParam UUID userID, @RequestParam UUID productID){
+    CartDto save(@RequestParam String userID, @RequestParam String productID){
         Cart cart = service.save(userID, productID);
 
         CartDto cartDto = modelMapper.map(cart, CartDto.class);
@@ -50,19 +49,19 @@ public class CartController {
 
 //    Update cart
     @PutMapping("")
-    CartDto updateCart(@RequestBody UUID cartID,@RequestBody CartDto cartDto){
+    CartDto updateCart(@RequestBody String cartID,@RequestBody CartDto cartDto){
         Cart cartRequest = modelMapper.map(cartDto, Cart.class);
         return modelMapper.map(service.updateCart(cartID, cartRequest), CartDto.class);
     }
 
 //  Delete product in cart and cart
     @DeleteMapping("/product")
-    void deleteProduct(@RequestParam UUID cartID, @RequestParam UUID productID){
+    void deleteProduct(@RequestParam String cartID, @RequestParam String productID){
         service.deleteProductById(cartID, productID);
     }
 
     @DeleteMapping("")
-    void deleteCart(@RequestParam UUID cartID){
+    void deleteCart(@RequestParam String cartID){
         service.deleteCartById(cartID);
     }
 }

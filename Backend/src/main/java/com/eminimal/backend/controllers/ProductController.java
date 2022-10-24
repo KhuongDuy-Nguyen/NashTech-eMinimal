@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
 
-@RequestMapping("/product")
+@RequestMapping("/api/product")
 @RestController
 public class ProductController {
 
@@ -28,42 +28,28 @@ public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     //   Get information
     @GetMapping("/all")
-    List<ProductDto> findAll(){
-        return service.findAll().stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+    List<Product> findAll() throws ExecutionException, InterruptedException {
+        return service.findAll();
     }
 
     @GetMapping("/search/id={id}")
-    ResponseEntity<ProductDto> findProductById(@PathVariable UUID id){
+    ResponseEntity<ProductDto> findProductById(@PathVariable String id) throws ExecutionException, InterruptedException {
         Product product = service.findById(id);
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
         return  ResponseEntity.ok().body(productDto);
     }
 
-    @GetMapping("/search/name={name}")
-    ResponseEntity<ProductDto> findProductByName(@PathVariable String name){
-        Optional<Product> product =  service.findProductByProductName(name);
-        ProductDto productDto = modelMapper.map(product, ProductDto.class);
-        logger.info("Find: " + productDto);
-        return ResponseEntity.ok().body(productDto);
-    }
 
     //  Create product
     @PostMapping("/create")
-    ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto){
-        Product productRequest = modelMapper.map(productDto, Product.class);
-        Product product = service.save(productRequest);
-
-
-//        Entity -> DTO
-        ProductDto productResponse = modelMapper.map(product, ProductDto.class);
-        return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
+    String createProduct(@RequestBody Product product) throws ExecutionException, InterruptedException {
+        return service.save(product);
     }
 
     //  Update product
     @PutMapping("/update")
-    ResponseEntity<ProductDto> updateProduct(@RequestParam UUID id, @RequestBody ProductDto productDto){
-        Product productRequest = modelMapper.map(productDto, Product.class);
-        Product product = service.updateProduct(id, productRequest);
+    ResponseEntity<ProductDto> updateProduct( @RequestBody Product newProduct) throws ExecutionException, InterruptedException {
+        String product = service.updateProduct(newProduct.getProductID(), newProduct);
 
 //        Entity -> DTO
         ProductDto productResponse = modelMapper.map(product, ProductDto.class);
@@ -71,12 +57,19 @@ public class ProductController {
         return ResponseEntity.ok().body(productResponse);
     }
 
+//    Rating product
+    @PutMapping("/rating")
+    ResponseEntity<ProductDto> ratingProduct(@RequestParam String id, @RequestBody int rating) throws ExecutionException, InterruptedException {
+        Product product = service.ratingProduct(id, rating);
+        ProductDto productResponse = modelMapper.map(product, ProductDto.class);
+        return ResponseEntity.ok().body(productResponse);
+    }
+
     //  Delete product
     @DeleteMapping("/delete")
-    ResponseEntity<io.swagger.v3.oas.models.responses.ApiResponse> deleteProductById(@RequestParam UUID id){
+    ResponseEntity<?> deleteProductById(@RequestParam String id){
         service.deleteById(id);
-        io.swagger.v3.oas.models.responses.ApiResponse apiResponse = new io.swagger.v3.oas.models.responses.ApiResponse();
-        apiResponse.setDescription("Remove successfully");
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return new ResponseEntity<>("Remove successfully", HttpStatus.OK);
     }
+
 }
