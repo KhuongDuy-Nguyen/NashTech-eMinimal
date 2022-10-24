@@ -14,7 +14,7 @@ public class Category {
 
     @Id
     @Column(name = "category_id")
-    private UUID categoryID = UUID.randomUUID();
+    private String categoryID = UUID.randomUUID().toString();
 
     private String categoryName;
     private String categoryDesc;

@@ -14,17 +14,24 @@ import java.util.*;
 public class Product {
     @Id
     @Column(name = "product_id")
-    private UUID productID = UUID.randomUUID();
+    private String productID = UUID.randomUUID().toString();
 
     private String productName ;
     private String productDesc ;
     private String productImage ;
     private float  productCost;
+
     private int productSale ;
-    private int productRating ;
+
+    @ElementCollection
+    private List<Integer> productRating = new ArrayList<>();
+
     private int productAmount ;
+
     private Date dateCreate = new Date();
+
     private Date dateUpdate;
+
     private Date dateSale;
 
     @ManyToOne
