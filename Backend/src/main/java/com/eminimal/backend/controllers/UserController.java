@@ -1,27 +1,21 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.dto.ProductDto;
 import com.eminimal.backend.dto.UsersDto;
-import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.Users;
-import com.eminimal.backend.services.impl.UserServiceImpl;
+import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.services.impl.users.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.SecureRandom;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequestMapping("/account")
+@RequestMapping("api/user")
 @RestController
 public class UserController {
-
     @Autowired
     private UserServiceImpl service;
 
@@ -35,14 +29,14 @@ public class UserController {
     }
 
     @GetMapping("/id={id}")
-    ResponseEntity<UsersDto> findUserByID(@PathVariable UUID id ){
+    ResponseEntity<UsersDto> findUserByID(@PathVariable String id ) throws Exception {
         Users users = service.findById(id);
         UsersDto usersDto = modelMapper.map(users, UsersDto.class);
         return ResponseEntity.ok().body(usersDto);
     }
 
     @GetMapping("/email={email}")
-    ResponseEntity<UsersDto> findUserByEmail(@PathVariable String email){
+    ResponseEntity<UsersDto> findUserByEmail(@PathVariable String email) throws Exception {
         Users users = service.findByEmail(email);
         UsersDto usersDto = modelMapper.map(users, UsersDto.class);
         return ResponseEntity.ok().body(usersDto);
@@ -50,39 +44,29 @@ public class UserController {
 
     //    Create new account
     @PostMapping("/create")
-    ResponseEntity<UsersDto> createUser(@RequestBody UsersDto usersDto){
-        Users usersRequest = modelMapper.map(usersDto, Users.class);
-        service.save(usersRequest);
-
-        UsersDto usersResponse = modelMapper.map(usersRequest, UsersDto.class);
-        return new ResponseEntity<>(usersResponse, HttpStatus.CREATED);
+    ResponseEntity<?> createUser(@RequestBody Users users) throws Exception {
+        service.save(users);
+        return new ResponseEntity<>("Create successfully", HttpStatus.CREATED);
     }
 
     //    Update account
     @PutMapping("/update")
-    ResponseEntity<UsersDto> updateUser(@RequestParam UUID id, @RequestBody UsersDto usersDto){
-        Users usersRequest = modelMapper.map(usersDto, Users.class);
-        service.updateUserById(id, usersRequest);
-
-        UsersDto usersResponse = modelMapper.map(usersRequest, UsersDto.class);
-        return ResponseEntity.ok().body(usersResponse);
+    ResponseEntity<?> updateUser(@RequestParam String id, @RequestBody Users users) throws Exception {
+        service.updateUserById(id, users);
+        return new ResponseEntity<>("Update successfully", HttpStatus.OK);
     }
 
     //    Remove account
     @DeleteMapping("/delete")
-    ResponseEntity<io.swagger.v3.oas.models.responses.ApiResponse> deleteUserById(@RequestParam UUID id){
+    ResponseEntity<?> deleteUserById(@RequestParam String id) throws Exception {
         service.deleteById(id);
-        io.swagger.v3.oas.models.responses.ApiResponse apiResponse = new io.swagger.v3.oas.models.responses.ApiResponse();
-        apiResponse.setDescription("Remove successfully");
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return new ResponseEntity<>("Update successfully", HttpStatus.OK);
     }
 
 //   Active account
     @PutMapping("/active")
-    ResponseEntity<io.swagger.v3.oas.models.responses.ApiResponse> activeUserById(@RequestParam String email){
-        io.swagger.v3.oas.models.responses.ApiResponse apiResponse = new io.swagger.v3.oas.models.responses.ApiResponse();
+    ResponseEntity<?> activeUserById(@RequestParam String email) throws Exception {
         service.activeUser(email);
-        apiResponse.setDescription("Active successfully");
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return new ResponseEntity<>("Active successfully", HttpStatus.OK);
     }
 }
