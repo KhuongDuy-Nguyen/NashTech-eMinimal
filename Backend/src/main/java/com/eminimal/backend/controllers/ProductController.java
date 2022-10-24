@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/product")
 @RestController
@@ -28,8 +29,8 @@ public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     //   Get information
     @GetMapping("/all")
-    List<Product> findAll() throws ExecutionException, InterruptedException {
-        return service.findAll();
+    List<ProductDto> findAll() throws ExecutionException, InterruptedException {
+        return service.findAll().stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/search/id={id}")
@@ -42,19 +43,15 @@ public class ProductController {
 
     //  Create product
     @PostMapping("/create")
-    String createProduct(@RequestBody Product product) throws ExecutionException, InterruptedException {
-        return service.save(product);
+    ResponseEntity<?> createProduct(@RequestBody Product product) throws ExecutionException, InterruptedException {
+//        return service.save(product);
+        return ResponseEntity.ok().body(service.save(product));
     }
 
     //  Update product
     @PutMapping("/update")
-    ResponseEntity<ProductDto> updateProduct( @RequestBody Product newProduct) throws ExecutionException, InterruptedException {
-        String product = service.updateProduct(newProduct.getProductID(), newProduct);
-
-//        Entity -> DTO
-        ProductDto productResponse = modelMapper.map(product, ProductDto.class);
-
-        return ResponseEntity.ok().body(productResponse);
+    ResponseEntity<?> updateProduct( @RequestBody Product newProduct) throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok().body(service.updateProduct(newProduct));
     }
 
 //    Rating product

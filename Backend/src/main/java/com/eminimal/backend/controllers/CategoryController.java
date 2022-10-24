@@ -1,5 +1,6 @@
 package com.eminimal.backend.controllers;
 
+import com.eminimal.backend.dto.CartDto;
 import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.services.impl.CategoryServiceImpl;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/category")
 @RestController
@@ -29,14 +31,13 @@ public class CategoryController {
 
     //    Get category
     @GetMapping("/all")
-    List<Category> findAll() throws ExecutionException, InterruptedException {
-        return service.findAll();
+    List<CategoryDto> findAll() throws ExecutionException, InterruptedException {
+        return service.findAll().stream().map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/search/id={id}")
     ResponseEntity<CategoryDto> findCategoryById(@PathVariable String id ) throws ExecutionException, InterruptedException {
         Category category = service.findById(id);
-
         CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
         return ResponseEntity.ok().body(categoryDto);
     }
@@ -44,10 +45,10 @@ public class CategoryController {
 
     //    Create new category
     @PostMapping("/create")
-    String createCategory(@RequestBody Category category) throws ExecutionException, InterruptedException {
+    public ResponseEntity<?> createCategory(@RequestBody Category category) throws ExecutionException, InterruptedException {
 //        DTO -> entity
 //        Category categoryRequest = modelMapper.map(categoryDto, Category.class);
-        return service.save(category);
+        return ResponseEntity.ok().body(service.save(category));
 
 ////        Entity -> DTO
 //        CategoryDto categoryResponse = modelMapper.map(category, CategoryDto.class);

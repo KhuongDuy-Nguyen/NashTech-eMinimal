@@ -18,5 +18,5 @@ public interface ProductService {
     String deleteById(String id);
 
     //  Update product
-    String updateProduct(String id, Product newProduct) throws ExecutionException, InterruptedException;
+    String updateProduct(Product newProduct) throws ExecutionException, InterruptedException;
 }
