@@ -18,10 +18,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class CartDto implements Serializable {
-    private UUID cartID = UUID.randomUUID();
+    private String cartID;
     private int cartQuantity;
     private float price;
     private boolean cartStatus;
-    private List<ProductDto> cartProducts = new ArrayList<>();
+    private List<ProductDto> cartProducts;
     private UsersDto cartUsers;
 }
