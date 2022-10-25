@@ -4,22 +4,23 @@ import com.eminimal.backend.models.Cart;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public interface CartService {
     //    Find all cart
-    List<Cart> findAll();
+    List<Cart> findAll() throws ExecutionException, InterruptedException;
 
     //    Find all cart with user ID
-    Cart findById(String userID);
+    Cart findById(String userID) throws ExecutionException, InterruptedException;
 
     //  Add item in order
-    Cart save(String usersID, String productID);
+    String save(String usersID, String productID) throws Exception;
 
     //    Update cart
-    Cart updateCart(String id, Cart newCart);
+    String updateCart(Cart newCart) throws ExecutionException, InterruptedException;
 
     //  Delete item in order
-    void deleteProductById(String cartID, String productID);
+    String deleteProductById(String cartID, String productID) throws ExecutionException, InterruptedException;
 
-    void deleteCartById(String id);
+    String deleteCartById(String id);
 }
