@@ -21,7 +21,6 @@ public class BackendApplication {
 		return new ModelMapper();
 	}
 
-
 	public static FileInputStream getPath(String fileName) throws FileNotFoundException {
 		ClassLoader classLoader = BackendApplication.class.getClassLoader();
 		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());

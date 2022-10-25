@@ -4,7 +4,6 @@ import com.eminimal.backend.models.users.CustomUserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.Date;
 
 @Component
