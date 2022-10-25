@@ -5,6 +5,7 @@ import com.eminimal.backend.models.users.CustomUserDetails;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.repository.UsersRepository;
+import com.google.firebase.auth.FirebaseAuth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+
 @Service
-public class UserAuth {
+public class UserAuthServiceImpl {
 
     @Autowired
     UsersRepository userRepository;
@@ -31,7 +34,7 @@ public class UserAuth {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserAuth.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserAuthServiceImpl.class);
 
     public Users register(Users users){
         users.setUserPassword(passwordEncoder.encode(users.getUserPassword()));
@@ -56,11 +59,12 @@ public class UserAuth {
             // Trả về jwt cho người dùng.
             String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
 
-            return new UsersToken(jwt, "Bearer");
+            return new UsersToken(jwt, Principal.class.getName());
 
         }catch (AuthenticationException e){
             throw new Exception("Invalid username and password");
         }
+
     }
 
 }
