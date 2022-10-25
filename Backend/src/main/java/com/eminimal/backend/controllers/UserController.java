@@ -3,6 +3,9 @@ package com.eminimal.backend.controllers;
 import com.eminimal.backend.dto.UsersDto;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.services.impl.users.UserServiceImpl;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @RequestMapping("api/user")
@@ -24,7 +28,7 @@ public class UserController {
 
     //  Get account
     @GetMapping("/all")
-    List<UsersDto> findAll(){
+    List<UsersDto> findAll() throws FirebaseAuthException, ExecutionException, InterruptedException {
         return service.findAll().stream().map(users -> modelMapper.map(users, UsersDto.class)).collect(Collectors.toList());
     }
 
@@ -36,37 +40,31 @@ public class UserController {
     }
 
     @GetMapping("/email={email}")
-    ResponseEntity<UsersDto> findUserByEmail(@PathVariable String email) throws Exception {
-        Users users = service.findByEmail(email);
-        UsersDto usersDto = modelMapper.map(users, UsersDto.class);
-        return ResponseEntity.ok().body(usersDto);
+    ResponseEntity<?> findUserByEmail(@PathVariable String email) throws Exception {
+//        Users users = service.findByEmail(email);
+//        UsersDto usersDto = modelMapper.map(users, UsersDto.class);
+        UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
+//        System.out.println("Successfully fetched user data: " + userRecord.getEmail());
+        return ResponseEntity.ok().body(userRecord.getProviderData());
     }
 
     //    Create new account
     @PostMapping("/create")
     ResponseEntity<?> createUser(@RequestBody Users users) throws Exception {
-        service.save(users);
-        return new ResponseEntity<>("Create successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(users), HttpStatus.CREATED);
     }
 
     //    Update account
     @PutMapping("/update")
     ResponseEntity<?> updateUser(@RequestParam String id, @RequestBody Users users) throws Exception {
-        service.updateUserById(id, users);
-        return new ResponseEntity<>("Update successfully", HttpStatus.OK);
+        return new ResponseEntity<>(service.updateUserById(users), HttpStatus.OK);
     }
 
     //    Remove account
     @DeleteMapping("/delete")
     ResponseEntity<?> deleteUserById(@RequestParam String id) throws Exception {
-        service.deleteById(id);
-        return new ResponseEntity<>("Update successfully", HttpStatus.OK);
+        ;
+        return new ResponseEntity<>(service.deleteById(id), HttpStatus.OK);
     }
 
-//   Active account
-    @PutMapping("/active")
-    ResponseEntity<?> activeUserById(@RequestParam String email) throws Exception {
-        service.activeUser(email);
-        return new ResponseEntity<>("Active successfully", HttpStatus.OK);
-    }
 }

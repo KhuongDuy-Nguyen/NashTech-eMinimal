@@ -1,113 +1,111 @@
 package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.Cart;
-import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.Users;
-import com.eminimal.backend.repository.CartRepository;
-import com.eminimal.backend.repository.ProductRepository;
-import com.eminimal.backend.repository.UserRepository;
-import org.hibernate.criterion.Order;
+import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.services.impl.users.UserServiceImpl;
+import com.eminimal.backend.services.interfaces.CartService;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 @Service
-public class CartServiceImpl implements com.eminimal.backend.services.CartService {
+public class CartServiceImpl implements CartService {
+
+    private static final String COLLECTION_NAME = "cart";
+    private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private final Firestore dbFirestore = FirestoreClient.getFirestore();
+    private final List<Cart> cartList = new ArrayList<>();
 
     @Autowired
-    private CartRepository cartRepository;
+    private ProductServiceImpl productService;
 
     @Autowired
-    private ProductRepository productRepository;
+    private UserServiceImpl userService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
 //    Find all cart
     @Override
-    public List<Cart> findAll() {
-        return cartRepository.findAll();
+    public List<Cart> findAll() throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            Cart cart = document.toObject(Cart.class);
+            cartList.add(cart);
+        }
+        return cartList;
     }
 
-//    Find all cart with user ID
     @Override
-    public Cart findById(UUID userID){
-        return cartRepository.findByCartUsers_UserId(userID);
+    public Cart findById(String cartID) throws ExecutionException, InterruptedException {
+//        return cartRepository.findByCartUsers_UserId(userID);
+        ApiFuture<DocumentSnapshot> future = dbFirestore.collection(COLLECTION_NAME).document(cartID).get();
+        DocumentSnapshot document = future.get();
+        if(document.exists()){
+            return document.toObject(Cart.class);
+        }else{
+            throw new ExecutionException("Can't find cart with id: " + cartID, null);
+        }
     }
 
 //  Add item in order
     @Override
-    public Cart save(UUID usersID, UUID productID){
-        Users user = userRepository.findByUserId(usersID);
-        Product product = productRepository.findByProductID(productID);
-        Cart cartHaveUser = cartRepository.findByCartUsers_UserId(usersID);
+    public String save(String usersID, String productID) throws Exception {
+        Users user = userService.findById(usersID);
+        Product product = productService.findById(productID);
+        Cart cart = new Cart();
+        cart.getCartProducts().add(product);
+        cart.setCartQuantity(cart.getCartQuantity() + 1);
+        cart.setPrice(cart.getPrice() + product.getProductCost());
+        cart.setCartUsers(user);
 
+        dbFirestore.collection(COLLECTION_NAME).document(cart.getCartID()).set(cart);
         decreaseAmountProduct(productID);
-
-        if(cartHaveUser == null){
-            Cart cart = new Cart();
-            cart.getCartProducts().add(product);
-            cart.setCartQuantity(1);
-            cart.setPrice(product.getProductCost());
-            cart.setCartUsers(user);
-            logger.info("Product in order: " + cart.getCartProducts());
-            return cartRepository.save(cart);
-        }else{
-            cartHaveUser.getCartProducts().add(product);
-            cartHaveUser.setCartQuantity(cartHaveUser.getCartQuantity() + 1);
-            cartHaveUser.setPrice(cartHaveUser.getPrice() + product.getProductCost());
-            logger.info("Product in order: " + cartHaveUser.getCartProducts());
-            return cartRepository.save(cartHaveUser);
-        }
+        return "Create success";
     }
 
 //    Change amount in product
-    public void decreaseAmountProduct(UUID productID){
-        Product product = productRepository.findByProductID(productID);
+    public void decreaseAmountProduct(String productID) throws ExecutionException, InterruptedException {
+        Product product =  productService.findById(productID);
         product.setProductAmount(product.getProductAmount() - 1);
-        productRepository.save(product);
+        dbFirestore.collection(COLLECTION_NAME).document(product.getProductID()).set(product);
     }
 
-    public void increaseAmountProduct(UUID productID){
-        Product product = productRepository.findByProductID(productID);
+    public void increaseAmountProduct(String productID) throws ExecutionException, InterruptedException {
+        Product product = productService.findById(productID);
         product.setProductAmount(product.getProductAmount() + 1);
-        productRepository.save(product);
+        dbFirestore.collection(COLLECTION_NAME).document(product.getProductID()).set(product);
     }
 
 //    Update cart
     @Override
-    public Cart updateCart(UUID id, Cart newCart){
-        Cart cartDB = cartRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Invalid cart id:" + id));
-
-        cartDB.setPrice(newCart.getPrice());
-        cartDB.setCartStatus(newCart.isCartStatus());
-        cartDB.setCartProducts(newCart.getCartProducts());
-        cartDB.setCartQuantity(newCart.getCartQuantity());
-
-        return cartRepository.save(cartDB);
+    public String updateCart(Cart newCart) throws ExecutionException, InterruptedException {
+        findById(newCart.getCartID());
+        dbFirestore.collection(COLLECTION_NAME).document(newCart.getCartID()).set(newCart);
+        return "Update success";
     }
 
 
     //  Delete item in order
     @Override
-    public void deleteProductById(UUID cartID, UUID productID) {
-        Cart cart = cartRepository.findByCartID(cartID);
-        Product product = productRepository.findByProductID(productID);
-        cart.getCartProducts().remove(product);
-        increaseAmountProduct(productID);
-        cartRepository.save(cart);
+    public String deleteProductById(String cartID, String productID) throws ExecutionException, InterruptedException {
+            Cart cart = findById(cartID);
+            Product product = productService.findById(productID);
+            cart.getCartProducts().remove(product);
+            increaseAmountProduct(productID);
+            dbFirestore.collection(COLLECTION_NAME).document(cartID).set(cart);
+            return "Remove item in order success";
     }
 
     @Override
-    public void deleteCartById(UUID id){
-        cartRepository.deleteById(id);
+    public String deleteCartById(String id){
+        dbFirestore.collection(COLLECTION_NAME).document(id).delete();
+        return "Remove success with cart ID: " + id;
     }
 }

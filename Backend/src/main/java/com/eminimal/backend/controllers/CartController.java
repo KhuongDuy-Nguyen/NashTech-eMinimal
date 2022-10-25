@@ -8,9 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,41 +28,36 @@ public class CartController {
 
 //   Find cart
     @GetMapping
-    List<CartDto> findAll(){
+    public List<CartDto> findAll() throws ExecutionException, InterruptedException {
         return service.findAll().stream().map(cart -> modelMapper.map(cart, CartDto.class)).collect(Collectors.toList());
     }
 
     @PostMapping("/user")
-    CartDto findByUserId(@RequestParam String userID){
+    public CartDto findByUserId(@RequestParam String userID) throws ExecutionException, InterruptedException {
         return modelMapper.map(service.findById(userID), CartDto.class);
     }
 
 //   Crete new cart
     @PostMapping("")
-    CartDto save(@RequestParam String userID, @RequestParam String productID){
-        Cart cart = service.save(userID, productID);
-
-        CartDto cartDto = modelMapper.map(cart, CartDto.class);
-        logger.info("Cart: " + cart);
-        logger.info("CartDTO: " +  cartDto);
-        return cartDto;
+    public ResponseEntity<?> save(@RequestParam String userID, @RequestParam String productID) throws Exception {
+        return ResponseEntity.ok().body(service.save(userID, productID));
     }
 
 //    Update cart
     @PutMapping("")
-    CartDto updateCart(@RequestBody String cartID,@RequestBody CartDto cartDto){
-        Cart cartRequest = modelMapper.map(cartDto, Cart.class);
-        return modelMapper.map(service.updateCart(cartID, cartRequest), CartDto.class);
+    public ResponseEntity<?> updateCart(@RequestBody Cart cart) throws ExecutionException, InterruptedException {
+//        Cart cartRequest = modelMapper.map(cartDto, Cart.class);
+        return ResponseEntity.ok().body(service.updateCart(cart));
     }
 
 //  Delete product in cart and cart
     @DeleteMapping("/product")
-    void deleteProduct(@RequestParam String cartID, @RequestParam String productID){
-        service.deleteProductById(cartID, productID);
+    public ResponseEntity<?> deleteProduct(@RequestParam String cartID, @RequestParam String productID) throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok().body(service.deleteProductById(cartID, productID));
     }
 
     @DeleteMapping("")
-    void deleteCart(@RequestParam String cartID){
-        service.deleteCartById(cartID);
+    public ResponseEntity<?> deleteCart(@RequestParam String cartID){
+        return ResponseEntity.ok().body(service.deleteCartById(cartID));
     }
 }

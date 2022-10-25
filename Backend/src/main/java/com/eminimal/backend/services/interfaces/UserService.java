@@ -1,30 +1,24 @@
 package com.eminimal.backend.services.interfaces;
 
 import com.eminimal.backend.models.users.Users;
+import com.google.firebase.auth.FirebaseAuthException;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public interface UserService {
     //  Find account
-    List<Users> findAll();
+    List<Users> findAll() throws FirebaseAuthException, ExecutionException, InterruptedException;
 
     Users findById(String uuid) throws Exception;
 
-    Users findByEmail(String email) throws Exception;
-
-    Users findByUsername(String username) throws Exception;
-
     //  Create account
-    <S extends Users> S save(S entity) throws Exception;
+    <S extends Users> String save(S entity) throws Exception;
 
     //  Delete account
-    void deleteById(String uuid) throws Exception;
+    String deleteById(String uuid) throws Exception;
 
     //   Update account
-    void updateUserById(String id, Users newUsers) throws Exception;
-
-    void activeUser(String email) throws Exception;
+    String updateUserById(Users newUsers) throws Exception;
 
 }
