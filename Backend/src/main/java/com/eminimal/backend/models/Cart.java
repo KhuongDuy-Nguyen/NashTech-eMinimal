@@ -1,5 +1,6 @@
 package com.eminimal.backend.models;
 
+import com.eminimal.backend.models.product.Product;
 import com.eminimal.backend.models.users.Users;
 import lombok.*;
 
@@ -21,9 +22,7 @@ public class Cart {
 
     private int cartQuantity;
     private float price;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean cartStatus;
+    private boolean cartStatus = false;
 
     @ManyToMany
     @ToString.Exclude

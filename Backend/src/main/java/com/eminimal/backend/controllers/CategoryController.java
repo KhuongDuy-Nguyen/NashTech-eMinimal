@@ -1,6 +1,5 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.dto.CartDto;
 import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.services.impl.CategoryServiceImpl;
@@ -8,11 +7,11 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -31,52 +30,40 @@ public class CategoryController {
 
     //    Get category
     @GetMapping("/all")
-    List<CategoryDto> findAll() throws ExecutionException, InterruptedException {
+    List<CategoryDto> findAll(){
         return service.findAll().stream().map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
     }
 
-    @GetMapping("/search/id={id}")
-    ResponseEntity<CategoryDto> findCategoryById(@PathVariable String id ) throws ExecutionException, InterruptedException {
+    @GetMapping("")
+    ResponseEntity<Category> findCategoryById(@RequestParam String id) throws Exception {
         Category category = service.findById(id);
-        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
-        return ResponseEntity.ok().body(categoryDto);
+//        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        return ResponseEntity.ok().body(category);
     }
 
+    @GetMapping("/")
+    ResponseEntity<List<Category>> findCategoryByName(@RequestParam String name) throws Exception {
+        List<Category> category = service.findByName(name);
+//        CategoryDto categoryDto = modelMapper.map(category, CategoryDto.class);
+        return ResponseEntity.ok().body(category);
+    }
 
     //    Create new category
     @PostMapping("/create")
-    public ResponseEntity<?> createCategory(@RequestBody Category category) throws ExecutionException, InterruptedException {
-//        DTO -> entity
-//        Category categoryRequest = modelMapper.map(categoryDto, Category.class);
+    public ResponseEntity<?> createCategory(@RequestBody Category category){
         return ResponseEntity.ok().body(service.save(category));
-
-////        Entity -> DTO
-//        CategoryDto categoryResponse = modelMapper.map(category, CategoryDto.class);
-//
-//        return new ResponseEntity<>(categoryResponse, HttpStatus.CREATED);
     }
 
     //    Update category
     @PutMapping("/update")
-    String updateCategory(@RequestBody Category category) throws ExecutionException, InterruptedException {
-//        Category categoryRequest = modelMapper.map(categoryDto, Category.class);
-//        Category category = service.updateCategory(id, categoryRequest);
-//
-////        Entity -> DTO
-//        CategoryDto categoryResponse = modelMapper.map(category, CategoryDto.class);
-//
-//        return ResponseEntity.ok().body(categoryResponse);
-        return service.updateCategory(category);
-
+    public ResponseEntity<?> updateCategory(@RequestBody Category category) throws Exception {
+        return new ResponseEntity<>(service.updateCategory(category), HttpStatus.OK);
     }
 
     //    Remove category
     @DeleteMapping("/delete")
-    String deleteCategoryById(@RequestParam String id){
-        return service.deleteById(id);
-//        io.swagger.v3.oas.models.responses.ApiResponse apiResponse = new io.swagger.v3.oas.models.responses.ApiResponse();
-//        apiResponse.setDescription("Remove successfully");
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    public ResponseEntity<?> deleteCategoryById(@RequestParam String id) throws Exception {
+        return new ResponseEntity<>(service.deleteById(id), HttpStatus.OK);
     }
 
 }
