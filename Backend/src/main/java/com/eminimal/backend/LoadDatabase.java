@@ -1,14 +1,17 @@
 package com.eminimal.backend;
 
-import com.eminimal.backend.models.Product;
-import com.eminimal.backend.repository.CategoryRepository;
-import com.eminimal.backend.repository.ProductRepository;
-import com.eminimal.backend.repository.UsersRepository;
+import com.eminimal.backend.models.Category;
+import com.eminimal.backend.models.product.Product;
+import com.eminimal.backend.models.product.ProductDetails;
+import com.eminimal.backend.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class LoadDatabase {
@@ -18,67 +21,58 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(CategoryRepository categoryRepository,
                                    ProductRepository productRepository,
-                                   UsersRepository usersRepository){
+                                   UsersRepository usersRepository,
+                                   CartRepository cartRepository){
         return args -> {
-            usersRepository.deleteAll();
-            productRepository.deleteAll();
             categoryRepository.deleteAll();
-
-
+            productRepository.deleteAll();
+            cartRepository.deleteAll();
+            usersRepository.deleteAll();
 //          Insert Category
-//            log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
-//            log.info("Inserting --> " + categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri")));
-//
-//            log.info("Inserting --> " + categoryRepository.save(new Category("Beds", "Tong hop cac loai giuong")));
-//            log.info("Inserting --> " + categoryRepository.save(new Category("Lamp", "Tong hop cac loai den")));
-//
-//            log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
-//            log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
+            log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
+            log.info("Inserting --> " + categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri")));
+            log.info("Inserting --> " + categoryRepository.save(new Category("Beds", "Tong hop cac loai giuong")));
+            log.info("Inserting --> " + categoryRepository.save(new Category("Lamp", "Tong hop cac loai den")));
+            log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
+            log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
+
+//          Insert product
+            List<String> list = new ArrayList<>();
+            list.add("url-1");
+            list.add("url-2");
+            list.add("url-3");
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 1",
                     "Day la ghe xoay",
-                    "...",
+                    list,
                     12.5f,
-                    99,
-                    categoryRepository.findByCategoryName("Sofas")
+                    new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
             )));
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 2",
                     "Day la ghe xoay",
-                    "...",
+                    list,
                     12.5f,
-                    99,
-                    categoryRepository.findByCategoryName("Sofas")
+                    new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
             )));
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 3",
                     "Day la ghe xoay",
-                    "...",
+                    list,
                     12.5f,
-                    99,
-                    categoryRepository.findByCategoryName("Beds")
+                    new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
             )));
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 4",
                     "Day la ghe xoay",
-                    "...",
+                    list,
                     12.5f,
-                    99,
-                    categoryRepository.findByCategoryName("Beds")
+                    new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
             )));
-
-//            log.info("Inserting --> " + rolesRepository.save(new UsersRole(
-//                    "Guest"
-//            )));
-//
-//            log.info("Inserting --> " + rolesRepository.save(new UsersRole(
-//                    "Admin"
-//            )));
-
         };
     }
 
