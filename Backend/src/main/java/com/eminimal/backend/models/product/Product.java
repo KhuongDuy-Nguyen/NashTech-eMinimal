@@ -1,5 +1,6 @@
-package com.eminimal.backend.models;
+package com.eminimal.backend.models.product;
 
+import com.eminimal.backend.models.Category;
 import lombok.*;
 import javax.persistence.*;
 import java.util.*;
@@ -7,6 +8,7 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -18,32 +20,26 @@ public class Product {
 
     private String productName ;
     private String productDesc ;
-    private String productImage ;
+    @ElementCollection
+    private List<String> productImage = new ArrayList<>();
+
     private float  productCost;
 
-    private int productSale ;
 
     @ElementCollection
     private List<Integer> productRating = new ArrayList<>();
 
-    private int productAmount ;
 
-    private Date dateCreate = new Date();
 
-    private Date dateUpdate;
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProductDetails details;
 
-    private Date dateSale;
-
-    @ManyToOne
-    private Category categories;
-
-    public Product(String productName, String productDesc, String productImage, float productCost, int productAmount, Category categories) {
+    public Product(String productName, String productDesc, List<String> productImage, float productCost,  ProductDetails details) {
         this.productName = productName;
         this.productDesc = productDesc;
         this.productImage = productImage;
         this.productCost = productCost;
-        this.productAmount = productAmount;
-        this.categories = categories;
+        this.details = details;
     }
 
 }

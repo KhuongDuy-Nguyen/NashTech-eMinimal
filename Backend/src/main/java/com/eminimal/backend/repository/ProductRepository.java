@@ -1,14 +1,11 @@
 package com.eminimal.backend.repository;
 
-import com.eminimal.backend.models.Category;
-import com.eminimal.backend.models.Product;
+import com.eminimal.backend.models.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
-    Product findByProductName(String name);
+    List<Product> findByProductNameContaining(String name);
     Product findByProductID(String id);
 }
