@@ -10,8 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, UUID> {
-    List<Category> findCategoryByCategoryName(String name);
+public interface CategoryRepository extends JpaRepository<Category, String> {
+    Category findByCategoryName(String name);
 
-    Category findCategoriesByCategoryName(String name);
+    Category findByCategoryID(String id);
 }

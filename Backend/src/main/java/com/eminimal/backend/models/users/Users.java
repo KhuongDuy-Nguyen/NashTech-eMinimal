@@ -1,8 +1,9 @@
-package com.eminimal.backend.models;
+package com.eminimal.backend.models.users;
 
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -12,29 +13,24 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","user_name", "user_email"})})
-public class Users {
+public class Users{
+
     @Id
     @Column(name = "user_id")
-    private UUID userId = UUID.randomUUID();
+    private String userId = UUID.randomUUID().toString();
 
     @Column(name = "user_name")
     private String userName;
     private String userPassword;
-    private String userImage;
-    private String userRole;
-    private String userPhone;
-
     @Column(name = "user_email")
     private String userEmail;
 
+    private boolean userActive = false;
+    private String userImage;
+    private String userPhone;
     private String userAddress;
     private String userCountry;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean userActive;
-
-    @ManyToOne
-    private Orders orders;
 
     public Users(String userName, String userPassword, String userEmail) {
         this.userName = userName;

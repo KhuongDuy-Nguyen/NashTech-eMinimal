@@ -10,21 +10,29 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "productID"))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "product_id"))
 public class Product {
     @Id
-    private UUID productID = UUID.randomUUID();
+    @Column(name = "product_id")
+    private String productID = UUID.randomUUID().toString();
 
     private String productName ;
     private String productDesc ;
     private String productImage ;
     private float  productCost;
+
     private int productSale ;
-    private int productRating ;
+
+    @ElementCollection
+    private List<Integer> productRating = new ArrayList<>();
+
     private int productAmount ;
+
     private Date dateCreate = new Date();
-    private Date dateUpdate ;
-    private Date dateSale ;
+
+    private Date dateUpdate;
+
+    private Date dateSale;
 
     @ManyToOne
     private Category categories;
@@ -37,4 +45,5 @@ public class Product {
         this.productAmount = productAmount;
         this.categories = categories;
     }
+
 }

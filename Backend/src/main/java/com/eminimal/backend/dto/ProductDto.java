@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -17,15 +19,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ProductDto implements Serializable {
-    private UUID productID = UUID.randomUUID();
+    private String productID;
     private String productName;
     private String productDesc;
     private String productImage;
     private float productCost;
     private int productSale;
-    private int productRating;
+    private List<Integer> productRating;
     private int productAmount;
-    private Date dateCreate = new Date();
+    private Date dateCreate;
     private Date dateUpdate;
     private Date dateSale;
+    private CategoryDto categories;
 }
