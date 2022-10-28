@@ -1,10 +1,7 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.dto.CartDto;
 import com.eminimal.backend.models.Cart;
 import com.eminimal.backend.services.impl.CartServiceImpl;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cart")

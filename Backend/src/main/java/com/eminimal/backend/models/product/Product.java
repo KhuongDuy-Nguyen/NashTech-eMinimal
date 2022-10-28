@@ -25,11 +25,8 @@ public class Product {
 
     private float  productCost;
 
-
     @ElementCollection
     private List<Integer> productRating = new ArrayList<>();
-
-
 
     @OneToOne(cascade = CascadeType.ALL)
     private ProductDetails details;

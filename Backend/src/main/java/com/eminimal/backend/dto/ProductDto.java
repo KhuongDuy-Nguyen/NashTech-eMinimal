@@ -1,18 +1,17 @@
 package com.eminimal.backend.dto;
 
+import com.eminimal.backend.models.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
- * A DTO for the {@link com.eminimal.backend.models.Product} entity
+ * A DTO for the {@link Product} entity
  */
 @Data
 @AllArgsConstructor
