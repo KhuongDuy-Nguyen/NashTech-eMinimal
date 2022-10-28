@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 
 @Service
-public class FileServiceImpl{
+public class FileServiceImpl implements com.eminimal.backend.services.interfaces.FileService {
     private static final String ACCESS_TOKEN = "sl.BRxn-jTGQFTbp789B9BZs0E1EToN4wMPLpjct6LLkLAqFn0TE97GbJ03Z0ASg6QnuabKLOwx_SqF_DIBZ91Ge5n4MecghhnsgqrSEXdvowVWMlNBtlVTa2zSs9M7yVn86ySk0e7pHhk";
     private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
     
+    @Override
     public String upload(File file) throws Exception {
 //		Dropbox
         DbxRequestConfig config = DbxRequestConfig.newBuilder("App/eMinimal").build();

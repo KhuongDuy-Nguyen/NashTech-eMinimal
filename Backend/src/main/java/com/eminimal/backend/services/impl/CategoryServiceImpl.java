@@ -2,6 +2,7 @@ package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.repository.CategoryRepository;
+import com.eminimal.backend.services.interfaces.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,20 +11,19 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class CategoryServiceImpl{
+public class CategoryServiceImpl implements CategoryService {
     private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Autowired
     private CategoryRepository repository;
 
 //  Find category
+    @Override
     public List<Category> findAll(){
         return repository.findAll();
     }
 
+    @Override
     public Category findById(String id) throws Exception {
         Category category = repository.findByCategoryID(id);
         if(category != null){
@@ -33,6 +33,7 @@ public class CategoryServiceImpl{
         }
     }
 
+    @Override
     public List<Category> findByName(String name) throws Exception {
         List<Category> categoryList = repository.findByCategoryNameContaining(name);
         if(categoryList.isEmpty()){
@@ -44,12 +45,14 @@ public class CategoryServiceImpl{
 
 //  Create new category
     
+    @Override
     public Category save(Category category){
         return repository.save(category);
     }
 
 //  Delete category
     
+    @Override
     public String deleteById(String uuid) throws Exception {
         findById(uuid);
         repository.deleteById(uuid);
@@ -58,6 +61,7 @@ public class CategoryServiceImpl{
 
 //  Update category
     
+    @Override
     public Category updateCategory(Category newCategory) throws Exception {
         Category category = findById(newCategory.getCategoryID());
         category.setCategoryName(newCategory.getCategoryName());

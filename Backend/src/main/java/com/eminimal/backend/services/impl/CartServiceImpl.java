@@ -2,12 +2,10 @@ package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.Cart;
 import com.eminimal.backend.models.product.Product;
-import com.eminimal.backend.models.product.ProductDetails;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.repository.CartRepository;
-import com.eminimal.backend.repository.ProductDetailsRepository;
 import com.eminimal.backend.repository.ProductRepository;
-import com.eminimal.backend.services.impl.users.UserServiceImpl;
+import com.eminimal.backend.services.interfaces.CartService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class CartServiceImpl {
+public class CartServiceImpl implements CartService {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
@@ -35,16 +33,19 @@ public class CartServiceImpl {
 
 
 //    Find all cart
+    @Override
     public List<Cart> findAll() throws ExecutionException, InterruptedException {
         return cartRepository.findAll();
     }
 
     //    Find cart of user ID
+    @Override
     public List<Cart> findCartByUserID(String userID){
         return cartRepository.findByCartUsers_UserId(userID);
     }
 
     //  Find cart ID
+    @Override
     public Cart findByID(String cartID) throws Exception {
         Cart cart = cartRepository.findByCartID(cartID);
         if(cart != null){
@@ -55,6 +56,7 @@ public class CartServiceImpl {
     }
 
     //  Create cart
+    @Override
     public Cart save(String userID) throws Exception {
         Users user = userService.findById(userID);
         Cart cart = new Cart();
@@ -76,7 +78,8 @@ public class CartServiceImpl {
     }
 
     //  Add item in cart
-    public Cart addProductInCart(String productID,String cartID) throws Exception {
+    @Override
+    public Cart addProductInCart(String productID, String cartID) throws Exception {
         Cart cart = findByID(cartID);
         Product product = productService.findById(productID);
         cart.getCartProducts().add(product);
@@ -87,7 +90,8 @@ public class CartServiceImpl {
     }
 
     //  Delete item in order
-    public Cart deleteProductInCart(String productID,String cartID) throws Exception {
+    @Override
+    public Cart deleteProductInCart(String productID, String cartID) throws Exception {
         Cart cart = findByID(cartID);
         Product product = productService.findById(productID);
         cart.getCartProducts().remove(product);
@@ -98,6 +102,7 @@ public class CartServiceImpl {
     }
 
     //  Delete cart
+    @Override
     public String deleteCartById(String id){
         cartRepository.deleteById(id);
         return "Remove success with cart ID: " + id;

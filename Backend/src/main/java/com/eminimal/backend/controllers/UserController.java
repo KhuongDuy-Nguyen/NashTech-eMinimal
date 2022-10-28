@@ -1,9 +1,10 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.models.users.UserDetails;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.services.impl.CartServiceImpl;
-import com.eminimal.backend.services.impl.users.UserServiceImpl;
+import com.eminimal.backend.services.impl.UserServiceImpl;
+import com.eminimal.backend.services.interfaces.CartService;
+import com.eminimal.backend.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,21 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 @RequestMapping("api/user")
 @RestController
 public class UserController {
     @Autowired
-    private UserServiceImpl service;
+    private UserService service;
 
     @Autowired
-    private CartServiceImpl cartService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private CartService cartService;
 
     //  Get account
     @GetMapping("/all")

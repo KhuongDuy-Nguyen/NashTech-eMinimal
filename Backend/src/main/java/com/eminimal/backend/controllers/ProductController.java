@@ -4,6 +4,7 @@ import com.eminimal.backend.dto.ProductDto;
 import com.eminimal.backend.models.product.Product;
 import com.eminimal.backend.models.product.ProductDetails;
 import com.eminimal.backend.services.impl.ProductServiceImpl;
+import com.eminimal.backend.services.interfaces.ProductService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductServiceImpl service;
+    private ProductService service;
 
 
     @Autowired

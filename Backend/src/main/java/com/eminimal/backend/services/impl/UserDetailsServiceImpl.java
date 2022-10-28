@@ -1,4 +1,4 @@
-package com.eminimal.backend.services.impl.users;
+package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.users.CustomUserDetails;
 import com.eminimal.backend.models.users.Users;

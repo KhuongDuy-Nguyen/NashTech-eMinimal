@@ -3,7 +3,8 @@ package com.eminimal.backend.controllers;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
-import com.eminimal.backend.services.impl.users.UserAuthServiceImpl;
+import com.eminimal.backend.services.impl.UserAuthServiceImpl;
+import com.eminimal.backend.services.interfaces.UserAuthService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
    @Autowired
-   private UserAuthServiceImpl auth;
+   private UserAuthService auth;
 
    @Autowired
    private UsersTokenRepository tokenRepository;

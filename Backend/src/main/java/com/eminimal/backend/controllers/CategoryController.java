@@ -3,6 +3,7 @@ package com.eminimal.backend.controllers;
 import com.eminimal.backend.dto.CategoryDto;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.services.impl.CategoryServiceImpl;
+import com.eminimal.backend.services.interfaces.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     @Autowired
-    private CategoryServiceImpl service;
+    private CategoryService service;
 
     @Autowired
     private ModelMapper modelMapper;

@@ -5,6 +5,7 @@ import com.eminimal.backend.models.product.Product;
 import com.eminimal.backend.models.product.ProductDetails;
 import com.eminimal.backend.repository.ProductDetailsRepository;
 import com.eminimal.backend.repository.ProductRepository;
+import com.eminimal.backend.services.interfaces.ProductService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class ProductServiceImpl{
+public class ProductServiceImpl implements ProductService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
@@ -31,14 +32,17 @@ public class ProductServiceImpl{
     private CategoryServiceImpl categoryService;
 
 //  Find product
+    @Override
     public List<Product> findAll(){
         return productRepository.findAll();
     }
 
+    @Override
     public List<ProductDetails> findAllProductDetails(){
         return detailsRepository.findAll();
     }
 
+    @Override
     public Product findById(String id) throws Exception {
         Product product =  productRepository.findByProductID(id);
         if(product == null){
@@ -48,6 +52,7 @@ public class ProductServiceImpl{
         }
     }
 
+    @Override
     public ProductDetails findProductDetailID(String id) throws Exception {
         ProductDetails details =  detailsRepository.findByProductDetailID(id);
         if(details == null){
@@ -58,12 +63,14 @@ public class ProductServiceImpl{
     }
 
 
+    @Override
     public List<Product> findByName(String name){
         return productRepository.findByProductNameContaining(name);
     }
 
 
 //  Create product
+    @Override
     public <S extends Product> S save(S entity) throws Exception {
 //        Check category valid
         Category category = categoryService.findById(entity.getDetails().getCategories().getCategoryID());
@@ -74,6 +81,7 @@ public class ProductServiceImpl{
     }
 
 //  Delete product
+    @Override
     public String deleteById(String id) {
         Product product = productRepository.findByProductID(id);
         productRepository.deleteById(id);
@@ -81,6 +89,7 @@ public class ProductServiceImpl{
     }
 
 //  Update product
+    @Override
     public Product updateProduct(Product newProduct) throws Exception {
         Product product = findById(newProduct.getProductID());
         ProductDetails details = findProductDetailID(product.getDetails().getProductDetailID());
@@ -108,6 +117,7 @@ public class ProductServiceImpl{
         return productRepository.save(product);
     }
 
+    @Override
     public Product ratingProduct(String productID, int rating) throws Exception {
         Product product = findById(productID);
         product.getProductRating().add(rating);

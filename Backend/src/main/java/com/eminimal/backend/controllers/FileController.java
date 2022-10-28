@@ -1,6 +1,7 @@
 package com.eminimal.backend.controllers;
 
 import com.eminimal.backend.services.impl.FileServiceImpl;
+import com.eminimal.backend.services.interfaces.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
     @Autowired
-    private FileServiceImpl fileService;
+    private FileService fileService;
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> upload(@RequestParam("file") MultipartFile file) throws Exception {

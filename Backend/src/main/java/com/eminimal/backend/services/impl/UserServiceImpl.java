@@ -1,10 +1,9 @@
-package com.eminimal.backend.services.impl.users;
+package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.users.UserDetails;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.security.SecureRandom;
 import java.util.*;
 
 @Service
-public class UserServiceImpl{
+public class UserServiceImpl implements com.eminimal.backend.services.interfaces.UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
@@ -25,14 +24,17 @@ public class UserServiceImpl{
 
 //  Find account
 
+    @Override
     public List<Users> findAll(){
         return repository.findAll();
     }
 
+    @Override
     public List<UserDetails> findAllUserDetails(){
         return  detailsRepository.findAll();
     }
 
+    @Override
     public Users findById(String id) throws Exception {
         Users users = repository.findByUserId(id);
         if(users != null){
@@ -42,6 +44,7 @@ public class UserServiceImpl{
         }
     }
 
+    @Override
     public Users findByEmail(String email) throws Exception {
         Users users = repository.findByUserEmail(email);
         if(users != null){
@@ -51,6 +54,7 @@ public class UserServiceImpl{
         }
     }
 
+    @Override
     public UserDetails findDetailByUserID(String userID) throws Exception {
         UserDetails details = detailsRepository.findByUserDetailsID(userID);
         if(details != null){
@@ -62,6 +66,7 @@ public class UserServiceImpl{
 
 
     //  Create account
+    @Override
     public Users save(Users entity) throws Exception {
         if(repository.existsByUserEmail(entity.getUserEmail())){
             throw new Exception("Email have been taken");
@@ -82,6 +87,7 @@ public class UserServiceImpl{
 
 //  Delete account
 
+    @Override
     public String deleteById(String uuid) throws Exception {
         repository.deleteById(uuid);
         return "Remove user success with id: " + uuid;
@@ -89,6 +95,7 @@ public class UserServiceImpl{
 
 //   Update account
 
+    @Override
     public Users updateUserById(Users newUsers) throws Exception {
         Users user = findById(newUsers.getUserId());
 
@@ -115,6 +122,7 @@ public class UserServiceImpl{
         return repository.save(user);
     }
 
+    @Override
     public UserDetails activeUserByUserEmail(String email) throws Exception {
         Users users = findByEmail(email);
 
@@ -123,6 +131,7 @@ public class UserServiceImpl{
         return detailsRepository.save(details);
     }
 
+    @Override
     public UserDetails changeRoleByUserEmail(String email, String role) throws Exception {
         Users users = findByEmail(email);
 
