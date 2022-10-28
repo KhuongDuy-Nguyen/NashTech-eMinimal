@@ -2,6 +2,7 @@ package com.eminimal.backend.controllers;
 
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.models.users.UsersToken;
+import com.eminimal.backend.repository.UsersTokenRepository;
 import com.eminimal.backend.services.impl.users.UserAuthServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -20,6 +22,10 @@ public class AuthController {
 
    @Autowired
    private UserAuthServiceImpl auth;
+
+   @Autowired
+   private UsersTokenRepository tokenRepository;
+
 
     @Autowired
     ModelMapper modelMapper;
@@ -34,5 +40,10 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody Users users) throws Exception {
 //        Users users = modelMapper.map(usersDto, Users.class);
         return ResponseEntity.ok().body(auth.register(users));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestParam String email) throws Exception {
+        return ResponseEntity.ok().body(auth.logout(email));
     }
 }
