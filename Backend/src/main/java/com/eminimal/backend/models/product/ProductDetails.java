@@ -1,6 +1,9 @@
 package com.eminimal.backend.models.product;
 
 import com.eminimal.backend.models.Category;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,9 +23,18 @@ public class ProductDetails{
     private String productDetailID = UUID.randomUUID().toString();
 
     private int productAmount ;
+
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
     private Date dateCreate = new Date();
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
     private Date dateUpdate;
+
+
     private int productSale ;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss", timezone = "GMT+7")
     private Date dateSale;
 
     @ManyToOne
