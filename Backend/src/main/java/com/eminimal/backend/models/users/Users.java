@@ -9,6 +9,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,16 +26,19 @@ public class Users{
     @Column(name = "user_email")
     private String userEmail;
 
-    private boolean userActive = false;
-    private String userImage;
-    private String userPhone;
-    private String userAddress;
-    private String userCountry;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserDetails details;
 
     public Users(String userName, String userPassword, String userEmail) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
+    }
+
+    public Users(String userName, String userPassword, String userEmail, UserDetails details) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+        this.details = details;
     }
 }

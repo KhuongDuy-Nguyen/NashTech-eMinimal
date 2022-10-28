@@ -1,15 +1,9 @@
 package com.eminimal.backend.services.impl.users;
 
+import com.eminimal.backend.models.users.UserDetails;
 import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
-import com.eminimal.backend.services.interfaces.UserService;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.firebase.auth.*;
-import com.google.firebase.cloud.FirestoreClient;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,59 +12,65 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 @Service
-public class UserServiceImpl implements UserService {
-    private static final String COLLECTION_NAME = "users";
+public class UserServiceImpl{
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    private final Firestore dbFirestore = FirestoreClient.getFirestore();
 
     @Autowired
-    private ModelMapper modelMapper;
+    private UsersRepository repository;
 
+    @Autowired
+    private UserDetailsRepository detailsRepository;
 
 //  Find account
-    @Override
-    public List<Users> findAll() throws FirebaseAuthException, ExecutionException, InterruptedException {
 
-        List<Users> usersList = new ArrayList<>();
-        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME).get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        for (QueryDocumentSnapshot document : documents) {
-            Users users = document.toObject(Users.class);
-            usersList.add(users);
-        }
-        return usersList;
+    public List<Users> findAll(){
+        return repository.findAll();
     }
 
-    @Override
-    public Users findById(String uuid) throws Exception {
-        ApiFuture<DocumentSnapshot> future = dbFirestore.collection(COLLECTION_NAME).document(uuid).get();
-        DocumentSnapshot document = future.get();
-        if(document.exists()){
-            return document.toObject(Users.class);
+    public List<UserDetails> findAllUserDetails(){
+        return  detailsRepository.findAll();
+    }
+
+    public Users findById(String id) throws Exception {
+        Users users = repository.findByUserId(id);
+        if(users != null){
+            return users;
         }else{
-            throw new ExecutionException("Can't find user with id: " + uuid, null);
+            throw new Exception("Can not find user with id: " + id);
+        }
+    }
+
+    public Users findByEmail(String email) throws Exception {
+        Users users = repository.findByUserEmail(email);
+        if(users != null){
+            return users;
+        }else{
+            throw new Exception("Can not find user with email: " + email);
+        }
+    }
+
+    public UserDetails findDetailByUserID(String userID) throws Exception {
+        UserDetails details = detailsRepository.findByUserDetailsID(userID);
+        if(details != null){
+            return details;
+        }else{
+            throw new Exception("Can not find user details with user id: " + userID);
         }
     }
 
 
     //  Create account
-    @Override
-    public String save(Users entity) throws ExecutionException, InterruptedException, FirebaseAuthException {
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
-                .setUid(entity.getUserId())
-                .setDisplayName(entity.getUserName())
-                .setEmail(entity.getUserEmail())
-                .setPassword(hashPass(entity.getUserPassword()))
-                .setEmailVerified(false)
-                .setDisabled(false);
-
-        UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
-        dbFirestore.collection(COLLECTION_NAME).document(entity.getUserId()).set(entity);
-        return "Successfully created new user: " + userRecord.getDisplayName();
-
+    public Users save(Users entity) throws Exception {
+        if(repository.existsByUserEmail(entity.getUserEmail())){
+            throw new Exception("Email have been taken");
+        } else if (repository.existsByUserName(entity.getUserName())) {
+            throw new Exception("Username have been taken");
+        }
+        entity.setUserPassword(hashPass(entity.getUserPassword()));
+        entity.setDetails(new UserDetails());
+        return repository.save(entity);
     }
 
     public String hashPass(String pass){
@@ -81,30 +81,53 @@ public class UserServiceImpl implements UserService {
 
 
 //  Delete account
-    @Override
+
     public String deleteById(String uuid) throws Exception {
-        FirebaseAuth.getInstance().deleteUser(uuid);
-        dbFirestore.collection(COLLECTION_NAME).document(uuid).delete();
+        repository.deleteById(uuid);
         return "Remove user success with id: " + uuid;
     }
 
 //   Update account
-    @Override
-    public String updateUserById(Users newUsers) throws Exception {
+
+    public Users updateUserById(Users newUsers) throws Exception {
         Users user = findById(newUsers.getUserId());
 
-        modelMapper.map(newUsers, user);
-        dbFirestore.collection(COLLECTION_NAME).document(newUsers.getUserId()).set(user);
+        UserDetails details = findDetailByUserID(user.getDetails().getUserDetailsID());
 
-        UserRecord.UpdateRequest request = new UserRecord.UpdateRequest(user.getUserId())
-            .setEmail(user.getUserEmail())
-            .setPhoneNumber(user.getUserPhone())
-            .setPassword(hashPass(user.getUserPassword()))
-            .setDisplayName(user.getUserName())
-            .setPhotoUrl(user.getUserImage());
+        details = UserDetails.builder()
+                .userDetailsID(details.getUserDetailsID())
+                .userImage(newUsers.getDetails().getUserImage())
+                .userPhone(newUsers.getDetails().getUserPhone())
+                .userAddress(newUsers.getDetails().getUserAddress())
+                .userCountry(newUsers.getDetails().getUserCountry())
+                .userRole(newUsers.getDetails().getUserRole())
+                .userActive(newUsers.getDetails().isUserActive())
+                .build();
 
-        FirebaseAuth.getInstance().updateUser(request);
+        user = Users.builder()
+                .userId(user.getUserId())
+                .userName(newUsers.getUserName())
+                .userEmail(newUsers.getUserEmail())
+                .userPassword(hashPass(newUsers.getUserPassword()))
+                .details(details)
+                .build();
 
-        return "Update success";
+        return repository.save(user);
+    }
+
+    public UserDetails activeUserByUserEmail(String email) throws Exception {
+        Users users = findByEmail(email);
+
+        UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
+        details.setUserActive(true);
+        return detailsRepository.save(details);
+    }
+
+    public UserDetails changeRoleByUserEmail(String email, String role) throws Exception {
+        Users users = findByEmail(email);
+
+        UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
+        details.setUserRole(role);
+        return detailsRepository.save(details);
     }
 }
