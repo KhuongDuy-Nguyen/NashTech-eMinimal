@@ -48,9 +48,20 @@ public class ProductServiceImpl{
         }
     }
 
+    public ProductDetails findProductDetailID(String id) throws Exception {
+        ProductDetails details =  detailsRepository.findByProductDetailID(id);
+        if(details == null){
+            throw new Exception("Can't find product detail with id: " + id);
+        }else{
+            return details;
+        }
+    }
+
+
     public List<Product> findByName(String name){
         return productRepository.findByProductNameContaining(name);
     }
+
 
 //  Create product
     public <S extends Product> S save(S entity) throws Exception {
@@ -58,7 +69,7 @@ public class ProductServiceImpl{
         Category category = categoryService.findById(entity.getDetails().getCategories().getCategoryID());
         entity.getDetails().setCategories(category);
 
-        detailsRepository.save(entity.getDetails());
+//        detailsRepository.save(entity.getDetails());
         return productRepository.save(entity);
     }
 
@@ -71,16 +82,27 @@ public class ProductServiceImpl{
 
 //  Update product
     public Product updateProduct(Product newProduct) throws Exception {
-        findById(newProduct.getProductID());
+        Product product = findById(newProduct.getProductID());
+        ProductDetails details = findProductDetailID(product.getDetails().getProductDetailID());
 
-         Product product = Product.builder()
+        details = ProductDetails.builder()
+                .productDetailID(details.getProductDetailID())
+                .dateCreate(details.getDateCreate())
+                .dateUpdate(new Date())
+                .productAmount(newProduct.getDetails().getProductAmount())
+                .productSale(newProduct.getDetails().getProductSale())
+                .dateSale(newProduct.getDetails().getDateSale())
+                .categories(newProduct.getDetails().getCategories())
+                .build();
+
+        product = Product.builder()
                  .productID(newProduct.getProductID())
                  .productName(newProduct.getProductName())
                  .productDesc(newProduct.getProductDesc())
                  .productImage(newProduct.getProductImage())
                  .productCost(newProduct.getProductCost())
                  .productRating(newProduct.getProductRating())
-                 .details(newProduct.getDetails())
+                 .details(details)
                  .build();
 
         return productRepository.save(product);
