@@ -1,11 +1,9 @@
 package com.eminimal.backend.models.users;
 
-import jdk.jfr.Enabled;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import java.util.UUID;
 
 @Entity

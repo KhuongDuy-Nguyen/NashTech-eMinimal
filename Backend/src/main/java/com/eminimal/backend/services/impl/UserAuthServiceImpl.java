@@ -5,6 +5,7 @@ import com.eminimal.backend.models.users.CustomUserDetails;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class UserAuthServiceImpl implements com.eminimal.backend.services.interf
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(UserAuthServiceImpl.class);
 

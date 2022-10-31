@@ -1,8 +1,8 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.dto.CategoryDto;
+import com.eminimal.backend.dto.ErrorResponse;
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Category;
-import com.eminimal.backend.services.impl.CategoryServiceImpl;
 import com.eminimal.backend.services.interfaces.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +31,8 @@ public class CategoryController {
 
     //    Get category
     @GetMapping("/all")
-    List<CategoryDto> findAll(){
-        return service.findAll().stream().map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
+    List<Category> findAll(){
+        return service.findAll().stream().map(category -> modelMapper.map(category, Category.class)).collect(Collectors.toList());
     }
 
     @GetMapping("")
@@ -49,7 +51,7 @@ public class CategoryController {
 
     //    Create new category
     @PostMapping("/create")
-    public ResponseEntity<?> createCategory(@RequestBody Category category){
+    public ResponseEntity<?> createCategory(@RequestBody Category category) throws ValidationException {
         return ResponseEntity.ok().body(service.save(category));
     }
 
@@ -62,7 +64,18 @@ public class CategoryController {
     //    Remove category
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteCategoryById(@RequestParam String id) throws Exception {
-        return new ResponseEntity<>(service.deleteById(id), HttpStatus.OK);
+        return new ResponseEntity<>(service.deleteById(id), HttpStatus.NO_CONTENT);
     }
 
+    @ExceptionHandler({NotFoundException.class})
+    protected ResponseEntity<ErrorResponse> handleCategoryNotFoundException(){
+        ErrorResponse errorResponse = new ErrorResponse("01", "Category not found");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({NullPointerException.class})
+    protected ResponseEntity<ErrorResponse> handleCategoryNullException(){
+        ErrorResponse errorResponse = new ErrorResponse("02", "Value must not be null");
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

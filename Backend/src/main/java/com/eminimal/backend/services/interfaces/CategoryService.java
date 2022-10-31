@@ -2,6 +2,7 @@ package com.eminimal.backend.services.interfaces;
 
 import com.eminimal.backend.models.Category;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
 
 public interface CategoryService {
@@ -12,7 +13,7 @@ public interface CategoryService {
 
     List<Category> findByName(String name) throws Exception;
 
-    Category save(Category category);
+    abstract <S extends Category> S save(S entity) throws ValidationException;
 
     String deleteById(String uuid) throws Exception;
 

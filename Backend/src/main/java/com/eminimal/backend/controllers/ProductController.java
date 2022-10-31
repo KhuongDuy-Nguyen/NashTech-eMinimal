@@ -1,9 +1,7 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.dto.ProductDto;
 import com.eminimal.backend.models.product.Product;
 import com.eminimal.backend.models.product.ProductDetails;
-import com.eminimal.backend.services.impl.ProductServiceImpl;
 import com.eminimal.backend.services.interfaces.ProductService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -63,10 +61,10 @@ public class ProductController {
 
 //    Rating product
     @PutMapping("/rating")
-    ResponseEntity<ProductDto> ratingProduct(@RequestParam String id, @RequestBody int rating) throws Exception {
+    ResponseEntity<?> ratingProduct(@RequestParam String id, @RequestBody int rating) throws Exception {
         Product product = service.ratingProduct(id, rating);
-        ProductDto productResponse = modelMapper.map(product, ProductDto.class);
-        return ResponseEntity.ok().body(productResponse);
+//        ProductDto productResponse = modelMapper.map(product, ProductDto.class);
+        return ResponseEntity.ok().body(product);
     }
 
     //  Delete product

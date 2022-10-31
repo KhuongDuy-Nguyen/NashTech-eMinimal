@@ -3,7 +3,10 @@ package com.eminimal.backend;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.product.Product;
 import com.eminimal.backend.models.product.ProductDetails;
+import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.repository.*;
+import com.eminimal.backend.services.impl.UserAuthServiceImpl;
+import com.eminimal.backend.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -21,13 +24,13 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(CategoryRepository categoryRepository,
                                    ProductRepository productRepository,
-                                   UsersRepository usersRepository,
+                                   UserService userService,
                                    CartRepository cartRepository){
         return args -> {
             categoryRepository.deleteAll();
             productRepository.deleteAll();
             cartRepository.deleteAll();
-            usersRepository.deleteAll();
+//            usersRepository.deleteAll();
 //          Insert Category
             log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
             log.info("Inserting --> " + categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri")));
@@ -72,6 +75,12 @@ public class LoadDatabase {
                     list,
                     12.5f,
                     new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
+            )));
+
+            log.info("Inserting --> " + userService.save(new Users(
+                    "admin",
+                    "123",
+                    "admin@gmail.com"
             )));
         };
     }

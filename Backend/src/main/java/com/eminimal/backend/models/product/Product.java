@@ -1,9 +1,11 @@
 package com.eminimal.backend.models.product;
 
-import com.eminimal.backend.models.Category;
 import lombok.*;
+
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter

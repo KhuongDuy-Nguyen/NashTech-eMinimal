@@ -3,12 +3,13 @@ package com.eminimal.backend.jwt;
 import com.eminimal.backend.models.users.CustomUserDetails;
 import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.*;
-import lombok.extern.slf4j.Slf4j;
+
 import java.util.Date;
 
 @Component
