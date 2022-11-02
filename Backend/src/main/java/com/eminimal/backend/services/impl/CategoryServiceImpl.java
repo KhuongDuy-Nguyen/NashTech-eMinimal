@@ -5,6 +5,7 @@ import com.eminimal.backend.exceptions.ValidationException;
 import com.eminimal.backend.exceptions.ResourceFoundException;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.repository.CategoryRepository;
+import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository repository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
 
     //  Find category
@@ -71,6 +75,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String deleteById(String uuid) throws Exception {
         findById(uuid);
+        if(productRepository.findByDetails_Categories_CategoryID(uuid).size() > 0){
+            throw new Exception("There are products in category");
+        }
+
         repository.deleteById(uuid);
         return "Remove category success";
     }

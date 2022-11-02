@@ -25,5 +25,11 @@ public class UserDetails {
     private boolean userActive = false;
     private String userRole = "GUEST";
 
-
+    public UserDetails(String userDetailsID, String userImage, String userPhone, String userAddress, String userCountry) {
+        this.userDetailsID = userDetailsID;
+        this.userImage = userImage;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
+        this.userCountry = userCountry;
+    }
 }
