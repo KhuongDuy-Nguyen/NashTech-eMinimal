@@ -5,6 +5,7 @@ import com.eminimal.backend.models.users.CustomUserDetails;
 import com.eminimal.backend.models.users.Users;
 import com.eminimal.backend.models.users.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
+import com.eminimal.backend.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +22,26 @@ import org.springframework.stereotype.Service;
 public class UserAuthServiceImpl implements com.eminimal.backend.services.interfaces.UserAuthService {
 
     @Autowired
-    UserServiceImpl userService;
+    private UserService userService;
+
+    @Autowired
+    private  AuthenticationManager authenticationManager;
+
+
+    @Autowired
+    private  JwtTokenProvider tokenProvider;
+
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+
 
     @Autowired
     UsersTokenRepository tokenRepository;
 
-    @Autowired
-    private JwtTokenProvider tokenProvider;
+
+
 
     @Autowired
     private ModelMapper modelMapper;
@@ -48,8 +56,6 @@ public class UserAuthServiceImpl implements com.eminimal.backend.services.interf
     @Override
     public UsersToken login(Users users) throws Exception {
         // Xác thực từ username và password.
-        logger.info("users: " + users);
-
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
