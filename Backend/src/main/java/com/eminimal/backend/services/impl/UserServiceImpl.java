@@ -31,11 +31,6 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     }
 
     @Override
-    public List<UserDetails> findAllUserDetails(){
-        return  detailsRepository.findAll();
-    }
-
-    @Override
     public Users findById(String id) throws Exception {
         Users users = repository.findByUserId(id);
         if(users != null){
@@ -54,17 +49,6 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
             throw new Exception("Can not find user with email: " + email);
         }
     }
-
-    @Override
-    public UserDetails findDetailByUserID(String userID) throws Exception {
-        UserDetails details = detailsRepository.findByUserDetailsID(userID);
-        if(details != null){
-            return details;
-        }else{
-            throw new Exception("Can not find user details with user id: " + userID);
-        }
-    }
-
 
     //  Create account
     @Override
@@ -90,6 +74,7 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 
     @Override
     public String deleteById(String uuid) throws Exception {
+        findById(uuid);
         repository.deleteById(uuid);
         return "Remove user success with id: " + uuid;
     }
@@ -100,10 +85,10 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     public Users updateUserById(Users newUsers) throws Exception {
         Users user = findById(newUsers.getUserId());
 
-        UserDetails details = findDetailByUserID(user.getDetails().getUserDetailsID());
+        UserDetails details = detailsRepository.findByUserDetailsID(newUsers.getDetails().getUserDetailsID());
 
-        details = UserDetails.builder()
-                .userDetailsID(details.getUserDetailsID())
+         details = UserDetails.builder()
+                .userDetailsID(user.getDetails().getUserDetailsID())
                 .userImage(newUsers.getDetails().getUserImage())
                 .userPhone(newUsers.getDetails().getUserPhone())
                 .userAddress(newUsers.getDetails().getUserAddress())

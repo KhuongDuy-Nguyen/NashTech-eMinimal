@@ -24,13 +24,11 @@ public class ProductDetails{
 
     private int productAmount ;
 
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
     private Date dateCreate = new Date();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
     private Date dateUpdate;
-
 
     private int productSale ;
 

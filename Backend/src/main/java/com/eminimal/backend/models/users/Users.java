@@ -40,4 +40,5 @@ public class Users{
         this.userEmail = userEmail;
         this.details = details;
     }
+
 }
