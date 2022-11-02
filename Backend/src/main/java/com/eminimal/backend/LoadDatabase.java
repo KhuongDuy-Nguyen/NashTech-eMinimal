@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Configuration
@@ -75,6 +76,22 @@ public class LoadDatabase {
                     list,
                     12.5f,
                     new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
+            )));
+
+            log.info("Inserting --> " + productRepository.save(new Product(
+                    "Ghe xoay 5",
+                    "Day la ghe xoay",
+                    list,
+                    12.5f,
+                    new ProductDetails(100, 50, new Date() ,categoryRepository.findByCategoryName("Beds"))
+            )));
+
+            log.info("Inserting --> " + productRepository.save(new Product(
+                    "Ghe xoay 6",
+                    "Day la ghe xoay",
+                    list,
+                    12.5f,
+                    new ProductDetails(100,20, new Date(), categoryRepository.findByCategoryName("Beds"))
             )));
 
             log.info("Inserting --> " + userService.save(new Users(

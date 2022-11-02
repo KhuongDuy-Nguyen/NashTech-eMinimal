@@ -35,6 +35,8 @@ public class ProductController {
         return service.findAllProductDetails();
     }
 
+
+
     @GetMapping("")
     ResponseEntity<?> findProductById(@RequestParam String id) throws Exception {
         return ResponseEntity.ok().body(service.findById(id));
@@ -45,6 +47,18 @@ public class ProductController {
         List<Product> products = service.findByName(name);
         return ResponseEntity.ok().body(products);
     }
+
+    @GetMapping("/category")
+    ResponseEntity<List<Product>> findByCategory(@RequestParam String name){
+        return ResponseEntity.ok().body(service.findByCategory(name));
+    }
+
+    @GetMapping("/sale")
+    ResponseEntity<List<Product>> getProductSale() throws Exception {
+        return ResponseEntity.ok().body(service.getProductSale());
+    }
+
+
 
 
     //  Create product
