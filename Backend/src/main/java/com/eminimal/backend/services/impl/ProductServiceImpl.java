@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByProductNameContaining(name);
     }
 
+    @Override
+    public List<Product> findByCategory(String name){
+        return productRepository.findByDetails_Categories_CategoryName(name);
+    }
 
 //  Create product
     @Override
@@ -123,5 +128,17 @@ public class ProductServiceImpl implements ProductService {
         Product product = findById(productID);
         product.getProductRating().add(rating);
         return productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> getProductSale(){
+        List<Product> productList = productRepository.findAll();
+        List<Product> productSale = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getDetails().getProductSale() > 0) {
+                productSale.add(product);
+            }
+        }
+        return productSale;
     }
 }

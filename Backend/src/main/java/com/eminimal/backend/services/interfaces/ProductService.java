@@ -17,6 +17,10 @@ public interface ProductService {
 
     List<Product> findByName(String name);
 
+    List<Product> findByCategory(String name);
+
+    List<Product> getProductSale();
+
     //  Create product
     <S extends Product> S save(S entity) throws Exception;
 
