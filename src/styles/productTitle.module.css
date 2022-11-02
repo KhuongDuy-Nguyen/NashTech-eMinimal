@@ -1,0 +1,25 @@
+/* CSS navbar product */
+.product_title_h3{
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.product_title{
+    color: black;
+    font-weight: 600;
+}
+
+.product_title:hover{
+    color: #f1c40f;
+}
+
+.move_page{
+    color: black;
+}
+
+.move_page:hover{
+    color: #f1c40f;
+    
+}

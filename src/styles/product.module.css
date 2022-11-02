@@ -1,0 +1,33 @@
+/* CSS item product */
+
+.item_info{
+    margin: 10px;
+    padding: 0px;
+}
+
+.item_info_p{
+    color: black;
+    font-weight: 600;
+    font-weight: bold;
+    font-size: medium;
+}
+
+
+.item_sale_p{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+/* 
+.item_info{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    padding: 5px 10px;
+} */
