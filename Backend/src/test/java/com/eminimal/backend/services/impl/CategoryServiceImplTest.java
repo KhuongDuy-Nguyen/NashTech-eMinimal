@@ -3,7 +3,9 @@ package com.eminimal.backend.services.impl;
 import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.exceptions.ValidationException;
 import com.eminimal.backend.models.Category;
+import com.eminimal.backend.models.product.Product;
 import com.eminimal.backend.repository.CategoryRepository;
+import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,14 +28,11 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
-
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImplTest.class);
-
-    @Mock
-    CategoryService categoryService;
-
     @Mock
     CategoryRepository categoryRepository;
+
+    @Mock
+    ProductRepository productRepository;
 
     @InjectMocks
     CategoryServiceImpl categoryServiceImpl;
@@ -52,7 +51,7 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void findAll_WhenGetAll_ShouldReturnList() {
+    void findAll_ShouldReturnList_WhenGetAll() {
 //        assertEquals(10, categoryService.findAll().size());
 
         when(categoryRepository.findAll()).thenReturn(mockCategory);
@@ -175,6 +174,18 @@ class CategoryServiceImplTest {
         verify(categoryRepository, times(1)).deleteById("1");
     }
 
+    @Test
+    void deleteById_ShouldThrowException_WhenHaveProduct() throws Exception {
+        initCategory = mock(Category.class);
+        List<Product> initProduct = Collections.singletonList(mock(Product.class));
+
+        when(categoryRepository.findByCategoryID("1")).thenReturn(initCategory);
+        when(productRepository.findByDetails_Categories_CategoryID("1")).thenReturn(initProduct);
+
+
+        Exception actualException = assertThrows(Exception.class, () -> categoryServiceImpl.deleteById("1"));
+        assertEquals("There are products in category", actualException.getMessage());
+    }
 
 //    Update
     @Test
@@ -191,14 +202,5 @@ class CategoryServiceImplTest {
 
         assertEquals(result, expectedCategory);
     }
-
-//    @Test
-//    void updateCategory_ShouldThrowNoFoundException_WhenNotFoundId(){
-////        when(categoryRepository.findByCategoryID("1")).thenThrow(NotFoundException.class);
-//        NotFoundException actualException = assertThrows(NotFoundException.class, () -> categoryServiceImpl.updateCategory(new Category("1", "name", "desc")));
-//        assertEquals("Category not found", actualException.getMessage());
-//    }
-
-
 
 }
