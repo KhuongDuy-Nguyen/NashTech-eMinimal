@@ -1,76 +1,108 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
+import com.eminimal.backend.exceptions.ValidationException;
+import com.eminimal.backend.exceptions.ResourceFoundException;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.repository.CategoryRepository;
+import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.CategoryService;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private static final String COLLECTION_NAME = "category";
-    private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
-    private final Firestore dbFirestore = FirestoreClient.getFirestore();
 
+    private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Autowired
     private CategoryRepository repository;
 
-//  Find product
+    @Autowired
+    private ProductRepository productRepository;
+
+
+    //  Find category
     @Override
-    public List<Category> findAll() throws ExecutionException, InterruptedException {
-        List<Category> categoryList = new ArrayList<>();
-        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME).get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        for (QueryDocumentSnapshot document : documents) {
-            Category category = document.toObject(Category.class);
-            categoryList.add(category);
+    public List<Category> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Category findById(String id){
+        if (id.isBlank())
+            throw new ValidationException("ID is requirement");
+
+        Category category = repository.findByCategoryID(id);
+        if (category == null) {
+            throw new NotFoundException("Category not found");
         }
+
+        return category;
+    }
+
+    @Override
+    public List<Category> findByName(String name){
+        if (name.isBlank())
+            throw new ValidationException("Name is requirement");
+
+        List<Category> categoryList = repository.findByCategoryNameContaining(name);
+        if (categoryList.isEmpty()) {
+            throw new NotFoundException("Category not found");
+        }
+
         return categoryList;
+
+    }
+
+//  Create new category
+
+    @Override
+    public <S extends Category> S save(S entity){
+        checkValid(entity);
+        return repository.save(entity);
     }
 
 
+//  Delete category
 
     @Override
-    public Category findById(String id) throws ExecutionException, InterruptedException {
-        ApiFuture<DocumentSnapshot> future = dbFirestore.collection(COLLECTION_NAME).document(id).get();
-        DocumentSnapshot document = future.get();
-        if(document.exists()){
-            return document.toObject(Category.class);
-        }else{
-            throw new ExecutionException("Can't find category with id: " + id, null);
+    public String deleteById(String uuid) throws Exception {
+        findById(uuid);
+        if(productRepository.findByDetails_Categories_CategoryID(uuid).size() > 0){
+            throw new Exception("There are products in category");
         }
+
+        repository.deleteById(uuid);
+        return "Remove category success";
     }
 
-//  Create new product
+//  Update category
+
     @Override
-    public String save(Category category) throws ExecutionException, InterruptedException {
-        dbFirestore.collection(COLLECTION_NAME).document(category.getCategoryID()).set(category);
-        return "Create success";
+    public Category updateCategory(Category newCategory) throws Exception {
+        Category category = findById(newCategory.getCategoryID());
+        checkValid(newCategory);
+        category.setCategoryName(newCategory.getCategoryName());
+        category.setCategoryDesc(newCategory.getCategoryDesc());
+        return repository.save(category);
     }
 
-//  Delete product
-    @Override
-    public String deleteById(String uuid) {
-        dbFirestore.collection(COLLECTION_NAME).document(uuid).delete();
-        return "Remove success with category ID: " + uuid;
-    }
+//    Check valid function
+    public void checkValid(Category newCategory) throws NullPointerException{
+        if(StringUtils.isEmpty(newCategory.getCategoryName()))
+            throw new ValidationException("Category name is require");
 
-//  Update product
-    @Override
-    public String updateCategory(Category category) throws ExecutionException, InterruptedException {
-        findById(category.getCategoryID());
-        dbFirestore.collection(COLLECTION_NAME).document(category.getCategoryID()).update(
-                "categoryDesc", category.getCategoryDesc(),
-                "categoryName", category.getCategoryName());
-        return "Update success";
+        if(StringUtils.isEmpty(newCategory.getCategoryDesc()))
+            throw new ValidationException("Category description is require");
+//
+//        if(newCategory.getCategoryName() == null || newCategory.getCategoryDesc() == null)
+//            throw new NullPointerException("Value must not be null");
     }
-
 }

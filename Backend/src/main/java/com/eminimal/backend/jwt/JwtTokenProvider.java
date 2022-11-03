@@ -1,31 +1,46 @@
 package com.eminimal.backend.jwt;
 
 import com.eminimal.backend.models.users.CustomUserDetails;
-import org.springframework.stereotype.Component;
+import com.eminimal.backend.models.users.UsersToken;
+import com.eminimal.backend.repository.UsersTokenRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 @Component
 @Slf4j
 public class JwtTokenProvider {
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
     // Đoạn JWT_SECRET này là bí mật, chỉ có phía server biết
     private final String JWT_SECRET = "eminimal-secretkey";
 
     //Thời gian có hiệu lực của chuỗi jwt
     private final long JWT_EXPIRATION = 604800000L;
 
+    @Autowired
+    private UsersTokenRepository tokenRepository;
+
     // Tạo ra jwt từ thông tin user
-    public String generateToken(CustomUserDetails userDetails) {
+    public UsersToken generateToken(CustomUserDetails userDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
+
         // Tạo chuỗi json web token từ id của user.
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject((userDetails.getUsers().getUserId()))
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
+
+        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), "Bearer " + token, new Date() ,expiryDate);
+        return  tokenRepository.save(usersToken);
     }
 
     // Lấy thông tin user từ jwt

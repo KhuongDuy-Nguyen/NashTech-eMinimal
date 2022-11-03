@@ -2,23 +2,20 @@ package com.eminimal.backend.services.interfaces;
 
 import com.eminimal.backend.models.Category;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-
 
 public interface CategoryService {
-    //  Find product
-    List<Category> findAll() throws ExecutionException, InterruptedException;
+    //  Find category
+    List<Category> findAll();
 
-    Category findById(String uuid) throws ExecutionException, InterruptedException;
+    Category findById(String id) throws Exception;
 
-    //  Create new product
-    String save(Category category) throws ExecutionException, InterruptedException;
+    List<Category> findByName(String name) throws Exception;
 
-    String deleteById(String uuid);
+    abstract <S extends Category> S save(S entity) throws ValidationException;
 
+    String deleteById(String uuid) throws Exception;
 
-    //  Update product
-    String updateCategory(Category category) throws ExecutionException, InterruptedException;
+    Category updateCategory(Category newCategory) throws Exception;
 }

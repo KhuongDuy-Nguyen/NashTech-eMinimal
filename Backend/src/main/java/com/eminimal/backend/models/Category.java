@@ -1,6 +1,7 @@
 package com.eminimal.backend.models;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "category_id"))
 public class Category {
@@ -20,6 +22,12 @@ public class Category {
     private String categoryDesc;
 
     public Category(String categoryName, String categoryDesc) {
+        this.categoryName = categoryName;
+        this.categoryDesc = categoryDesc;
+    }
+
+    public Category(String categoryID, String categoryName, String categoryDesc) {
+        this.categoryID = categoryID;
         this.categoryName = categoryName;
         this.categoryDesc = categoryDesc;
     }

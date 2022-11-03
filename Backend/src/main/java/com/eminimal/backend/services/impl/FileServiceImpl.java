@@ -3,20 +3,26 @@ package com.eminimal.backend.services.impl;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.*;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.ListFolderResult;
+import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.sharing.CreateSharedLinkWithSettingsErrorException;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.dropbox.core.v2.users.FullAccount;
-import com.eminimal.backend.services.interfaces.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Service
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl implements com.eminimal.backend.services.interfaces.FileService {
     private static final String ACCESS_TOKEN = "sl.BRxn-jTGQFTbp789B9BZs0E1EToN4wMPLpjct6LLkLAqFn0TE97GbJ03Z0ASg6QnuabKLOwx_SqF_DIBZ91Ge5n4MecghhnsgqrSEXdvowVWMlNBtlVTa2zSs9M7yVn86ySk0e7pHhk";
     private static final Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+    
     @Override
     public String upload(File file) throws Exception {
 //		Dropbox
