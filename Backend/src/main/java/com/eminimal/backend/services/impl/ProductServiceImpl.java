@@ -1,8 +1,8 @@
 package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.Category;
-import com.eminimal.backend.models.product.Product;
-import com.eminimal.backend.models.product.ProductDetails;
+import com.eminimal.backend.models.Product;
+import com.eminimal.backend.models.ProductDetails;
 import com.eminimal.backend.repository.ProductDetailsRepository;
 import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.ProductService;

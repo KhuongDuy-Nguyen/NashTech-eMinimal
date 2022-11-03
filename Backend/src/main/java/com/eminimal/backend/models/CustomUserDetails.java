@@ -1,4 +1,4 @@
-package com.eminimal.backend.models.users;
+package com.eminimal.backend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

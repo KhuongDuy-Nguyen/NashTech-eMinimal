@@ -1,11 +1,8 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.models.users.Users;
-import com.eminimal.backend.services.impl.CartServiceImpl;
-import com.eminimal.backend.services.impl.UserServiceImpl;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.services.interfaces.CartService;
 import com.eminimal.backend.services.interfaces.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

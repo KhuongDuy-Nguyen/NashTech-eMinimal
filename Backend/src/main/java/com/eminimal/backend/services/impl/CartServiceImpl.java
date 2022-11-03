@@ -1,8 +1,8 @@
 package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.Cart;
-import com.eminimal.backend.models.product.Product;
-import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.Product;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.CartRepository;
 import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.CartService;

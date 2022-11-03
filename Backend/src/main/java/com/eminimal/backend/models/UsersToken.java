@@ -1,4 +1,4 @@
-package com.eminimal.backend.models.users;
+package com.eminimal.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

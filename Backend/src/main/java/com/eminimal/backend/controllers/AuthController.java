@@ -1,8 +1,9 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.dto.UsersDto;
-import com.eminimal.backend.models.users.Users;
-import com.eminimal.backend.models.users.UsersToken;
+import com.eminimal.backend.dto.ErrorResponse;
+import com.eminimal.backend.exceptions.NotFoundException;
+import com.eminimal.backend.models.Users;
+import com.eminimal.backend.models.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
 import com.eminimal.backend.services.interfaces.UserAuthService;
 import org.modelmapper.ModelMapper;
@@ -66,4 +67,11 @@ public class AuthController {
         return errors;
     }
 
+
+
+    @ExceptionHandler({NotFoundException.class})
+    protected ResponseEntity<ErrorResponse> handleCategoryNotFoundException(){
+        ErrorResponse errorResponse = new ErrorResponse("01", "Invalid username and password");
+        return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }

@@ -1,12 +1,9 @@
 package com.eminimal.backend.services.impl;
 
-import com.eminimal.backend.models.Category;
-import com.eminimal.backend.models.users.UserDetails;
-import com.eminimal.backend.models.users.Users;
-import com.eminimal.backend.repository.CategoryRepository;
+import com.eminimal.backend.models.UserDetails;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
-import com.eminimal.backend.services.interfaces.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,13 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

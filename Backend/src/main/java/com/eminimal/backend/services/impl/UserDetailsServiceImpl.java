@@ -1,7 +1,7 @@
 package com.eminimal.backend.services.impl;
 
-import com.eminimal.backend.models.users.CustomUserDetails;
-import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.CustomUserDetails;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

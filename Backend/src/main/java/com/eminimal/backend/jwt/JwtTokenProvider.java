@@ -1,7 +1,7 @@
 package com.eminimal.backend.jwt;
 
-import com.eminimal.backend.models.users.CustomUserDetails;
-import com.eminimal.backend.models.users.UsersToken;
+import com.eminimal.backend.models.CustomUserDetails;
+import com.eminimal.backend.models.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +42,8 @@ public class JwtTokenProvider {
         UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), "Bearer " + token, new Date() ,expiryDate);
         return  tokenRepository.save(usersToken);
     }
+
+
 
     // Lấy thông tin user từ jwt
     public String getUserIdFromJWT(String token) {

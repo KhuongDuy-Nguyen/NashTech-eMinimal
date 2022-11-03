@@ -38,11 +38,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+//                Anonymous
+                .antMatchers(HttpMethod.GET, "/api/category/***").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/product/***").permitAll()
 //               Role ADMIN
-//                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+//                Role GUEST
+//                Cart
+                .antMatchers(HttpMethod.GET, "/api/cart/**").hasAnyRole()
+                .antMatchers(HttpMethod.POST, "/api/cart/**").hasAnyRole()
+                .antMatchers(HttpMethod.PUT, "/api/cart/**").hasAnyRole()
+                .antMatchers(HttpMethod.DELETE, "/api/cart/**").hasAnyRole()
+//                manager self-info
+                .antMatchers(HttpMethod.GET, "/api/users/***").hasAnyRole()
+                .antMatchers(HttpMethod.PUT, "/api/users/***").hasAnyRole()
+
+
+
 
                 .anyRequest()
                 .authenticated()

@@ -1,7 +1,7 @@
 package com.eminimal.backend.services.impl;
 
-import com.eminimal.backend.models.users.UserDetails;
-import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.UserDetails;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
 import org.slf4j.Logger;
