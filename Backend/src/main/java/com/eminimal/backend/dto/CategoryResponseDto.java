@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * A DTO for the {@link com.eminimal.backend.models.Category} entity
+ * A DTO for the Category entity
  */
 @Data
 public class CategoryResponseDto implements Serializable {
