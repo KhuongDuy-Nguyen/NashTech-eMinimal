@@ -34,6 +34,7 @@ class UserAuthServiceImplTest {
     @Mock
     UserService userService;
 
+
     @Mock
     AuthenticationManager manager;
 //
