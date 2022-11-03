@@ -1,6 +1,6 @@
 package com.eminimal.backend.repository;
 
-import com.eminimal.backend.models.product.ProductDetails;
+import com.eminimal.backend.models.ProductDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

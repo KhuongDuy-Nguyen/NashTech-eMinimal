@@ -1,7 +1,7 @@
 package com.eminimal.backend.services.interfaces;
 
-import com.eminimal.backend.models.product.Product;
-import com.eminimal.backend.models.product.ProductDetails;
+import com.eminimal.backend.models.Product;
+import com.eminimal.backend.models.ProductDetails;
 
 import java.util.List;
 

@@ -1,12 +1,13 @@
 package com.eminimal.backend.dto;
 
+import com.eminimal.backend.models.ProductDetails;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * A DTO for the {@link com.eminimal.backend.models.product.ProductDetails} entity
+ * A DTO for the {@link ProductDetails} entity
  */
 @Data
 public class ProductDetailsResponseDto implements Serializable {

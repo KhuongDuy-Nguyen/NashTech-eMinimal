@@ -1,4 +1,4 @@
-package com.eminimal.backend.models.product;
+package com.eminimal.backend.models;
 
 import lombok.*;
 
