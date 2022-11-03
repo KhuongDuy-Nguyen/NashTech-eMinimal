@@ -1,9 +1,10 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.jwt.JwtTokenProvider;
-import com.eminimal.backend.models.users.CustomUserDetails;
-import com.eminimal.backend.models.users.Users;
-import com.eminimal.backend.models.users.UsersToken;
+import com.eminimal.backend.models.CustomUserDetails;
+import com.eminimal.backend.models.Users;
+import com.eminimal.backend.models.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
@@ -71,7 +72,7 @@ public class UserAuthServiceImpl implements com.eminimal.backend.services.interf
             return tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
 
         }catch (AuthenticationException e){
-            throw new Exception("Invalid username and password");
+            throw new NotFoundException("Invalid username and password");
         }
 
     }

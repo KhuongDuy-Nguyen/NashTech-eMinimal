@@ -1,4 +1,4 @@
-package com.eminimal.backend.models.product;
+package com.eminimal.backend.models;
 
 import com.eminimal.backend.models.Category;
 import com.fasterxml.jackson.annotation.JsonFormat;

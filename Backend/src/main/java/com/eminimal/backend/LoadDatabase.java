@@ -1,11 +1,10 @@
 package com.eminimal.backend;
 
 import com.eminimal.backend.models.Category;
-import com.eminimal.backend.models.product.Product;
-import com.eminimal.backend.models.product.ProductDetails;
-import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.Product;
+import com.eminimal.backend.models.ProductDetails;
+import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.*;
-import com.eminimal.backend.services.impl.UserAuthServiceImpl;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

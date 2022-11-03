@@ -61,10 +61,10 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -73,6 +73,11 @@
 		</dependency>
 
 		<!-- swagger UI -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -83,7 +88,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-parent</artifactId>
-			<version>2.7.5</version>
+			<version>2.7.4</version>
 			<type>pom</type>
 		</dependency>
 
@@ -93,19 +98,11 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--	Swagger	-->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-boot-starter</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -128,7 +125,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-
 
 		<!--	DropBox	-->
 		<dependency>
@@ -164,11 +160,6 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>

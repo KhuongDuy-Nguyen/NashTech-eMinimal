@@ -1,11 +1,8 @@
 package com.eminimal.backend.repository;
 
-import com.eminimal.backend.models.users.Users;
+import com.eminimal.backend.models.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, String> {

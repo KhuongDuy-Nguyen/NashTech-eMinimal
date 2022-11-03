@@ -1,7 +1,7 @@
 package com.eminimal.backend.jwt;
 
-import com.eminimal.backend.models.users.CustomUserDetails;
-import com.eminimal.backend.models.users.UsersToken;
+import com.eminimal.backend.models.CustomUserDetails;
+import com.eminimal.backend.models.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -39,9 +39,11 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
 
-        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), "Bearer " + token, new Date() ,expiryDate);
+        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), token, new Date() ,expiryDate);
         return  tokenRepository.save(usersToken);
     }
+
+
 
     // Lấy thông tin user từ jwt
     public String getUserIdFromJWT(String token) {
@@ -55,9 +57,14 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
+            log.error("Token: " + authToken);
+            log.error("--> " + Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken));
+
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
             return true;
+
         } catch (MalformedJwtException ex) {
+            log.error(ex.getMessage());
             log.error("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
