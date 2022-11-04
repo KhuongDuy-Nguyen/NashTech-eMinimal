@@ -32,4 +32,11 @@ public class UserDetails {
         this.userAddress = userAddress;
         this.userCountry = userCountry;
     }
+
+    public UserDetails(String userImage, String userPhone, String userAddress, String userCountry) {
+        this.userImage = userImage;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
+        this.userCountry = userCountry;
+    }
 }

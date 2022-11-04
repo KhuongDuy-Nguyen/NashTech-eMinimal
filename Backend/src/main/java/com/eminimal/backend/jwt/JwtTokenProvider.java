@@ -39,7 +39,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
 
-        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), "Bearer " + token, new Date() ,expiryDate);
+        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), token, new Date() ,expiryDate);
         return  tokenRepository.save(usersToken);
     }
 

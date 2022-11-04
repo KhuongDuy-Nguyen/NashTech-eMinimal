@@ -4,6 +4,7 @@ import com.eminimal.backend.models.UserDetails;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 
     @Autowired
     private UserDetailsRepository detailsRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 //  Find account
 
@@ -59,7 +63,11 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
             throw new Exception("Username have been taken");
         }
         entity.setUserPassword(hashPass(entity.getUserPassword()));
-        entity.setDetails(new UserDetails());
+
+        if(entity.getDetails() == null){
+            entity.setDetails(new UserDetails());
+        }
+
         return repository.save(entity);
     }
 
@@ -84,26 +92,29 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     @Override
     public Users updateUserById(Users newUsers) throws Exception {
         Users user = findById(newUsers.getUserId());
+        user = modelMapper.map(newUsers, Users.class);
+        logger.error("User update: " + user);
+//        UserDetails details = detailsRepository.findByUserDetailsID(newUsers.getDetails().getUserDetailsID());
+//
+//         details = UserDetails.builder()
+//                .userDetailsID(user.getDetails().getUserDetailsID())
+//                .userImage(newUsers.getDetails().getUserImage())
+//                .userPhone(newUsers.getDetails().getUserPhone())
+//                .userAddress(newUsers.getDetails().getUserAddress())
+//                .userCountry(newUsers.getDetails().getUserCountry())
+//                .userRole(newUsers.getDetails().getUserRole())
+//                .userActive(newUsers.getDetails().isUserActive())
+//                .build();
+//
+//        user = Users.builder()
+//                .userId(user.getUserId())
+//                .userName(newUsers.getUserName())
+//                .userEmail(newUsers.getUserEmail())
+//                .userPassword(hashPass(newUsers.getUserPassword()))
+//                .details(details)
+//                .build();
 
-        UserDetails details = detailsRepository.findByUserDetailsID(newUsers.getDetails().getUserDetailsID());
 
-         details = UserDetails.builder()
-                .userDetailsID(user.getDetails().getUserDetailsID())
-                .userImage(newUsers.getDetails().getUserImage())
-                .userPhone(newUsers.getDetails().getUserPhone())
-                .userAddress(newUsers.getDetails().getUserAddress())
-                .userCountry(newUsers.getDetails().getUserCountry())
-                .userRole(newUsers.getDetails().getUserRole())
-                .userActive(newUsers.getDetails().isUserActive())
-                .build();
-
-        user = Users.builder()
-                .userId(user.getUserId())
-                .userName(newUsers.getUserName())
-                .userEmail(newUsers.getUserEmail())
-                .userPassword(hashPass(newUsers.getUserPassword()))
-                .details(details)
-                .build();
 
         return repository.save(user);
     }

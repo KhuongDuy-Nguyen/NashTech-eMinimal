@@ -3,11 +3,15 @@ package com.eminimal.backend.controllers;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.services.interfaces.CartService;
 import com.eminimal.backend.services.interfaces.UserService;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.ResponseHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("api/user")
@@ -25,7 +29,7 @@ public class UserController {
         return service.findAll();
     }
 
-    @GetMapping("")
+    @GetMapping("/id")
     ResponseEntity<?> findUserByID(@RequestParam String id ) throws Exception {
         return ResponseEntity.ok().body(service.findById(id));
     }
@@ -33,6 +37,12 @@ public class UserController {
     @GetMapping("/email={email}")
     ResponseEntity<?> findUserByEmail(@PathVariable String email) throws Exception {
         return ResponseEntity.ok().body(service.findByEmail(email));
+    }
+
+    @PostMapping("/info")
+    ResponseEntity<?> getUser(Authentication authentication){
+
+        return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 
     //    Create new account

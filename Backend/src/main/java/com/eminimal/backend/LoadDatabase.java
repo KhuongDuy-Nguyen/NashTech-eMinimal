@@ -1,9 +1,6 @@
 package com.eminimal.backend;
 
-import com.eminimal.backend.models.Category;
-import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.ProductDetails;
-import com.eminimal.backend.models.Users;
+import com.eminimal.backend.models.*;
 import com.eminimal.backend.repository.*;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.slf4j.Logger;
@@ -15,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 public class LoadDatabase {
@@ -45,59 +43,32 @@ public class LoadDatabase {
             list.add("url-2");
             list.add("url-3");
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 1",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
-            )));
+            Random random = new Random();
+            for (int i = 1; i <= 50 ; i++){
+                productRepository.save(new Product(
+                        "Ghe xoay " + i,
+                        "Day la ghe xoay",
+                        list,
+                        random.nextInt(100000),
+                        new ProductDetails(random.nextInt(100), random.nextInt(50), new Date(), categoryRepository.findByCategoryName("Chairs"))
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 2",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
-            )));
+            for (int i = 1; i <= 20 ; i++){
+                userService.save(new Users(
+                        "admin" + i,
+                        "123",
+                        "admin" + i + "@gmail.com"
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 3",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
-            )));
-
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 4",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
-            )));
-
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 5",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, 50, new Date() ,categoryRepository.findByCategoryName("Beds"))
-            )));
-
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 6",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100,20, new Date(), categoryRepository.findByCategoryName("Beds"))
-            )));
-
-            log.info("Inserting --> " + userService.save(new Users(
-                    "admin",
-                    "123",
-                    "admin@gmail.com"
-            )));
+            for (int i = 1; i <= 20 ; i++){
+                userService.save(new Users(
+                        "user" + i,
+                        "123",
+                        "user" + i + "@gmail.com"
+                ));
+            }
         };
     }
 
