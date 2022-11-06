@@ -54,15 +54,22 @@ public class LoadDatabase {
                 ));
             }
 
-            for (int i = 1; i <= 20 ; i++){
+            for (int i = 1; i <= 10 ; i++){
                 userService.save(new Users(
                         "admin" + i,
                         "123",
-                        "admin" + i + "@gmail.com"
+                        "admin" + i + "@gmail.com",
+                        new UserDetails(
+                                "0794536542",
+                                "BTD",
+                                "Ho Chi Minh",
+                                true,
+                                "ADMIN"
+                        )
                 ));
             }
 
-            for (int i = 1; i <= 20 ; i++){
+            for (int i = 1; i <= 10 ; i++){
                 userService.save(new Users(
                         "user" + i,
                         "123",
