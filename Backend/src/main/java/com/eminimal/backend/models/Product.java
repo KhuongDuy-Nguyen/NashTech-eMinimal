@@ -41,4 +41,10 @@ public class Product {
         this.details = details;
     }
 
+    public Product(String productName, String productDesc, float productCost, ProductDetails details) {
+        this.productName = productName;
+        this.productDesc = productDesc;
+        this.productCost = productCost;
+        this.details = details;
+    }
 }

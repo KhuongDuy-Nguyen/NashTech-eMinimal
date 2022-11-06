@@ -1,5 +1,6 @@
 package com.eminimal.backend.jwt;
 
+import com.eminimal.backend.exceptions.ResourceFoundException;
 import com.eminimal.backend.services.impl.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception ex) {
-            log.error("failed on set user authentication", ex);
+//            throw new ResourceFoundException("failed on set user authentication", ex);
+            throw new ResourceFoundException("Something was wrong. Try login again", ex);
         }
 
         filterChain.doFilter(request, response);

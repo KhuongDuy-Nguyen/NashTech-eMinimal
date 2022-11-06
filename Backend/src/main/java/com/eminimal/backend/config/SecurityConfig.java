@@ -39,22 +39,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .cors().and().csrf().disable()
                 .authorizeRequests()
 //                Anonymous
-                .antMatchers(HttpMethod.GET, "/api/category/***").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/product/***").permitAll()
-//               Role ADMIN
-                .antMatchers(HttpMethod.GET, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-//                Role GUEST
-//                Cart
-                .antMatchers(HttpMethod.GET, "/api/cart/**").hasAnyRole()
-                .antMatchers(HttpMethod.POST, "/api/cart/**").hasAnyRole()
-                .antMatchers(HttpMethod.PUT, "/api/cart/**").hasAnyRole()
-                .antMatchers(HttpMethod.DELETE, "/api/cart/**").hasAnyRole()
-//                manager self-info
-                .antMatchers(HttpMethod.GET, "/api/users/***").hasAnyRole()
-                .antMatchers(HttpMethod.PUT, "/api/users/***").hasAnyRole()
+                .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+//
+////               Role ADMIN
+////                .antMatchers(HttpMethod.GET, "/api/**").hasRole("ADMIN")
+////                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+////                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+////                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+////                Role GUEST
+////                Cart
+//                .antMatchers(HttpMethod.GET, "/api/cart/**").hasAnyRole()
+//                .antMatchers(HttpMethod.POST, "/api/cart/**").hasAnyRole()
+//                .antMatchers(HttpMethod.PUT, "/api/cart/**").hasAnyRole()
+//                .antMatchers(HttpMethod.DELETE, "/api/cart/**").hasAnyRole()
+////                manager self-info
+//                .antMatchers(HttpMethod.GET, "/api/user/id").hasAnyRole()
+//                .antMatchers(HttpMethod.GET, "/api/user/info").hasAnyRole()
+//                .antMatchers(HttpMethod.PUT, "/api/user/**").hasAnyRole()
 
 
 

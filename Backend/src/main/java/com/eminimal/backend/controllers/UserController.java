@@ -1,5 +1,7 @@
 package com.eminimal.backend.controllers;
 
+import com.eminimal.backend.dto.ErrorResponse;
+import com.eminimal.backend.exceptions.ResourceFoundException;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.services.interfaces.CartService;
 import com.eminimal.backend.services.interfaces.UserService;
@@ -73,6 +75,12 @@ public class UserController {
     @DeleteMapping("/delete")
     ResponseEntity<?> deleteUserById(@RequestParam String id) throws Exception {
         return new ResponseEntity<>(service.deleteById(id), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(ResourceFoundException.class)
+    ResponseEntity<ErrorResponse> resourceFoundException(){
+        ErrorResponse errorResponse = new ErrorResponse("03", "Something was wrong. Try login again");
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
 }
