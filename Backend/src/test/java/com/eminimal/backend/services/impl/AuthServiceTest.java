@@ -3,6 +3,7 @@ package com.eminimal.backend.services.impl;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.models.UsersToken;
 import com.eminimal.backend.services.interfaces.UserService;
+import com.eminimal.backend.utils.AuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,9 +23,9 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @WithMockUser(roles = "GUEST")
-class UserAuthServiceImplTest {
+class AuthServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserAuthServiceImplTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthServiceTest.class);
 
     @Mock
     UserService userService;
@@ -37,7 +38,7 @@ class UserAuthServiceImplTest {
 //    JwtTokenProvider tokenProvider;
 
     @InjectMocks
-    UserAuthServiceImpl userAuthServiceImpl;
+    AuthService authService;
 
 //    @Mock
 //    UsersRepository usersRepository;
@@ -54,7 +55,7 @@ class UserAuthServiceImplTest {
 //        userAuthServiceImpl = new UserAuthServiceImpl(userService, manager, tokenProvider);
 
         initUser = Users.builder().userId("1").userName("admin").userEmail("admin@gmail.com").userPassword("123").build();
-        when(userAuthServiceImpl.register(initUser)).thenReturn(initUser);
+        when(authService.register(initUser)).thenReturn(initUser);
         logger.info("Users: " + initUser);
     }
 
@@ -64,9 +65,9 @@ class UserAuthServiceImplTest {
         UsersToken token = mock(UsersToken.class);
         Authentication authentication = mock(UsernamePasswordAuthenticationToken.class);
 
-        when(userAuthServiceImpl.login(initUser)).thenReturn(token);
+        when(authService.login(initUser)).thenReturn(token);
 
-        UsersToken result = userAuthServiceImpl.login(initUser);
+        UsersToken result = authService.login(initUser);
 
         assertEquals(result, token);
 
