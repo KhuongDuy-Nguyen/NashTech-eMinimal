@@ -1,8 +1,8 @@
 import React ,{useState} from "react";
 import { useEffect } from "react";
 import { Rate } from 'antd';
-import style from "../styles/product.module.css";
-import sofa_sell from "../assets/images/sofa-sell.png";
+import style from "../../styles/product.module.css";
+import sofa_sell from "../../assets/images/sofa-sell.png";
 import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
 import { useParams } from "react-router-dom";
@@ -13,26 +13,28 @@ function ProductItem() {
 
   // Make default value in usePrams
 
-  let { categoryName } = useParams() || "all";
-  let { filter } = useParams() || "all";
   
+  
+  // const [filter, setFilter] = useState("all");
+  // const [category, setCategory] = useState("all");
 
-  // useEffect(() => {
-  //   fetch("http://localhost:8080/api/product/all")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(categoryName);
-  //       console.log(filter);
-  //       setProduct(data);
-  //     });
-  // }, []);
+  var { categoryName } = useParams();
+  var { filter } = useParams();
+
+  if(categoryName === undefined){
+    categoryName = "all";
+  }
+
+  if (filter === undefined) {
+    filter = "all";
+  }
+
 
   useEffect(() => {
     if (categoryName === "all") {
       fetch("http://localhost:8080/api/product/all")
         .then((res) => res.json())
         .then((data) => {
-          console.log("Show all");
           setProduct(data);
         });
     }
@@ -47,7 +49,6 @@ function ProductItem() {
     fetch(`http://localhost:8080/api/product/${filter}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Filter");
         setProduct(data);
       });
   }, [filter]);

@@ -1,5 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
-import style from '../styles/policy.module.css';
+import style from '../../styles/policy.module.css';
 
 function Policy() {
   return (

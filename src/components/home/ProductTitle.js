@@ -1,7 +1,7 @@
 import React from "react";
 import { Nav, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import style from "../styles/productTitle.module.css"
+import style from "../../styles/productTitle.module.css"
 
 function ProductTitle() {
   return (

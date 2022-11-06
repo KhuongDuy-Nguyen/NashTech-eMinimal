@@ -60,9 +60,11 @@ function App() {
         setMessage("Login Success")
         setType("success")
 
-        localStorage.setItem("token", JSON.stringify(res.data.token));
-        // Auto redirect to home page
+        localStorage.setItem("token", JSON.stringify(res.data.token).replace(/"/g, ""));
+        localStorage.setItem("userId", JSON.stringify(res.data.userId).replace(/"/g, ""));
+        localStorage.setItem("role", JSON.stringify(res.data.userRole).replace(/"/g, ""));
 
+        // Auto redirect to home page
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);

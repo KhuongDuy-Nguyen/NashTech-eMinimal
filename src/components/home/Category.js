@@ -1,5 +1,5 @@
 import { Col, Row } from 'react-bootstrap';
-import style from '../styles/category.module.css';
+import style from '../../styles/category.module.css';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
