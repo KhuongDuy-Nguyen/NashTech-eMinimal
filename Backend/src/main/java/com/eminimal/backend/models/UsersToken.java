@@ -23,6 +23,8 @@ public class UsersToken{
 
     private String userId;
 
+    private String userRole;
+
     private String token;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
@@ -31,8 +33,9 @@ public class UsersToken{
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
     private Date expiryDate;
 
-    public UsersToken(String userId, String token, Date createdDate, Date expiryDate) {
+    public UsersToken(String userId, String userRole ,String token, Date createdDate, Date expiryDate) {
         this.userId = userId;
+        this.userRole = userRole;
         this.token = token;
         this.createdDate = createdDate;
         this.expiryDate = expiryDate;
