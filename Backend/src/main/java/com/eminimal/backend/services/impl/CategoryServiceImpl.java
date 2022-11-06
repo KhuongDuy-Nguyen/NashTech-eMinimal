@@ -61,11 +61,27 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    public Category findByCategoryName(String name){
+        if (name.isBlank())
+            throw new ValidationException("Name is requirement");
+
+        Category category = repository.findByCategoryName(name);
+        if (category == null) {
+            throw new NotFoundException("Category not found");
+        }
+
+        return category;
+
+    }
+
 //  Create new category
 
     @Override
-    public <S extends Category> S save(S entity){
+    public <S extends Category> S save(S entity) throws Exception {
         checkValid(entity);
+        if(repository.existsByCategoryName(entity.getCategoryName())){
+            throw new Exception("Name have been taken");
+        }
         return repository.save(entity);
     }
 
@@ -91,7 +107,7 @@ public class CategoryServiceImpl implements CategoryService {
         checkValid(newCategory);
         category.setCategoryName(newCategory.getCategoryName());
         category.setCategoryDesc(newCategory.getCategoryDesc());
-        return repository.save(category);
+        return save(category);
     }
 
 //    Check valid function
