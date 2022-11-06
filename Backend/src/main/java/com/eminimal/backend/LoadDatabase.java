@@ -1,6 +1,13 @@
 package com.eminimal.backend;
 
+<<<<<<< HEAD
 import com.eminimal.backend.models.*;
+=======
+import com.eminimal.backend.models.Category;
+import com.eminimal.backend.models.Product;
+import com.eminimal.backend.models.ProductDetails;
+import com.eminimal.backend.models.Users;
+>>>>>>> main
 import com.eminimal.backend.repository.*;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.slf4j.Logger;

@@ -1,5 +1,6 @@
 package com.eminimal.backend.controllers;
 
+<<<<<<< HEAD
 import com.eminimal.backend.dto.ErrorResponse;
 import com.eminimal.backend.exceptions.ResourceFoundException;
 import com.eminimal.backend.models.Users;
@@ -7,6 +8,11 @@ import com.eminimal.backend.services.interfaces.CartService;
 import com.eminimal.backend.services.interfaces.UserService;
 import io.swagger.annotations.Authorization;
 import io.swagger.annotations.ResponseHeader;
+=======
+import com.eminimal.backend.models.Users;
+import com.eminimal.backend.services.interfaces.CartService;
+import com.eminimal.backend.services.interfaces.UserService;
+>>>>>>> main
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +47,18 @@ public class UserController {
         return ResponseEntity.ok().body(service.findByEmail(email));
     }
 
+<<<<<<< HEAD
     @PostMapping("/info")
     ResponseEntity<?> getUser(Authentication authentication){
 
+=======
+    @GetMapping("/info")
+    ResponseEntity<?> getUser(Authentication authentication, Principal principal) throws Exception {
+//        System.out.println("-----------------");
+//        System.out.println(authentication.getName());
+//        System.out.println(authentication.getDetails());
+//        System.out.println("-----------------");
+>>>>>>> main
         return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 

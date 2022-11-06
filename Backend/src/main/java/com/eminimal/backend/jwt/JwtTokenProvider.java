@@ -39,8 +39,12 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
 
+<<<<<<< HEAD
         UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(),userDetails.getUserRole()  ,token, new Date() ,expiryDate);
 //        log.error(userDetails.getUserRole());
+=======
+        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), token, new Date() ,expiryDate);
+>>>>>>> main
         return  tokenRepository.save(usersToken);
     }
 
@@ -58,10 +62,19 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) throws Exception {
         try {
+            log.error("Token: " + authToken);
+            log.error("--> " + Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken));
+
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
             return true;
+
         } catch (MalformedJwtException ex) {
+<<<<<<< HEAD
             throw new Exception("Invalid JWT token");
+=======
+            log.error(ex.getMessage());
+            log.error("Invalid JWT token");
+>>>>>>> main
         } catch (ExpiredJwtException ex) {
             throw new Exception("Expired JWT token");
         } catch (UnsupportedJwtException ex) {
