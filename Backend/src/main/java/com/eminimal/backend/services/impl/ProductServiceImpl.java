@@ -3,6 +3,7 @@ package com.eminimal.backend.services.impl;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.models.ProductDetails;
+import com.eminimal.backend.repository.CategoryRepository;
 import com.eminimal.backend.repository.ProductDetailsRepository;
 import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.ProductService;
@@ -32,6 +33,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryServiceImpl categoryService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
 //  Find product
     @Override
@@ -79,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public <S extends Product> S save(S entity) throws Exception {
 //        Check category valid
-        Category category = categoryService.findById(entity.getDetails().getCategories().getCategoryID());
+        Category category = categoryService.findByCategoryName(entity.getDetails().getCategories().getCategoryName());
         entity.getDetails().setCategories(category);
 
 //        detailsRepository.save(entity.getDetails());
@@ -99,6 +103,7 @@ public class ProductServiceImpl implements ProductService {
     public Product updateProduct(Product newProduct) throws Exception {
         Product product = findById(newProduct.getProductID());
         ProductDetails details = findProductDetailID(product.getDetails().getProductDetailID());
+        Category category = categoryRepository.findByCategoryName(newProduct.getDetails().getCategories().getCategoryName());
 
         details = ProductDetails.builder()
                 .productDetailID(details.getProductDetailID())
@@ -107,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
                 .productAmount(newProduct.getDetails().getProductAmount())
                 .productSale(newProduct.getDetails().getProductSale())
                 .dateSale(newProduct.getDetails().getDateSale())
-                .categories(newProduct.getDetails().getCategories())
+                .categories(category)
                 .build();
 
         product = Product.builder()

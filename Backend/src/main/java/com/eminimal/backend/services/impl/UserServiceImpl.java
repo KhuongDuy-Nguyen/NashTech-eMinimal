@@ -98,7 +98,6 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 //
 //         details = UserDetails.builder()
 //                .userDetailsID(user.getDetails().getUserDetailsID())
-//                .userImage(newUsers.getDetails().getUserImage())
 //                .userPhone(newUsers.getDetails().getUserPhone())
 //                .userAddress(newUsers.getDetails().getUserAddress())
 //                .userCountry(newUsers.getDetails().getUserCountry())
@@ -116,7 +115,7 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 
 
 
-        return repository.save(user);
+        return save(user);
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface CategoryService {
 
     List<Category> findByName(String name) throws Exception;
 
-    abstract <S extends Category> S save(S entity) throws ValidationException;
+    abstract <S extends Category> S save(S entity) throws Exception;
 
     String deleteById(String uuid) throws Exception;
 
