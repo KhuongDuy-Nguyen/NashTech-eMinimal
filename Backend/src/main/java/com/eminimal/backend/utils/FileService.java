@@ -22,7 +22,7 @@ import java.util.Date;
 
 @Service
 public class FileService {
-    private static final String ACCESS_TOKEN = "sl.BShgWz0Kc4H9eKFUghqND8TeWSGCZXfaNTQdTw0HtzkK1Fh1J7KH9k6V_Ti5X0MCdpZb4hX5TvJw9UsdbuHJQiKGScqQ6n_XNCjYOoYPs280Br7I84q6F6cvn3G6rUZp0-5WiVLFTi8";
+    private static final String ACCESS_TOKEN = "sl.BStKb7ehVLpDDQlAC84sGX6Ww_jUAQ3Xd02vH9PHsuCTfXDdadgk4rypdpx1mK-tr4vrjstpqBXEYF8y97DoDSqO9TF2Tf8lfHYdHnYtmaVQmokmJ5MmmbjypuD42O1MC2qhM2fUi4k";
     private static final String pathDropbox = "/upload/images/";
 
 

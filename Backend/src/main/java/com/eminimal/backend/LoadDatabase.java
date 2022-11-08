@@ -51,7 +51,7 @@ public class LoadDatabase {
                 productRepository.save(new Product(
                         "Ghe xoay " + i,
                         "Day la ghe xoay",
-                        list,
+                        new ArrayList<>(),
                         random.nextInt(100000),
                         random.nextInt(100),
                         random.nextInt(50),

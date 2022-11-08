@@ -1,5 +1,7 @@
 package com.eminimal.backend.controllers;
 
+import com.dropbox.core.InvalidAccessTokenException;
+import com.eminimal.backend.dto.ErrorResponse;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.services.interfaces.ProductService;
 import com.eminimal.backend.utils.FileService;
@@ -43,5 +45,11 @@ public class FileController {
 
         return new ResponseEntity<>("Upload success", HttpStatus.OK);
 //        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidAccessTokenException.class)
+    ResponseEntity<ErrorResponse> resourceFoundException(){
+        ErrorResponse errorResponse = new ErrorResponse("01", "Invalid dropbox token. Please reload it in BE");
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

@@ -23,6 +23,9 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     @Autowired
     private ModelMapper modelMapper;
 
+    int strength = 10; // work factor of bcrypt
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
+
 //  Find account
 
     @Override
@@ -64,14 +67,12 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     }
 
     public String hashPass(String pass){
-        int strength = 10; // work factor of bcrypt
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
+
         return bCryptPasswordEncoder.encode(pass);
     }
 
 
 //  Delete account
-
     @Override
     public String deleteById(String uuid) throws Exception {
         findById(uuid);
@@ -84,37 +85,28 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     @Override
     public Users updateUserById(Users newUsers) throws Exception {
         Users user = findById(newUsers.getUserId());
+
+        if(!bCryptPasswordEncoder.matches(newUsers.getUserPassword(), user.getUserPassword()))
+            throw new Exception("Password invalid");
+
+        newUsers.setUserPassword(hashPass(newUsers.getUserPassword()));
         user = modelMapper.map(newUsers, Users.class);
-        logger.error("User update: " + user);
-//        UserDetails details = detailsRepository.findByUserDetailsID(newUsers.getDetails().getUserDetailsID());
-//
-//         details = UserDetails.builder()
-//                .userDetailsID(user.getDetails().getUserDetailsID())
-//                .userPhone(newUsers.getDetails().getUserPhone())
-//                .userAddress(newUsers.getDetails().getUserAddress())
-//                .userCountry(newUsers.getDetails().getUserCountry())
-//                .userRole(newUsers.getDetails().getUserRole())
-//                .userActive(newUsers.getDetails().isUserActive())
-//                .build();
-//
-//        user = Users.builder()
-//                .userId(user.getUserId())
-//                .userName(newUsers.getUserName())
-//                .userEmail(newUsers.getUserEmail())
-//                .userPassword(hashPass(newUsers.getUserPassword()))
-//                .details(details)
-//                .build();
-
-
-
         return repository.save(user);
+    }
+
+    @Override
+    public Users changePasswordByUserId(String userID, String oldPass, String newPass) throws Exception {
+        Users users = findById(userID);
+        if(!bCryptPasswordEncoder.matches(oldPass, users.getUserPassword())){
+            throw new Exception("Password not match!");
+        }
+        users.setUserPassword(hashPass(newPass));
+        return repository.save(users);
     }
 
     @Override
     public Users activeUserByUserEmail(String email) throws Exception {
         Users users = findByEmail(email);
-
-//        UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
         users.setUserActive(true);
         return repository.save(users);
     }

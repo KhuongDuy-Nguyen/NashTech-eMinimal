@@ -65,7 +65,7 @@ public class AuthService {
             return tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
 
         }catch (AuthenticationException e){
-            throw new NotFoundException("Invalid username and password");
+            throw new NotFoundException("Invalid username or password");
         }
 
     }
