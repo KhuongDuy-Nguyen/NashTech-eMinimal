@@ -1,6 +1,5 @@
 package com.eminimal.backend.dto;
 
-import com.eminimal.backend.models.ProductDetails;
 import lombok.Data;
 
 import java.io.Serializable;

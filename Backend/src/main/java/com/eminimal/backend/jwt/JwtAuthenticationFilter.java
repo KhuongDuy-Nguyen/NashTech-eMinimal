@@ -47,7 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (Exception ex) {
 //            throw new ResourceFoundException("failed on set user authentication", ex);
-            throw new ResourceFoundException("Something was wrong. Try login again", ex);
+            log.error("Error --------> " + ex);
+            throw new ResourceFoundException("Failed on set user authentication. Try login again", ex);
+
         }
 
         filterChain.doFilter(request, response);

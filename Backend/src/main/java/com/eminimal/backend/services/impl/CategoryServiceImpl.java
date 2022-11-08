@@ -91,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String deleteById(String uuid) throws Exception {
         findById(uuid);
-        if(productRepository.findByDetails_Categories_CategoryID(uuid).size() > 0){
+        if(productRepository.findByCategories_CategoryID(uuid).size() > 0){
             throw new Exception("There are products in category");
         }
 
@@ -107,7 +107,7 @@ public class CategoryServiceImpl implements CategoryService {
         checkValid(newCategory);
         category.setCategoryName(newCategory.getCategoryName());
         category.setCategoryDesc(newCategory.getCategoryDesc());
-        return save(category);
+        return repository.save(category);
     }
 
 //    Check valid function

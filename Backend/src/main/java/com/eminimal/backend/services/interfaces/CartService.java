@@ -26,4 +26,6 @@ public interface CartService {
 
     //  Delete cart
     String deleteCartById(String id);
+
+    Cart findCartWhenStatusIsFalse(String userID) throws Exception;
 }

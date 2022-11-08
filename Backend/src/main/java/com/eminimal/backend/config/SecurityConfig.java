@@ -42,20 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-<<<<<<< HEAD
+
 //
 ////               Role ADMIN
 ////                .antMatchers(HttpMethod.GET, "/api/**").hasRole("ADMIN")
 ////                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
 ////                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
 ////                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-=======
+
 //               Role ADMIN
 //                .antMatchers(HttpMethod.GET, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
->>>>>>> main
+//                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+
 ////                Role GUEST
 ////                Cart
 //                .antMatchers(HttpMethod.GET, "/api/cart/**").hasAnyRole()
@@ -63,17 +63,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //                .antMatchers(HttpMethod.PUT, "/api/cart/**").hasAnyRole()
 //                .antMatchers(HttpMethod.DELETE, "/api/cart/**").hasAnyRole()
 ////                manager self-info
-<<<<<<< HEAD
+
 //                .antMatchers(HttpMethod.GET, "/api/user/id").hasAnyRole()
 //                .antMatchers(HttpMethod.GET, "/api/user/info").hasAnyRole()
 //                .antMatchers(HttpMethod.PUT, "/api/user/**").hasAnyRole()
 
 
 
-=======
+
 //                .antMatchers(HttpMethod.GET, "/api/user/**").hasAnyRole()
 //                .antMatchers(HttpMethod.PUT, "/api/user/**").hasAnyRole()
->>>>>>> main
+
 
                 .anyRequest()
                 .authenticated()

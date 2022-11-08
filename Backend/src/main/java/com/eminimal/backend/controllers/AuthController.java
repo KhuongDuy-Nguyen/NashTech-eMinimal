@@ -2,10 +2,9 @@ package com.eminimal.backend.controllers;
 
 import com.eminimal.backend.dto.ErrorResponse;
 import com.eminimal.backend.exceptions.NotFoundException;
-<<<<<<< HEAD
+
 import com.eminimal.backend.exceptions.ResourceFoundException;
-=======
->>>>>>> main
+
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.models.UsersToken;
 import com.eminimal.backend.repository.UsersTokenRepository;
@@ -80,13 +79,11 @@ public class AuthController {
         ErrorResponse errorResponse = new ErrorResponse("01", "Invalid username and password");
         return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
-<<<<<<< HEAD
+
 
     @ExceptionHandler(ResourceFoundException.class)
     ResponseEntity<ErrorResponse> resourceFoundException(){
         ErrorResponse errorResponse = new ErrorResponse("03", "Something was wrong. Try login again");
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
-=======
->>>>>>> main
 }

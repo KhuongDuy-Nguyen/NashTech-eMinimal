@@ -1,8 +1,6 @@
 package com.eminimal.backend.services.impl;
 
-import com.eminimal.backend.models.UserDetails;
 import com.eminimal.backend.models.Users;
-import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -21,8 +19,6 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     @Autowired
     private UsersRepository repository;
 
-    @Autowired
-    private UserDetailsRepository detailsRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -63,10 +59,6 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
             throw new Exception("Username have been taken");
         }
         entity.setUserPassword(hashPass(entity.getUserPassword()));
-
-        if(entity.getDetails() == null){
-            entity.setDetails(new UserDetails());
-        }
 
         return repository.save(entity);
     }
@@ -115,24 +107,23 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 
 
 
-        return save(user);
+        return repository.save(user);
     }
 
     @Override
-    public UserDetails activeUserByUserEmail(String email) throws Exception {
+    public Users activeUserByUserEmail(String email) throws Exception {
         Users users = findByEmail(email);
 
-        UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
-        details.setUserActive(true);
-        return detailsRepository.save(details);
+//        UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
+        users.setUserActive(true);
+        return repository.save(users);
     }
 
     @Override
-    public UserDetails changeRoleByUserEmail(String email, String role) throws Exception {
+    public Users changeRoleByUserEmail(String email, String role) throws Exception {
         Users users = findByEmail(email);
 
-        UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
-        details.setUserRole(role);
-        return detailsRepository.save(details);
+        users.setUserRole(role);
+        return repository.save(users);
     }
 }

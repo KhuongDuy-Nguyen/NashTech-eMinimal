@@ -2,21 +2,14 @@ package com.eminimal.backend.services.impl;
 
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.ProductDetails;
-<<<<<<< HEAD
-import com.eminimal.backend.repository.CategoryRepository;
-=======
->>>>>>> main
-import com.eminimal.backend.repository.ProductDetailsRepository;
+import com.eminimal.backend.models.Rating;
 import com.eminimal.backend.repository.ProductRepository;
 import com.eminimal.backend.services.interfaces.ProductService;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,19 +19,11 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Autowired
-    ModelMapper modelMapper;
-
-    @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ProductDetailsRepository detailsRepository;
 
     @Autowired
     private CategoryServiceImpl categoryService;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
 
 //  Find product
     @Override
@@ -46,10 +31,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-    @Override
-    public List<ProductDetails> findAllProductDetails(){
-        return detailsRepository.findAll();
-    }
+//    @Override
+//    public List<ProductDetails> findAllProductDetails(){
+//        return detailsRepository.findAll();
+//    }
 
     @Override
     public Product findById(String id) throws Exception {
@@ -62,34 +47,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDetails findProductDetailID(String id) throws Exception {
-        ProductDetails details =  detailsRepository.findByProductDetailID(id);
-        if(details == null){
-            throw new Exception("Can't find product detail with id: " + id);
-        }else{
-            return details;
-        }
-    }
-
-
-    @Override
     public List<Product> findByName(String name){
         return productRepository.findByProductNameContaining(name);
     }
 
     @Override
     public List<Product> findByCategory(String name){
-        return productRepository.findByDetails_Categories_CategoryName(name);
+        return productRepository.findByCategories_CategoryName(name);
     }
 
 //  Create product
     @Override
     public <S extends Product> S save(S entity) throws Exception {
 //        Check category valid
-        Category category = categoryService.findByCategoryName(entity.getDetails().getCategories().getCategoryName());
-        entity.getDetails().setCategories(category);
+        Category category = categoryService.findByCategoryName(entity.getCategories().getCategoryName());
+        entity.setCategories(category);
 
 //        detailsRepository.save(entity.getDetails());
+//        logger.error("Entity: "  + entity);
         return productRepository.save(entity);
     }
 
@@ -105,18 +80,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(Product newProduct) throws Exception {
         Product product = findById(newProduct.getProductID());
-        ProductDetails details = findProductDetailID(product.getDetails().getProductDetailID());
-        Category category = categoryRepository.findByCategoryName(newProduct.getDetails().getCategories().getCategoryName());
+        Category category = categoryService.findByCategoryName(newProduct.getCategories().getCategoryName());
 
-        details = ProductDetails.builder()
-                .productDetailID(details.getProductDetailID())
-                .dateCreate(details.getDateCreate())
-                .dateUpdate(new Date())
-                .productAmount(newProduct.getDetails().getProductAmount())
-                .productSale(newProduct.getDetails().getProductSale())
-                .dateSale(newProduct.getDetails().getDateSale())
-                .categories(category)
-                .build();
+//        TODO: Fix date create - It's create new Date() when update
 
         product = Product.builder()
                  .productID(newProduct.getProductID())
@@ -125,14 +91,22 @@ public class ProductServiceImpl implements ProductService {
                  .productImage(newProduct.getProductImage())
                  .productCost(newProduct.getProductCost())
                  .productRating(newProduct.getProductRating())
-                 .details(details)
+                 .productAmount(newProduct.getProductAmount())
+
+                 .dateCreate(newProduct.getDateCreate())
+                 .dateUpdate(new Date())
+
+                 .productSale(newProduct.getProductSale())
+                 .dateSale(newProduct.getDateSale())
+
+                 .categories(category)
                  .build();
 
         return productRepository.save(product);
     }
 
     @Override
-    public Product ratingProduct(String productID, int rating) throws Exception {
+    public Product ratingProduct(String productID, Rating rating) throws Exception {
         Product product = findById(productID);
         product.getProductRating().add(rating);
         return productRepository.save(product);
@@ -140,13 +114,26 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductSale(){
-        List<Product> productList = productRepository.findAll();
-        List<Product> productSale = new ArrayList<>();
-        for (Product product : productList) {
-            if (product.getDetails().getProductSale() > 0) {
-                productSale.add(product);
-            }
-        }
-        return productSale;
+        return productRepository.findByOrderByProductSaleDesc();
+    }
+
+    @Override
+    public List<Product> OrderProductCostDesc(){
+        return productRepository.findByOrderByProductCostDesc();
+    }
+
+    @Override
+    public List<Product> OrderProductCostAsc(){
+        return productRepository.findByOrderByProductCostAsc();
+    }
+
+    @Override
+    public List<Product> OrderProductNameDesc(){
+        return productRepository.findByOrderByProductNameDesc();
+    }
+
+    @Override
+    public List<Product> OrderProductNameAsc(){
+        return productRepository.findByOrderByProductNameAsc();
     }
 }

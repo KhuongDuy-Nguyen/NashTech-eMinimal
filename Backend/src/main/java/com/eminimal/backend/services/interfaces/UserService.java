@@ -1,6 +1,5 @@
 package com.eminimal.backend.services.interfaces;
 
-import com.eminimal.backend.models.UserDetails;
 import com.eminimal.backend.models.Users;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface UserService {
 
     Users updateUserById(Users newUsers) throws Exception;
 
-    UserDetails activeUserByUserEmail(String email) throws Exception;
+    Users activeUserByUserEmail(String email) throws Exception;
 
-    UserDetails changeRoleByUserEmail(String email, String role) throws Exception;
+    Users changeRoleByUserEmail(String email, String role) throws Exception;
 }

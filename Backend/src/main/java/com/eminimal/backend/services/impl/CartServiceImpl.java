@@ -65,16 +65,28 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
+//    Find cart status = false
+    @Override
+    public Cart findCartWhenStatusIsFalse(String userID) throws Exception {
+        Cart cart = cartRepository.findByCartUsers_UserIdAndCartStatusIsFalse(userID);
+        if(cart == null){
+            logger.info("Don't have any cart");
+            return save(userID);
+        }
+        return cart;
+    }
+
+
     //  Change amount in product
     public void decreaseAmountProduct(String productID) throws Exception {
         Product product =  productService.findById(productID);
-        product.getDetails().setProductAmount(product.getDetails().getProductAmount() - 1);
+        product.setProductAmount(product.getProductAmount() - 1);
         productRepository.save(product);
     }
 
     public void increaseAmountProduct(String productID) throws Exception {
         Product product =  productService.findById(productID);
-        product.getDetails().setProductAmount(product.getDetails().getProductAmount() + 1);
+        product.setProductAmount(product.getProductAmount() + 1);
         productRepository.save(product);
     }
 

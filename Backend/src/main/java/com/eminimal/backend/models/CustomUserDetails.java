@@ -32,7 +32,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getUserRole(){
-        return users.getDetails().getUserRole();
+        return users.getUserRole();
     }
 
     @Override
