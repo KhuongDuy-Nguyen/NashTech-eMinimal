@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 
 import logo from "./assets/images/logo.jpg";
-
+import "./index.css";
 
 
 

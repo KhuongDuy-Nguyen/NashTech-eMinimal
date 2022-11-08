@@ -11,6 +11,7 @@ import ManagerCategory from "./components/dashboard/admin/managerCategory";
 
 import UserInfo from "./components/dashboard/user/info";
 import UserCart from "./components/dashboard/user/cart";
+import UserPass from "./components/dashboard/user/changePass";
 
 import { Route, Routes } from "react-router-dom";
 
@@ -34,15 +35,16 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/category/:categoryName" element={<Home />} />
         <Route path="/product/:filter" element={<Home />} />
+        <Route path="/product/search/:searchName" element={<Home />} />
 
         {/* Router Login */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/auth" element={<Login />} />
 
         {/* Router Dashboard of user */}
-
         <Route path="/user/" element={<DashboardUser />}>
           <Route path="info" element={<UserInfo />} />
           <Route path="cart" element={<UserCart />} />
+          <Route path="changePassword" element={<UserPass />} />
         </Route>
 
         {/* Router Dashboard of admin */}

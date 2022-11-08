@@ -14,11 +14,9 @@ import {
   MDBCard,
   MDBCardBody,
 } from "mdb-react-ui-kit";
-import { Alert } from "antd";
 import background from "../assets/images/backgroundLogin.png";
-import { Form, Route } from "react-router-dom";
-import axios from "axios";
 import { Toast } from "react-bootstrap";
+import { loginUser, registerUser } from "../services/users";
 
 
 function App() {
@@ -35,80 +33,72 @@ function App() {
     if (value === justifyActive) {
       return;
     }
-
     setJustifyActive(value);
   };
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
-  const [login, setLogin] = useState(false);
 
   const handleSubmitLogin = (e) => {
-    console.log(e);
     e.preventDefault();
     var username = e.target.username.value;
     var password = e.target.password.value;
 
-    axios
-      .post("http://localhost:8080/api/auth/login", {
-        userName: username,
-        userPassword: password,
-      })
-      .then((res) => {
+    loginUser(username, password).then((res) => {
+        setShow(true);
+        setMessage("Login Success");
+        setType("success");
 
-        setShow(true)
-        setMessage("Login Success")
-        setType("success")
-
-        localStorage.setItem("token", JSON.stringify(res.data.token).replace(/"/g, ""));
-        localStorage.setItem("userId", JSON.stringify(res.data.userId).replace(/"/g, ""));
-        localStorage.setItem("role", JSON.stringify(res.data.userRole).replace(/"/g, ""));
+        localStorage.setItem(
+          "token",
+          JSON.stringify(res.data.token).replace(/"/g, "")
+        );
+        localStorage.setItem(
+          "userId",
+          JSON.stringify(res.data.userId).replace(/"/g, "")
+        );
+        localStorage.setItem(
+          "role",
+          JSON.stringify(res.data.userRole).replace(/"/g, "")
+        );
 
         // Auto redirect to home page
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
-      })
-      .catch((err) => {
+      }).catch((err) => {
+        console.log(err);
         var message = err.response.data.message;
-        setShow(true)
-        setMessage(message)
-        setType("danger")
+        setShow(true);
+        setMessage(message);
+        setType("danger");
       });
   };
 
   const handleSubmitRegister = (e) => {
     e.preventDefault();
-    console.log(
-      e.target.email.value,
-      e.target.username.value,
-      e.target.password.value,
-      e.target.confirmPassword.value
-    );
+    var email = e.target.email.value;
+    var username =  e.target.username.value;
+    var pass =  e.target.password.value;
+    var confirmPass = e.target.confirmPassword.value;
 
-    if (e.target.password.value !== e.target.confirmPassword.value) {
-      setShow(true)
-      setMessage("Password not match")
-      setType("danger")
-    }else{
-      axios
-      .post("http://localhost:8080/api/auth/register", {
-        userName: e.target.username.value,
-        userEmail: e.target.email.value,
-        userPassword: e.target.password.value,
-      })
-      .then((res) => {
-        setShow(true)
-        setMessage("Register Success")
-        setType("success")
-        handleJustifyClick("tab1");
-      })
-      .catch((err) => {
-        var message = err.response.data.message;
-        setShow(true)
-        setMessage(message)
-        setType("danger")
-      });
+    if (pass !== confirmPass) {
+      setShow(true);
+      setMessage("Password not match");
+      setType("danger");
+    } else {
+      registerUser(username, email, pass).then((res) => {
+          setShow(true);
+          setMessage("Register Success");
+          setType("success");
+          handleJustifyClick("tab1");
+        })
+        .catch((err) => {
+          var message = err.response.data.message;
+          setShow(true);
+          setMessage(message);
+          setType("danger");
+        });
     }
   };
 
@@ -194,6 +184,7 @@ function App() {
                       type="text"
                       name="username"
                       required
+                      autoComplete="false"
                       // onChange={(e) => setEmail(e.target.value)}
                     />
                     <MDBInput
@@ -203,6 +194,7 @@ function App() {
                       type="password"
                       name="password"
                       required
+                      autoComplete="false"
                       // onChange={(e) => setPassword(e.target.value)}
                     />
 
@@ -263,6 +255,7 @@ function App() {
                       id="usernameRegister"
                       type="text"
                       name="username"
+                      autoComplete="false"
                       required
                       // onChange={(e) => setUsername(e.target.value)}
                     />
@@ -272,6 +265,7 @@ function App() {
                       id="emailRegister"
                       type="email"
                       name="email"
+                      autoComplete="false"
                       required
                       // onChange={(e) => setEmail(e.target.value)}
                     />
@@ -281,6 +275,7 @@ function App() {
                       id="passwordRegister"
                       type="password"
                       name="password"
+                      autoComplete="false"
                       required
                       // onChange={(e) => setPassword(e.target.value)}
                     />
@@ -290,6 +285,7 @@ function App() {
                       id="confirmPassword"
                       type="password"
                       name="confirmPassword"
+                      autoComplete="false"
                       required
                       // onChange={(e) => setConfirmPassword(e.target.value)}
                     />

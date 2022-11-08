@@ -13,7 +13,9 @@ import Modal from "antd/lib/modal/Modal";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorAuth from "../../../utils/ErrorAuth";
+import { deleteUser, getAllUser, updateUser, updateUserRole } from "../../../services/users";
+import ErrorAuth from "../../../utils/errorAuth";
+import ShowMessage from "../../../utils/message";
 
 const statesList = [
   "An Giang",
@@ -98,30 +100,25 @@ function App() {
     getData();
   }, []);
 
-  const getData = async () => {
-    await axios
-      .get("http://localhost:8080/api/user/all")
-      .then((res) => {
-        setData(
-          res.data.map((item) => {
-            setSwitch(item.details.userRole === "ADMIN" ? true : false);
-            return {
-              key: item.userId,
-              name: item.userName,
-              email: item.userEmail,
-              states: item.details.userCountry,
-              address: item.details.userAddress,
-              role: item.details.userRole,
-              phone: item.details.userPhone,
-            };
-          })
-        );
-      })
-      .catch((err) => {
-        ErrorAuth(err);
-        
-      });
-  };
+  const getData = () => getAllUser().then((res) => {
+      setData(
+        res.data.map((item) => {
+          setSwitch(item.userRole === "ADMIN" ? true : false);
+          return {
+            key: item.userId,
+            name: item.userName,
+            email: item.userEmail,
+            states: item.userCountry,
+            address: item.userAddress,
+            role: item.userRole,
+            phone: item.userPhone,
+          };
+        })
+      );
+    })
+    .catch((err) => {
+      ErrorAuth(err);
+    });
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -144,24 +141,18 @@ function App() {
   const [states, setState] = useState("");
 
   const success = (mes) => {
-    message.success(`${mes}`, 2);
+    ShowMessage("success", `${mes} success`);
   };
 
   const error = (mes) => {
-    message.error(`${mes}`, 2);
+    ShowMessage("error", `${mes}`);
   };
 
   // Handle
   const handleUpdateRole = (email, isCheck) => {
-    console.log(email);
-    console.log(isCheck);
     let role = isCheck ? "ADMIN" : "GUEST";
 
-    axios
-      .put(
-        `http://localhost:8080/api/user/changeRole?email=${email}&role=${role}`
-      )
-      .then((res) => {
+    updateUserRole(email, role).then((res) => {
         console.log(res);
         success("Update role successfully!");
       })
@@ -172,21 +163,7 @@ function App() {
   };
 
   const onFinishUpdate = (values) => {
-    const json = {
-      userId: id,
-      userName: values.userName,
-      userEmail: values.userEmail,
-      details: {
-        userPhone: values.userPhone,
-        userAddress: values.userAddress,
-        userCountry: values.userCountry,
-        userRole: values.userRole,
-      },
-    };
-    console.log(json);
-    console.log(values);
-    axios
-      .put("http://localhost:8080/api/user/update", json)
+    updateUser(id, values)
       .then((res) => {
         success("Update success");
         // console.log(res);
@@ -222,15 +199,7 @@ function App() {
 
   const handleDeleteOk = () => {
     setOpenDelete(false);
-    console.log("Run delete");
-    axios
-      .delete("http://localhost:8080/api/user/delete", {
-        params: {
-          id: id,
-        },
-      })
-      .then((res) => {
-        // console.log(res);
+    deleteUser(id).then((res) => {
         success("Delete success");
         getData();
       })

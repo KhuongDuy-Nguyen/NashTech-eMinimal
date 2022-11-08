@@ -3,7 +3,7 @@ import page from "../assets/images/401.jpg"
 export default function App(){
 
     setTimeout(() => {
-      window.location.href = "/login";
+      window.location.href = "/auth";
     }, 2000);
 
     return (

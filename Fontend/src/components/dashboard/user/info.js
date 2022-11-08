@@ -1,9 +1,14 @@
-import { Button, Form, Input, InputNumber, Select } from "antd";
+import { Button, Form, Input, message, Select } from "antd";
 import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import authToken from "../../../utils/authToken";
+import { getUserById, updateUser } from "../../../services/users";
+import ErrorAuth from "../../../utils/errorAuth";
+import ShowMessage from "../../../utils/message";
+
+var id = localStorage.getItem("userId");
+
 const layout = {
   labelCol: {
     span: 4,
@@ -88,60 +93,35 @@ const validateMessages = {
 };
 
 function App() {
-  const [userPassword, setUserPassword] = useState("");
-  const [userDetailsId, setUserDetailsId] = useState("");
   const [states, setState] = useState("");
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    var userId = localStorage.getItem("userId");
-    console.log(
-      "From content: " + axios.defaults.headers.common["Authorization"]
-    );
-    axios
-      .get("http://localhost:8080/api/user/id/", { params: { id: userId } })
-      .then((res) => {
-        setUserPassword(res.data.userPassword);
-        setUserDetailsId(res.data.details.userDetailsID);
+    getUserById(id).then((res) => {
+      console.log(res.data);
         form.setFieldsValue({
           userName: res.data.userName,
           userEmail: res.data.userEmail,
-          userPhone: res.data.details.userPhone,
-          userAddress: res.data.details.userAddress,
-          userCountry: res.data.details.userCountry,
+          userPhone: res.data.userPhone,
+          userAddress: res.data.userAddress,
+          userCountry: res.data.userCountry,
         });
       })
       .catch((error) => {
-        console.log(axios.defaults.headers.common["Authorization"]);
-        console.log(error.response);
+        ErrorAuth(error);
       });
   }, []);
 
   const onFinish = (values) => {
-    var userCountry = states;
-    var userId = localStorage.getItem("userId");
-
-    var data = {
-      userId: userId,
-      userName: values.userName,
-      userEmail: values.userEmail,
-      userPassword: userPassword,
-      details: {
-        userDetailsID: userDetailsId,
-        userPhone: values.userPhone,
-        userAddress: values.userAddress,
-        userCountry: userCountry,
-      },
-    };
-
-    axios
-      .put("http://localhost:8080/api/user/update", data)
+    console.log(values);
+    updateUser(id, values)
       .then((res) => {
         console.log(res);
+        ShowMessage("success", "Update user successfully!");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        ErrorAuth(error);
       });
   };
 
@@ -207,6 +187,19 @@ function App() {
       {/* Input Address */}
       <Form.Item name={"userAddress"} label="Address">
         <Input.TextArea />
+      </Form.Item>
+
+      <Form.Item
+        name={"userPassword"}
+        label="Password"
+        rules={[
+          {
+            required: true,
+            message: "You must input your password to change!",
+          },
+        ]}
+      >
+        <Input.Password />
       </Form.Item>
 
       {/* Button save */}

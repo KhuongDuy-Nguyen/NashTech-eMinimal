@@ -13,12 +13,18 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Content } from "antd/lib/layout/layout";
-import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import uploadFile from "../../../utils/uploadFile";
-import ErrorAuth from "../../../utils/ErrorAuth";
+import ErrorAuth from "../../../utils/errorAuth";
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  productUploadImages,
+  updateProduct,
+} from "../../../services/product";
+import { getAllCategory } from "../../../services/category";
+import ShowMessage from "../../../utils/message";
 
 const { RangePicker } = DatePicker;
 
@@ -33,32 +39,25 @@ const App = () => {
   const [name, setName] = useState("");
 
 
-  // Toast
-  const success = (mes) => {
-    message.success(`${mes}`, 2);
-  };
-
   useEffect(() => {
     getData();
   }, []);
 
-  const getData = async () => {
-    await axios
-      .get("http://localhost:8080/api/product/all")
+  const getData = () =>
+    getAllProducts()
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setData(
           res.data.map((item) => {
-            // console.log(item.details.categories.categoryName);
             return {
               key: item.productID,
               name: item.productName,
               desc: item.productDesc,
               cost: item.productCost,
-              sale: item.details.productSale,
-              category: item.details.categories.categoryName,
-              amount: item.details.productAmount,
-              dateCreated: item.details.dateCreate,
+              sale: item.productSale,
+              category: item.categories.categoryName,
+              amount: item.productAmount,
+              dateCreated: item.dateCreate,
             };
           })
         );
@@ -67,23 +66,21 @@ const App = () => {
         ErrorAuth(err);
       });
 
-    // Get categories
-    await axios
-      .get("http://localhost:8080/api/category/all")
-      .then((res) => {
-        setCategory(
-          res.data.map((item) => {
-            return {
-              label: item.categoryName,
-              value: item.categoryName,
-            };
-          })
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // Get categories
+  getAllCategory()
+    .then((res) => {
+      setCategory(
+        res.data.map((item) => {
+          return {
+            label: item.categoryName,
+            value: item.categoryName,
+          };
+        })
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -106,60 +103,49 @@ const App = () => {
   const [form] = Form.useForm();
 
   const onFinishCreate = (values) => {
-    const json = {
-      productName: values.productName,
-      productDesc: values.productDesc,
-      productCost: values.productCost,
-      details: {
-        productAmount: values.productAmount,
-        productSale: values.productSale,
-        dateSale: values.dateSale,
-        categories: {
-          categoryName: values.productCategory,
-        },
-      },
-    };
-    axios
-      .post("http://localhost:8080/api/product/create", json)
+    createProduct(values)
       .then((res) => {
+        console.log(res);
         getData();
-        success("Create product success");
+        ShowMessage("success","Create product success");
       })
       .catch((err) => {
         ErrorAuth(err);
       });
+
     console.log(values);
     form.resetFields();
     setOpenCreate(false);
   };
 
-  const onFinishUpdate = (values) => {
-    // console.log(values);
-    const json = {
-      productID: id,
-      productName: values.productName,
-      productDesc: values.productDesc,
-      productCost: values.productCost,
-      details: {
-        productAmount: values.productAmount,
-        productSale: values.productSale,
-        dateSale: values.dateSale,
-        categories: {
-          categoryName: values.productCategory,
-        },
-      },
-    };
+  const uploadFile = (values, id) => {
+    if (values.productImages.fileList.length > 0) {
+      for (var i = 0; i < values.productImages.fileList.length; i++) {
+        console.log(values.productImages.fileList[i].originFileObj);
+        let formData = new FormData();
+        formData.append("file", values.productImages.fileList[i].originFileObj);
+        formData.append("id", id);
+        productUploadImages(formData)
+          .then((res) => {
+            ShowMessage("success","Upload image success");
+          }).catch((err) => {
+            console.log(err);
+            ShowMessage("error",err.response.data.message);
+          });
+      }
+    }
+  };
 
-    axios
-      .put("http://localhost:8080/api/product/update", json)
+  const onFinishUpdate = (values) => {
+    updateProduct(id, values)
       .then((res) => {
         console.log(res);
         getData();
         uploadFile(values, id);
-        success("Update successfully");
+        ShowMessage("success","Update info successfully");
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        ErrorAuth(err);
       });
     form.resetFields();
     setOpenUpdate(false);
@@ -173,9 +159,9 @@ const App = () => {
       productDesc: e.desc,
       productCost: e.cost,
       productAmount: e.amount,
-      productCategory: e.category,
       productDate: e.dateCreated,
       productSale: e.sale,
+      productCategory: e.category,
     });
     setOpenUpdate(true);
   };
@@ -188,17 +174,11 @@ const App = () => {
 
   const handleDeleteOk = () => {
     setOpenDelete(false);
-    console.log("Run delete");
-    axios
-      .delete("http://localhost:8080/api/product/delete", {
-        params: {
-          id: id,
-        },
-      })
+    deleteProduct(id)
       .then((res) => {
         console.log(res);
         getData();
-        success("Delete successfully");
+        ShowMessage("success","Delete successfully");
       })
       .catch((err) => {
         ErrorAuth(err);
@@ -540,7 +520,7 @@ const App = () => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Create
+              Update
             </Button>
           </Form.Item>
         </Form>

@@ -7,22 +7,15 @@ import {
   UsergroupAddOutlined,
 } from "@ant-design/icons";
 
-import { Layout, Menu, message, Slider } from "antd";
+import { Layout, Menu} from "antd";
 import React, { useState } from "react";
 import "../styles/dashboard.css";
 import logo from "../assets/images/logo.jpg";
-import { Link, Outlet, Route, Routes } from "react-router-dom";
+import { Outlet} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import authToken from "../utils/authToken";
-
-
-// import AdminRouter from "../router/adminRouter";
-// import ManagerUser from "../components/dashboard/Admin_ManagerUser";
-// import ManagerProduct from "../components/dashboard/Admin_ManagerProduct";
+import logout from "../utils/logout";
 
 const { Header, Footer, Sider } = Layout;
-
-
 
 
 function App(){
@@ -32,8 +25,6 @@ function App(){
   if(localStorage.getItem("role") !== "ADMIN"){
     navigate("/401");
   }
-
-  // authToken(localStorage.getItem("token"));
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -54,7 +45,7 @@ function App(){
             {
               key: "1",
               icon: <UsergroupAddOutlined style={{ fontSize: "20px" }} />,
-              label: "Manager Users",
+              label: "Users Management",
               onClick: () => {
                 navigate("/admin/manager-user");
               },
@@ -62,7 +53,7 @@ function App(){
             {
               key: "2",
               icon: <ShoppingCartOutlined style={{ fontSize: "20px" }} />,
-              label: "Manager Products",
+              label: "Products Management",
               onClick: () => {
                 navigate("/admin/manager-product");
               },
@@ -70,7 +61,7 @@ function App(){
             {
               key: "3",
               icon: <TagsOutlined style={{ fontSize: "20px" }} />,
-              label: "Manager Categories",
+              label: "Categories Management",
               onClick: () => {
                 navigate("/admin/manager-category");
               },
@@ -80,6 +71,9 @@ function App(){
               key: "4",
               icon: <LogoutOutlined style={{ fontSize: "20px" }} />,
               label: "Logout",
+              onClick: () => {
+                logout();
+              },
             },
           ]}
         />

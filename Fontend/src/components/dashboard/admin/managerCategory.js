@@ -2,9 +2,15 @@ import { Button, Space, Table, Form, Input, Modal, message } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import ErrorAuth from "../../../utils/ErrorAuth";
+import ErrorAuth from "../../../utils/errorAuth";
 
-
+import {
+  getAllCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from "../../../services/category.js";
+import ShowMessage from "../../../utils/message";
 
 function App() {
   // Load data
@@ -17,21 +23,23 @@ function App() {
     getData();
   }, []);
 
-  const getData = async () => {
-    await axios.get("http://localhost:8080/api/category/all")
+  const getData = () =>
+    getAllCategory()
       .then((res) => {
-        setData(res.data.map((item) => {
-          return {
-            key: item.categoryID,
-            name: item.categoryName,
-            desc: item.categoryDesc,
-          }
-        }));
+        // console.log(res);
+        setData(
+          res.data.map((item) => {
+            return {
+              key: item.categoryID,
+              name: item.categoryName,
+              desc: item.categoryDesc,
+            };
+          })
+        );
       })
       .catch((err) => {
-        ErrorAuth(err);
+        console.log(err);
       });
-  };
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
@@ -56,22 +64,15 @@ function App() {
   const [form] = Form.useForm();
 
   const success = (mes) => {
-    message.success(`${mes} success`, 2);
+    ShowMessage("success",`${mes} success`);
   };
 
   const error = (mes) => {
-    message.error(`${mes}`, 2);
+    ShowMessage("error",`${mes}`);
   };
 
-
-
   const onFinishUpdate = (values) => {
-    axios
-      .put("http://localhost:8080/api/category/update", {
-        categoryID: id,
-        categoryName: values.categoryName,
-        categoryDesc: values.categoryDesc,
-      })
+    updateCategory(id, values)
       .then((res) => {
         success("Update");
         console.log(res);
@@ -86,19 +87,13 @@ function App() {
   };
 
   const onFinishCreate = (values) => {
-    axios
-      .post("http://localhost:8080/api/category/create", {
-        categoryName: values.categoryName,
-        categoryDesc: values.categoryDesc,
-      })
+    createCategory(values)
       .then((res) => {
-        console.log(res);
         getData();
         success("Create");
         form.resetFields();
       })
       .catch((err) => {
-        // console.log(err.response.data.message);
         error(err.response.data.message);
       });
 
@@ -122,11 +117,7 @@ function App() {
   const handleDeleteOk = () => {
     setOpenDelete(false);
     console.log("Run delete");
-    axios.delete('http://localhost:8080/api/category/delete', {
-        params: {
-          id: id,
-        },
-      })
+    deleteCategory(id)
       .then((res) => {
         console.log(res);
         getData();
@@ -162,7 +153,13 @@ function App() {
           >
             Edit
           </Button>
-          <Button type="primary" danger onClick={() => {handleDelete(key)}}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => {
+              handleDelete(key);
+            }}
+          >
             Delete
           </Button>
         </Space>
@@ -328,7 +325,13 @@ function App() {
         footer={null}
       >
         <p>Are you sure to delete this category?</p>
-        <Button type="primary" danger onClick={() => {handleDeleteOk()}}>
+        <Button
+          type="primary"
+          danger
+          onClick={() => {
+            handleDeleteOk();
+          }}
+        >
           Delete
         </Button>
       </Modal>
