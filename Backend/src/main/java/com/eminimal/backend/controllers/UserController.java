@@ -1,6 +1,7 @@
 package com.eminimal.backend.controllers;
 
 import com.eminimal.backend.models.Users;
+import com.eminimal.backend.models.UsersChangePass;
 import com.eminimal.backend.services.interfaces.CartService;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,15 @@ public class UserController {
     @PutMapping("/changeRole")
     ResponseEntity<?> changeRole(@RequestParam String email, @RequestParam String role) throws Exception {
         return new ResponseEntity<>(service.changeRoleByUserEmail(email, role), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePass")
+    ResponseEntity<?> changePass(@RequestBody UsersChangePass changePass) throws Exception {
+        return new ResponseEntity<>(service.changePasswordByUserId(
+                changePass.getUserId() ,
+                changePass.getOldPass(),
+                changePass.getNewPass()),
+                HttpStatus.OK);
     }
 
     //    Remove account

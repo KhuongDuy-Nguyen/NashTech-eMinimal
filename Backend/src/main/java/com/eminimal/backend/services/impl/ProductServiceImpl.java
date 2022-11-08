@@ -98,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(Product newProduct) throws Exception {
         Product product = findById(newProduct.getProductID());
+<<<<<<< Updated upstream
         ProductDetails details = findProductDetailID(product.getDetails().getProductDetailID());
 
         details = ProductDetails.builder()
@@ -109,6 +110,11 @@ public class ProductServiceImpl implements ProductService {
                 .dateSale(newProduct.getDetails().getDateSale())
                 .categories(newProduct.getDetails().getCategories())
                 .build();
+=======
+        Category category = categoryService.findByCategoryName(newProduct.getCategories().getCategoryName());
+
+//        TODO: Fix date update - It's create new Date() when update
+>>>>>>> Stashed changes
 
         product = Product.builder()
                  .productID(newProduct.getProductID())
@@ -117,7 +123,19 @@ public class ProductServiceImpl implements ProductService {
                  .productImage(newProduct.getProductImage())
                  .productCost(newProduct.getProductCost())
                  .productRating(newProduct.getProductRating())
+<<<<<<< Updated upstream
                  .details(details)
+=======
+                 .productAmount(newProduct.getProductAmount())
+
+                 .dateCreate(product.getDateCreate())
+                 .dateUpdate(new Date())
+
+                 .productSale(newProduct.getProductSale())
+                 .dateSale(newProduct.getDateSale())
+
+                 .categories(category)
+>>>>>>> Stashed changes
                  .build();
 
         return productRepository.save(product);

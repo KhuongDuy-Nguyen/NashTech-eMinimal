@@ -39,6 +39,7 @@ public class LoadDatabase {
             log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
             log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
 
+<<<<<<< Updated upstream
 //          Insert product
             List<String> list = new ArrayList<>();
             list.add("url-1");
@@ -52,6 +53,23 @@ public class LoadDatabase {
                     12.5f,
                     new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
             )));
+=======
+//          Product
+
+            Random random = new Random();
+            for (int i = 1; i <= 10 ; i++){
+                productRepository.save(new Product(
+                        "Ghe xoay " + i,
+                        "Day la ghe xoay",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Chairs")
+                ));
+            }
+>>>>>>> Stashed changes
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 2",

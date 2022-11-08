@@ -21,5 +21,11 @@ public interface UserService {
 
     UserDetails activeUserByUserEmail(String email) throws Exception;
 
+<<<<<<< Updated upstream
     UserDetails changeRoleByUserEmail(String email, String role) throws Exception;
+=======
+    Users changeRoleByUserEmail(String email, String role) throws Exception;
+
+    Users changePasswordByUserId(String userID, String oldPass, String newPass) throws Exception;
+>>>>>>> Stashed changes
 }

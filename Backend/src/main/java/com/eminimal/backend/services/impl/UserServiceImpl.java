@@ -1,6 +1,10 @@
 package com.eminimal.backend.services.impl;
 
+<<<<<<< Updated upstream
 import com.eminimal.backend.models.UserDetails;
+=======
+import com.eminimal.backend.exceptions.ResourceFoundException;
+>>>>>>> Stashed changes
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements com.eminimal.backend.services.interfaces.UserService {
@@ -22,6 +27,9 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 
     @Autowired
     private UserDetailsRepository detailsRepository;
+
+    int strength = 10; // work factor of bcrypt
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
 
 //  Find account
 
@@ -64,8 +72,6 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     }
 
     public String hashPass(String pass){
-        int strength = 10; // work factor of bcrypt
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
         return bCryptPasswordEncoder.encode(pass);
     }
 
@@ -84,6 +90,7 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
     @Override
     public Users updateUserById(Users newUsers) throws Exception {
         Users user = findById(newUsers.getUserId());
+<<<<<<< Updated upstream
 
         UserDetails details = detailsRepository.findByUserDetailsID(newUsers.getDetails().getUserDetailsID());
 
@@ -104,6 +111,15 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
                 .userPassword(hashPass(newUsers.getUserPassword()))
                 .details(details)
                 .build();
+=======
+        if(!bCryptPasswordEncoder.matches(newUsers.getUserPassword(), user.getUserPassword()))
+            throw new Exception("Password not match");
+
+        newUsers.setUserPassword(hashPass(newUsers.getUserPassword()));
+        user = modelMapper.map(newUsers, Users.class);
+
+        logger.error("User update: " + user);
+>>>>>>> Stashed changes
 
         return repository.save(user);
     }
@@ -124,5 +140,15 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
         UserDetails details = detailsRepository.findByUserDetailsID(users.getDetails().getUserDetailsID());
         details.setUserRole(role);
         return detailsRepository.save(details);
+    }
+
+    @Override
+    public Users changePasswordByUserId(String userID, String oldPass, String newPass) throws Exception {
+        Users users = findById(userID);
+        if(!bCryptPasswordEncoder.matches(oldPass, users.getUserPassword())){
+            throw new Exception("Password not match!");
+        }
+        users.setUserPassword(hashPass(newPass));
+        return repository.save(users);
     }
 }
