@@ -61,6 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    @Override
     public Category findByCategoryName(String name){
         if (name.isBlank())
             throw new ValidationException("Name is requirement");

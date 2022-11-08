@@ -4,7 +4,10 @@ import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.models.Rating;
 import com.eminimal.backend.repository.ProductRepository;
+import com.eminimal.backend.repository.RatingRepository;
+import com.eminimal.backend.services.interfaces.CategoryService;
 import com.eminimal.backend.services.interfaces.ProductService;
+import com.eminimal.backend.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,7 +26,13 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryService categoryService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
 
 //  Find product
@@ -106,9 +116,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product ratingProduct(String productID, Rating rating) throws Exception {
+    public Product ratingProduct(String productID, Rating newRating) throws Exception {
+        String userID = newRating.getUserID();
         Product product = findById(productID);
-        product.getProductRating().add(rating);
+
+        userService.findById(userID);
+
+        if(newRating.getRating() > 5 || newRating.getRating() < 1)
+            throw new Exception("Rating value not valid");
+
+        for (int i = 0; i < product.getProductRating().size(); i++) {
+            if(product.getProductRating().get(i).getUserID().equals(userID)){
+                throw new Exception("You just only rating 1 times with product");
+            }
+        }
+        ratingRepository.save(newRating);
+        product.getProductRating().add(newRating);
         return productRepository.save(product);
     }
 
