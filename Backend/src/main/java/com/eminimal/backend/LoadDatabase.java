@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 public class LoadDatabase {
@@ -39,7 +40,6 @@ public class LoadDatabase {
             log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
             log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
 
-<<<<<<< Updated upstream
 //          Insert product
             List<String> list = new ArrayList<>();
             list.add("url-1");
@@ -53,7 +53,6 @@ public class LoadDatabase {
                     12.5f,
                     new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
             )));
-=======
 //          Product
 
             Random random = new Random();
@@ -69,7 +68,6 @@ public class LoadDatabase {
                         categoryRepository.findByCategoryName("Chairs")
                 ));
             }
->>>>>>> Stashed changes
 
             log.info("Inserting --> " + productRepository.save(new Product(
                     "Ghe xoay 2",

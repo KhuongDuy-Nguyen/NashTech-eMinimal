@@ -1,15 +1,14 @@
 package com.eminimal.backend.controllers;
 
-<<<<<<< Updated upstream
-import com.eminimal.backend.services.impl.FileServiceImpl;
+
+
 import com.eminimal.backend.services.interfaces.FileService;
-=======
+
 import com.dropbox.core.InvalidAccessTokenException;
 import com.eminimal.backend.dto.ErrorResponse;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.services.interfaces.ProductService;
-import com.eminimal.backend.utils.FileService;
->>>>>>> Stashed changes
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
