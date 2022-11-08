@@ -18,6 +18,8 @@ public interface UserService {
 
     Users updateUserById(Users newUsers) throws Exception;
 
+    Users changePasswordByUserId(String userID, String oldPass, String newPass) throws Exception;
+
     Users activeUserByUserEmail(String email) throws Exception;
 
     Users changeRoleByUserEmail(String email, String role) throws Exception;
