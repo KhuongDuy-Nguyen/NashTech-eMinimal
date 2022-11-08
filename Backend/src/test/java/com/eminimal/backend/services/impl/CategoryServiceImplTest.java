@@ -123,7 +123,7 @@ class CategoryServiceImplTest {
 
 //    Save
     @Test
-    void save_ShouldReturnCategory_WhenDataValid() {
+    void save_ShouldReturnCategory_WhenDataValid() throws Exception {
         Category actualCategory = mock(Category.class);
         Category category = Category.builder().categoryID("1").categoryName("Chair").categoryDesc("This is chair").build();
         when(categoryRepository.save(category)).thenReturn(actualCategory);
@@ -178,7 +178,7 @@ class CategoryServiceImplTest {
         List<Product> initProduct = Collections.singletonList(mock(Product.class));
 
         when(categoryRepository.findByCategoryID("1")).thenReturn(initCategory);
-        when(productRepository.findByDetails_Categories_CategoryID("1")).thenReturn(initProduct);
+        when(productRepository.findByCategories_CategoryID("1")).thenReturn(initProduct);
 
 
         Exception actualException = assertThrows(Exception.class, () -> categoryServiceImpl.deleteById("1"));

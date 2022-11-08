@@ -1,8 +1,6 @@
 package com.eminimal.backend.services.impl;
 
-import com.eminimal.backend.models.UserDetails;
 import com.eminimal.backend.models.Users;
-import com.eminimal.backend.repository.UserDetailsRepository;
 import com.eminimal.backend.repository.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,16 +25,11 @@ class UserServiceImplTest {
     @Mock
     UsersRepository usersRepository;
 
-    @Mock
-    UserDetailsRepository detailsRepository;
-
     @InjectMocks
     UserServiceImpl userServiceImpl;
 
     Users initUsers;
     Users expectedUsers;
-
-    UserDetails userDetails;
 
     private final List<Users> mockUsers = new ArrayList<>();
 
@@ -47,7 +40,7 @@ class UserServiceImplTest {
 //        userDetails = mock(UserDetails.class);
 
         for(int i = 0; i< 5; i++){
-            mockUsers.add(new Users( Integer.toString(i),"admin " + i, "123 ", "admin@gmail.com", new UserDetails()));
+            mockUsers.add(new Users( "admin " + i, "123 ",  "admin@gmail.com"));
         }
 
 //        when(usersRepository.save(initUsers)).thenReturn(initUsers);
@@ -85,7 +78,7 @@ class UserServiceImplTest {
 
     @Test
     void save_ShouldReturnUsers_WhenDataValid() throws Exception {
-        initUsers = Users.builder().userId("1").userName("admin").userPassword("123").userEmail("admin@gmail.com").details(new UserDetails()).build();
+        initUsers = Users.builder().userId("1").userName("admin").userPassword("123").userEmail("admin@gmail.com").build();
         when(usersRepository.save(initUsers)).thenReturn(initUsers);
         Users result = userServiceImpl.save(initUsers);
         assertEquals(result, initUsers);
@@ -106,13 +99,13 @@ class UserServiceImplTest {
 //        expectedUsers = mock(Users.class);
         initUsers = mock(Users.class);
         expectedUsers = mock(Users.class);
-        userDetails = mock(UserDetails.class);
 
         when(usersRepository.findByUserId("1")).thenReturn(initUsers);
-        when(detailsRepository.findByUserDetailsID("1")).thenReturn(userDetails);
         when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
 
-        Users result = userServiceImpl.updateUserById(new Users("1", "name", "123", "email@gmail.com", UserDetails.builder().userPhone("123123").build() ));
+        Users result = userServiceImpl.updateUserById(new Users("1",
+                "name", "123",
+                "email@gmail.com", "123",));
 
         logger.info("User: " + expectedUsers);
 //        verify(initUsers).setUserName("name");
