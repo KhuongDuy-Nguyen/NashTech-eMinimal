@@ -1,5 +1,6 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Cart;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.models.Users;
@@ -52,7 +53,7 @@ public class CartServiceImpl implements CartService {
         if(cart != null){
             return cart;
         }else{
-            throw new Exception("Can't find cart with id: " + cartID);
+            throw new NotFoundException("Can't find cart with id: " + cartID);
         }
     }
 
@@ -69,11 +70,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart findCartWhenStatusIsFalse(String userID) throws Exception {
         Cart cart = cartRepository.findByCartUsers_UserIdAndCartStatusIsFalse(userID);
-        if(cart == null){
-            logger.info("Don't have any cart");
+        if(cart != null){
+            return cart;
+        }else{
             return save(userID);
         }
-        return cart;
+
     }
 
 

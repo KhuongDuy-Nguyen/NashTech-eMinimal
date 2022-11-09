@@ -1,5 +1,6 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
@@ -35,21 +36,26 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
 
     @Override
     public Users findById(String id) throws Exception {
+        if(id.isEmpty())
+            throw new NullPointerException("ID can not be null or blank");
         Users users = repository.findByUserId(id);
         if(users != null){
             return users;
         }else{
-            throw new Exception("Can not find user with id: " + id);
+            throw new NotFoundException("Can not find user with id: " + id);
         }
     }
 
     @Override
     public Users findByEmail(String email) throws Exception {
+        if(email.isEmpty())
+            throw new NullPointerException("Email can not be null or blank");
+
         Users users = repository.findByUserEmail(email);
         if(users != null){
             return users;
         }else{
-            throw new Exception("Can not find user with email: " + email);
+            throw new NotFoundException("Can not find user with email: " + email);
         }
     }
 

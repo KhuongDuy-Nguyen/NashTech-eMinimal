@@ -1,5 +1,6 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.models.Rating;
@@ -50,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(String id) throws Exception {
         Product product =  productRepository.findByProductID(id);
         if(product == null){
-            throw new Exception("Can't find product with id: " + id);
+            throw new NotFoundException("Can't find product with id: " + id);
         }else{
             return product;
         }
