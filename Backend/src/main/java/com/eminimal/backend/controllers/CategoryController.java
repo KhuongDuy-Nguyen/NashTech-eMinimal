@@ -51,7 +51,7 @@ public class CategoryController {
 
     //    Create new category
     @PostMapping("/create")
-    public ResponseEntity<?> createCategory(@RequestBody Category category) throws ValidationException {
+    public ResponseEntity<?> createCategory(@RequestBody Category category) throws Exception {
         return ResponseEntity.ok().body(service.save(category));
     }
 

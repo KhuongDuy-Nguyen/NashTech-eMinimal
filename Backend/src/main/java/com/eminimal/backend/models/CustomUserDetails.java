@@ -20,6 +20,7 @@ public class CustomUserDetails implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority("GUEST"));
     }
 
+
     @Override
     public String getPassword() {
         return users.getUserPassword();
@@ -28,6 +29,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return users.getUserName();
+    }
+
+    public String getUserRole(){
+        return users.getUserRole();
     }
 
     @Override

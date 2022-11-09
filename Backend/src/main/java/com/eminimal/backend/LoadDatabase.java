@@ -1,8 +1,8 @@
 package com.eminimal.backend;
 
+import com.eminimal.backend.models.*;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.ProductDetails;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.*;
 import com.eminimal.backend.services.interfaces.UserService;
@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 public class LoadDatabase {
@@ -32,72 +33,121 @@ public class LoadDatabase {
             cartRepository.deleteAll();
 //            usersRepository.deleteAll();
 //          Insert Category
-            log.info("Inserting --> " + categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Beds", "Tong hop cac loai giuong")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Lamp", "Tong hop cac loai den")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh")));
-            log.info("Inserting --> " + categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong")));
+            categoryRepository.save(new Category("Sofas", "Tong hop cac loai sofa"));
+            categoryRepository.save(new Category("Lighting", "Tong hop cac loai den trang tri"));
+            categoryRepository.save(new Category("Beds", "Tong hop cac loai giuong"));
+            categoryRepository.save(new Category("Lamp", "Tong hop cac loai den"));
+            categoryRepository.save(new Category("Stools", "Tong hop cac loai ghe co dinh"));
+            categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong"));
 
-//          Insert product
-            List<String> list = new ArrayList<>();
-            list.add("url-1");
-            list.add("url-2");
-            list.add("url-3");
+//          Product
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 1",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
-            )));
+            Random random = new Random();
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Ghe xoay " + i,
+                        "Day la ghe xoay",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Chairs")
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 2",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Sofas"))
-            )));
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Ghe nhua " + i,
+                        "Day la ghe nhua",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Stools")
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 3",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
-            )));
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Den" + i,
+                        "Day la den",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Lamp")
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 4",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, categoryRepository.findByCategoryName("Beds"))
-            )));
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Giuong " + i,
+                        "Day la giuong",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Beds")
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 5",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100, 50, new Date() ,categoryRepository.findByCategoryName("Beds"))
-            )));
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Den trang tri " + i,
+                        "Day la den trang tri",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100), random.nextInt(50), new Date(), categoryRepository.findByCategoryName("Lighting")
+                ));
+            }
 
-            log.info("Inserting --> " + productRepository.save(new Product(
-                    "Ghe xoay 6",
-                    "Day la ghe xoay",
-                    list,
-                    12.5f,
-                    new ProductDetails(100,20, new Date(), categoryRepository.findByCategoryName("Beds"))
-            )));
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Sofa " + i,
+                        "Day la sofa",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Sofas")
+                ));
+            }
 
-            log.info("Inserting --> " + userService.save(new Users(
-                    "admin",
-                    "123",
-                    "admin@gmail.com"
-            )));
+//            --------------
+
+//          Account
+            for (int i = 1; i <= 10 ; i++){
+                userService.save(new Users(
+                        "admin" + i,
+                        "123",
+                        "admin" + i + "@gmail.com",
+                        "0794536542",
+                        "BTD",
+                        "Ho Chi Minh",
+                        true,
+                        "ADMIN"
+                ));
+            }
+
+            for (int i = 1; i <= 10 ; i++){
+                userService.save(new Users(
+                        "user" + i,
+                        "123",
+                        "user" + i + "@gmail.com",
+                        "0794536542",
+                        "BTD",
+                        "Ho Chi Minh",
+                        true,
+                        "GUEST"
+                ));
+            }
+
+
         };
     }
 

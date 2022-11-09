@@ -22,14 +22,25 @@ public class CartController {
 
 //   Find cart
     @GetMapping("/all")
-    public List<Cart> findAll() throws ExecutionException, InterruptedException {
-        return service.findAll();
+    public ResponseEntity<List<Cart>> findAll() throws ExecutionException, InterruptedException {
+        return ResponseEntity.ok().body(service.findAll());
     }
 
     @GetMapping("")
-    public List<Cart> findCartByUserID(@RequestParam String userID) throws ExecutionException, InterruptedException {
-        return service.findCartByUserID(userID);
+    public ResponseEntity<List<Cart>> findCartByUserID(@RequestParam String userID){
+        return ResponseEntity.ok().body(service.findCartByUserID(userID));
     }
+
+    @GetMapping("/id")
+    public ResponseEntity<?> findCartByCartID(@RequestParam String cartID) throws Exception {
+        return ResponseEntity.ok().body(service.findByID(cartID));
+    }
+
+    @GetMapping("/findByStatus")
+    public ResponseEntity<?> findCartWhenCartStatusIsFalse(@RequestParam String userId) throws Exception {
+        return ResponseEntity.ok().body(service.findCartWhenStatusIsFalse(userId));
+    }
+
 
 //   Crete new cart
     @PostMapping("/create")
@@ -43,6 +54,13 @@ public class CartController {
         return ResponseEntity.ok().body(service.addProductInCart(productID,cartID));
     }
 
+//    Change cart status
+//    When payment done, change status to true
+    @PutMapping("/paymentDone")
+    public ResponseEntity<?> changeCartStatus(@RequestParam String cartID) throws Exception {
+        return ResponseEntity.ok().body(service.changeCartStatus(cartID));
+    }
+
 //  Delete product in cart
     @DeleteMapping("/deleteProduct")
     public ResponseEntity<?> deleteProductInCart(@RequestParam String productID, @RequestParam String cartID) throws Exception {
@@ -51,7 +69,9 @@ public class CartController {
 
 //  Delete cart
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteCart(@RequestParam String cartID){
+    public ResponseEntity<?> deleteCart(@RequestParam String cartID) throws Exception {
         return ResponseEntity.ok().body(service.deleteCartById(cartID));
     }
+
+
 }

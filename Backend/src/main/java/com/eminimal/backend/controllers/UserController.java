@@ -1,6 +1,10 @@
 package com.eminimal.backend.controllers;
 
+
+import com.eminimal.backend.dto.ErrorResponse;
+import com.eminimal.backend.exceptions.ResourceFoundException;
 import com.eminimal.backend.models.Users;
+import com.eminimal.backend.models.UsersChangePass;
 import com.eminimal.backend.services.interfaces.CartService;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +31,7 @@ public class UserController {
         return service.findAll();
     }
 
-    @GetMapping("")
+    @GetMapping("/id")
     ResponseEntity<?> findUserByID(@RequestParam String id ) throws Exception {
         return ResponseEntity.ok().body(service.findById(id));
     }
@@ -43,6 +47,7 @@ public class UserController {
 //        System.out.println(authentication.getName());
 //        System.out.println(authentication.getDetails());
 //        System.out.println("-----------------");
+
         return ResponseEntity.ok().body(authentication.getPrincipal());
     }
 
@@ -74,6 +79,21 @@ public class UserController {
     @DeleteMapping("/delete")
     ResponseEntity<?> deleteUserById(@RequestParam String id) throws Exception {
         return new ResponseEntity<>(service.deleteById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePass")
+    ResponseEntity<?> changePass(@RequestBody UsersChangePass changePass) throws Exception {
+        return new ResponseEntity<>(service.changePasswordByUserId(
+                changePass.getUserId() ,
+                changePass.getOldPass(),
+                changePass.getNewPass()),
+                HttpStatus.OK);
+    }
+
+    @ExceptionHandler(ResourceFoundException.class)
+    ResponseEntity<ErrorResponse> resourceFoundException(){
+        ErrorResponse errorResponse = new ErrorResponse("03", "Something was wrong. Try login again");
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
 }

@@ -39,11 +39,10 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
 
-        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), token, new Date() ,expiryDate);
+
+        UsersToken usersToken = new UsersToken(userDetails.getUsers().getUserId(), userDetails.getUserRole() ,token, new Date() , expiryDate);
         return  tokenRepository.save(usersToken);
     }
-
-
 
     // Lấy thông tin user từ jwt
     public String getUserIdFromJWT(String token) {
@@ -55,24 +54,18 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public boolean validateToken(String authToken) {
+    public boolean validateToken(String authToken) throws Exception {
         try {
-            log.error("Token: " + authToken);
-            log.error("--> " + Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken));
-
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(authToken);
             return true;
-
         } catch (MalformedJwtException ex) {
-            log.error(ex.getMessage());
-            log.error("Invalid JWT token");
+            throw new Exception("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            log.error("Expired JWT token");
+            throw new Exception("Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            log.error("Unsupported JWT token");
+            throw new Exception("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            log.error("JWT claims string is empty.");
+            throw new Exception("JWT claims string is empty.");
         }
-        return false;
     }
 }

@@ -1,20 +1,22 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
-import com.eminimal.backend.models.ProductDetails;
-import com.eminimal.backend.repository.ProductDetailsRepository;
+import com.eminimal.backend.models.Rating;
 import com.eminimal.backend.repository.ProductRepository;
+import com.eminimal.backend.repository.RatingRepository;
+import com.eminimal.backend.services.interfaces.CategoryService;
 import com.eminimal.backend.services.interfaces.ProductService;
-import org.modelmapper.ModelMapper;
+import com.eminimal.backend.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,16 +24,17 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Autowired
-    ModelMapper modelMapper;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
-    private ProductDetailsRepository detailsRepository;
+    private CategoryService categoryService;
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private UserService userService;
+
+    @Autowired
+    private RatingRepository ratingRepository;
+
 
 //  Find product
     @Override
@@ -39,31 +42,20 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-    @Override
-    public List<ProductDetails> findAllProductDetails(){
-        return detailsRepository.findAll();
-    }
+//    @Override
+//    public List<ProductDetails> findAllProductDetails(){
+//        return detailsRepository.findAll();
+//    }
 
     @Override
     public Product findById(String id) throws Exception {
         Product product =  productRepository.findByProductID(id);
         if(product == null){
-            throw new Exception("Can't find product with id: " + id);
+            throw new NotFoundException("Can't find product with id: " + id);
         }else{
             return product;
         }
     }
-
-    @Override
-    public ProductDetails findProductDetailID(String id) throws Exception {
-        ProductDetails details =  detailsRepository.findByProductDetailID(id);
-        if(details == null){
-            throw new Exception("Can't find product detail with id: " + id);
-        }else{
-            return details;
-        }
-    }
-
 
     @Override
     public List<Product> findByName(String name){
@@ -72,17 +64,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findByCategory(String name){
-        return productRepository.findByDetails_Categories_CategoryName(name);
+        return productRepository.findByCategories_CategoryName(name);
     }
 
 //  Create product
     @Override
     public <S extends Product> S save(S entity) throws Exception {
 //        Check category valid
-        Category category = categoryService.findById(entity.getDetails().getCategories().getCategoryID());
-        entity.getDetails().setCategories(category);
+        Category category = categoryService.findByCategoryName(entity.getCategories().getCategoryName());
+        entity.setCategories(category);
 
 //        detailsRepository.save(entity.getDetails());
+//        logger.error("Entity: "  + entity);
         return productRepository.save(entity);
     }
 
@@ -98,47 +91,64 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(Product newProduct) throws Exception {
         Product product = findById(newProduct.getProductID());
-        ProductDetails details = findProductDetailID(product.getDetails().getProductDetailID());
+        Category category = categoryService.findByCategoryName(newProduct.getCategories().getCategoryName());
 
-        details = ProductDetails.builder()
-                .productDetailID(details.getProductDetailID())
-                .dateCreate(details.getDateCreate())
-                .dateUpdate(new Date())
-                .productAmount(newProduct.getDetails().getProductAmount())
-                .productSale(newProduct.getDetails().getProductSale())
-                .dateSale(newProduct.getDetails().getDateSale())
-                .categories(newProduct.getDetails().getCategories())
-                .build();
+        product.setProductName(newProduct.getProductName());
+        product.setProductDesc(newProduct.getProductDesc());
+        product.setProductImage(newProduct.getProductImage());
+        product.setProductCost(newProduct.getProductCost());
+        product.setProductAmount(newProduct.getProductAmount());
+        product.setDateUpdate(new Date());
 
-        product = Product.builder()
-                 .productID(newProduct.getProductID())
-                 .productName(newProduct.getProductName())
-                 .productDesc(newProduct.getProductDesc())
-                 .productImage(newProduct.getProductImage())
-                 .productCost(newProduct.getProductCost())
-                 .productRating(newProduct.getProductRating())
-                 .details(details)
-                 .build();
+        product.setProductSale(newProduct.getProductSale());
+        product.setDateSale(newProduct.getDateSale());
+        product.setCategories(category);
 
         return productRepository.save(product);
     }
 
     @Override
-    public Product ratingProduct(String productID, int rating) throws Exception {
+    public Product ratingProduct(String productID, Rating newRating) throws Exception {
+        String userID = newRating.getUserID();
         Product product = findById(productID);
-        product.getProductRating().add(rating);
+
+        userService.findById(userID);
+
+        if(newRating.getRating() > 5 || newRating.getRating() < 1)
+            throw new Exception("Rating value not valid");
+
+        for (int i = 0; i < product.getProductRating().size(); i++) {
+            if(product.getProductRating().get(i).getUserID().equals(userID)){
+                throw new Exception("You just only rating 1 times with product");
+            }
+        }
+        ratingRepository.save(newRating);
+        product.getProductRating().add(newRating);
         return productRepository.save(product);
     }
 
     @Override
     public List<Product> getProductSale(){
-        List<Product> productList = productRepository.findAll();
-        List<Product> productSale = new ArrayList<>();
-        for (Product product : productList) {
-            if (product.getDetails().getProductSale() > 0) {
-                productSale.add(product);
-            }
-        }
-        return productSale;
+        return productRepository.findByOrderByProductSaleDesc();
+    }
+
+    @Override
+    public List<Product> OrderProductCostDesc(){
+        return productRepository.findByOrderByProductCostDesc();
+    }
+
+    @Override
+    public List<Product> OrderProductCostAsc(){
+        return productRepository.findByOrderByProductCostAsc();
+    }
+
+    @Override
+    public List<Product> OrderProductNameDesc(){
+        return productRepository.findByOrderByProductNameDesc();
+    }
+
+    @Override
+    public List<Product> OrderProductNameAsc(){
+        return productRepository.findByOrderByProductNameAsc();
     }
 }

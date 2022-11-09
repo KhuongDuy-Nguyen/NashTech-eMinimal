@@ -121,9 +121,31 @@ class CategoryServiceImplTest {
         assertEquals("Name is requirement", actualException.getMessage());
     }
 
+    @Test
+    void findByCategoryName_ShouldReturnCategory_WhenDataValid(){
+        initCategory = new Category("1", "name", "desc");
+        when(categoryRepository.findByCategoryName("name")).thenReturn(initCategory);
+
+        Category result = categoryServiceImpl.findByCategoryName("name");
+        assertEquals(result,initCategory);
+    }
+
+    @Test
+    void findByCategoryName_ShouldThrowValidationException_WhenNameIsNull(){
+        ValidationException actualException = assertThrows(ValidationException.class, () -> categoryServiceImpl.findByCategoryName(""));
+        assertEquals("Name is requirement", actualException.getMessage());
+    }
+
+    @Test
+    void findByCategoryName_ShouldThrowNotFoundException_WhenNotFoundByName(){
+        NotFoundException actualException = assertThrows(NotFoundException.class, () -> categoryServiceImpl.findByCategoryName("name"));
+        assertEquals("Category not found", actualException.getMessage());
+    }
+
+
 //    Save
     @Test
-    void save_ShouldReturnCategory_WhenDataValid() {
+    void save_ShouldReturnCategory_WhenDataValid() throws Exception {
         Category actualCategory = mock(Category.class);
         Category category = Category.builder().categoryID("1").categoryName("Chair").categoryDesc("This is chair").build();
         when(categoryRepository.save(category)).thenReturn(actualCategory);
@@ -163,6 +185,15 @@ class CategoryServiceImplTest {
         assertEquals("Category name is require", actualException.getMessage());
     }
 
+    @Test
+    void save_ShouldThrowException_WhenNameHasExist() {
+        when(categoryRepository.existsByCategoryName("name")).thenReturn(true);
+        Category category = Category.builder().categoryName("name").categoryDesc("desc").build();
+        Exception actualException = assertThrows(Exception.class, () -> categoryServiceImpl.save(category));
+
+        assertEquals("Name have been taken", actualException.getMessage());
+    }
+
 //    Delete
     @Test
     void deleteById_ShouldReturnMessage_WhenIdValid() throws Exception {
@@ -178,7 +209,7 @@ class CategoryServiceImplTest {
         List<Product> initProduct = Collections.singletonList(mock(Product.class));
 
         when(categoryRepository.findByCategoryID("1")).thenReturn(initCategory);
-        when(productRepository.findByDetails_Categories_CategoryID("1")).thenReturn(initProduct);
+        when(productRepository.findByCategories_CategoryID("1")).thenReturn(initProduct);
 
 
         Exception actualException = assertThrows(Exception.class, () -> categoryServiceImpl.deleteById("1"));

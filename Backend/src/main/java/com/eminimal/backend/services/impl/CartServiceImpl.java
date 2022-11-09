@@ -1,5 +1,6 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Cart;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.models.Users;
@@ -52,7 +53,7 @@ public class CartServiceImpl implements CartService {
         if(cart != null){
             return cart;
         }else{
-            throw new Exception("Can't find cart with id: " + cartID);
+            throw new NotFoundException("Can't find cart with id: " + cartID);
         }
     }
 
@@ -65,16 +66,29 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
+//    Find cart status = false
+    @Override
+    public Cart findCartWhenStatusIsFalse(String userID) throws Exception {
+        Cart cart = cartRepository.findByCartUsers_UserIdAndCartStatusIsFalse(userID);
+        if(cart != null){
+            return cart;
+        }else{
+            return save(userID);
+        }
+
+    }
+
+
     //  Change amount in product
     public void decreaseAmountProduct(String productID) throws Exception {
         Product product =  productService.findById(productID);
-        product.getDetails().setProductAmount(product.getDetails().getProductAmount() - 1);
+        product.setProductAmount(product.getProductAmount() - 1);
         productRepository.save(product);
     }
 
     public void increaseAmountProduct(String productID) throws Exception {
         Product product =  productService.findById(productID);
-        product.getDetails().setProductAmount(product.getDetails().getProductAmount() + 1);
+        product.setProductAmount(product.getProductAmount() + 1);
         productRepository.save(product);
     }
 
@@ -104,8 +118,16 @@ public class CartServiceImpl implements CartService {
 
     //  Delete cart
     @Override
-    public String deleteCartById(String id){
+    public String deleteCartById(String id) throws Exception {
+        findByID(id);
         cartRepository.deleteById(id);
         return "Remove success with cart ID: " + id;
+    }
+
+    @Override
+    public Cart changeCartStatus(String cartID) throws Exception {
+        Cart cart = findByID(cartID);
+        cart.setCartStatus(true);
+        return cartRepository.save(cart);
     }
 }

@@ -1,7 +1,10 @@
 package com.eminimal.backend.controllers;
 
-import com.eminimal.backend.services.impl.FileServiceImpl;
-import com.eminimal.backend.services.interfaces.FileService;
+import com.dropbox.core.InvalidAccessTokenException;
+import com.eminimal.backend.dto.ErrorResponse;
+import com.eminimal.backend.models.Product;
+import com.eminimal.backend.services.interfaces.ProductService;
+import com.eminimal.backend.utils.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +17,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/api/file")
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private ProductService productService;
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> upload(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<Object> upload(@RequestParam("file") MultipartFile file, @RequestParam("id") String id) throws Exception {
+//        logger.info("Path file: " + file.getOriginalFilename());
         File convertFile = new File("upload/images/" + file.getOriginalFilename());
 
         FileOutputStream fileOutputStream = new FileOutputStream(convertFile);
@@ -31,7 +38,18 @@ public class FileController {
 
         logger.info("Path covert file: " + convertFile.getAbsolutePath());
         file.transferTo(convertFile.getAbsoluteFile());
-        return new ResponseEntity<>("Upload success: " + fileService.upload(convertFile), HttpStatus.OK);
 
+        Product product = productService.findById(id);
+        product.getProductImage().add(fileService.upload(convertFile));
+        productService.save(product);
+
+        return new ResponseEntity<>("Upload success", HttpStatus.OK);
+//        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidAccessTokenException.class)
+    ResponseEntity<ErrorResponse> resourceFoundException(){
+        ErrorResponse errorResponse = new ErrorResponse("01", "Invalid dropbox token. Please reload it in BE");
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,9 +1,10 @@
 package com.eminimal.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,18 +28,51 @@ public class Product {
 
     private float  productCost;
 
-    @ElementCollection
-    private List<Integer> productRating = new ArrayList<>();
+    @OneToMany
+    @ToString.Exclude
+    private List<Rating> productRating = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ProductDetails details;
+    private int productAmount ;
 
-    public Product(String productName, String productDesc, List<String> productImage, float productCost,  ProductDetails details) {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
+    private Date dateCreate = new Date();
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+7")
+    private Date dateUpdate;
+
+    private int productSale ;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss", timezone = "GMT+7")
+    private Date dateSale;
+
+    @ManyToOne
+    private Category categories;
+
+    public Product(String productName, String productDesc, List<String> productImage, float productCost, int productAmount, Category categories) {
         this.productName = productName;
         this.productDesc = productDesc;
         this.productImage = productImage;
         this.productCost = productCost;
-        this.details = details;
+        this.productAmount = productAmount;
+        this.categories = categories;
     }
 
+    public Product(String productName, String productDesc, List<String> productImage, float productCost, int productAmount, int productSale, Date dateSale, Category categories) {
+        this.productName = productName;
+        this.productDesc = productDesc;
+        this.productImage = productImage;
+        this.productCost = productCost;
+        this.productAmount = productAmount;
+        this.productSale = productSale;
+        this.dateSale = dateSale;
+        this.categories = categories;
+    }
+
+    public Product(String productID, String productName, String productDesc, float productCost, Category categories) {
+        this.productID = productID;
+        this.productName = productName;
+        this.productDesc = productDesc;
+        this.productCost = productCost;
+        this.categories = categories;
+    }
 }

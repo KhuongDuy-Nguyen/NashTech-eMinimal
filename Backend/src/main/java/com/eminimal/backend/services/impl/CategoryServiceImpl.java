@@ -61,11 +61,28 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    @Override
+    public Category findByCategoryName(String name){
+        if (name.isBlank())
+            throw new ValidationException("Name is requirement");
+
+        Category category = repository.findByCategoryName(name);
+        if (category == null) {
+            throw new NotFoundException("Category not found");
+        }
+
+        return category;
+
+    }
+
 //  Create new category
 
     @Override
-    public <S extends Category> S save(S entity){
+    public <S extends Category> S save(S entity) throws Exception {
         checkValid(entity);
+        if(repository.existsByCategoryName(entity.getCategoryName())){
+            throw new Exception("Name have been taken");
+        }
         return repository.save(entity);
     }
 
@@ -75,7 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String deleteById(String uuid) throws Exception {
         findById(uuid);
-        if(productRepository.findByDetails_Categories_CategoryID(uuid).size() > 0){
+        if(productRepository.findByCategories_CategoryID(uuid).size() > 0){
             throw new Exception("There are products in category");
         }
 

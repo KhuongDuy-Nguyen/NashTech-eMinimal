@@ -1,4 +1,4 @@
-package com.eminimal.backend.services.impl;
+package com.eminimal.backend.utils;
 
 import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.jwt.JwtTokenProvider;
@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserAuthServiceImpl implements com.eminimal.backend.services.interfaces.UserAuthService {
+public class AuthService {
 
     @Autowired
     private UserService userService;
@@ -28,33 +28,26 @@ public class UserAuthServiceImpl implements com.eminimal.backend.services.interf
     @Autowired
     private  AuthenticationManager authenticationManager;
 
-
     @Autowired
     private  JwtTokenProvider tokenProvider;
-
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
-
     @Autowired
     UsersTokenRepository tokenRepository;
-
-
-
 
     @Autowired
     private ModelMapper modelMapper;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserAuthServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
-    @Override
+
     public Users register(Users users) throws Exception {
         return userService.save(users);
     }
 
-    @Override
+
     public UsersToken login(Users users) throws Exception {
         // Xác thực từ username và password.
         try {
@@ -72,12 +65,12 @@ public class UserAuthServiceImpl implements com.eminimal.backend.services.interf
             return tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
 
         }catch (AuthenticationException e){
-            throw new NotFoundException("Invalid username and password");
+            throw new NotFoundException("Invalid username or password");
         }
 
     }
 
-    @Override
+
     public String logout(String email) throws Exception {
         Users users = userService.findByEmail(email);
         UsersToken token = tokenRepository.findByUserId(users.getUserId());
