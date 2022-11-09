@@ -116,7 +116,8 @@ public class CartServiceImpl implements CartService {
 
     //  Delete cart
     @Override
-    public String deleteCartById(String id){
+    public String deleteCartById(String id) throws Exception {
+        findByID(id);
         cartRepository.deleteById(id);
         return "Remove success with cart ID: " + id;
     }

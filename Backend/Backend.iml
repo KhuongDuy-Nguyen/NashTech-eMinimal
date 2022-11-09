@@ -160,5 +160,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:2.1.214" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-test:5.7.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.7.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.2" level="project" />
   </component>
 </module>

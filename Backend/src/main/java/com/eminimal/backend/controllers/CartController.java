@@ -62,7 +62,7 @@ public class CartController {
 
 //  Delete cart
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteCart(@RequestParam String cartID){
+    public ResponseEntity<?> deleteCart(@RequestParam String cartID) throws Exception {
         return ResponseEntity.ok().body(service.deleteCartById(cartID));
     }
 
