@@ -123,4 +123,11 @@ public class CartServiceImpl implements CartService {
         cartRepository.deleteById(id);
         return "Remove success with cart ID: " + id;
     }
+
+    @Override
+    public Cart changeCartStatus(String cartID) throws Exception {
+        Cart cart = findByID(cartID);
+        cart.setCartStatus(true);
+        return cartRepository.save(cart);
+    }
 }

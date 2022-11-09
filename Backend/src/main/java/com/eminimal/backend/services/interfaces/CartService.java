@@ -28,4 +28,6 @@ public interface CartService {
     String deleteCartById(String id) throws Exception;
 
     Cart findCartWhenStatusIsFalse(String userID) throws Exception;
+
+    public Cart changeCartStatus(String cartID) throws Exception ;
 }

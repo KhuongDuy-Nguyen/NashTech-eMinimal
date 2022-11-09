@@ -54,6 +54,13 @@ public class CartController {
         return ResponseEntity.ok().body(service.addProductInCart(productID,cartID));
     }
 
+//    Change cart status
+//    When payment done, change status to true
+    @PutMapping("/paymentDone")
+    public ResponseEntity<?> changeCartStatus(@RequestParam String cartID) throws Exception {
+        return ResponseEntity.ok().body(service.changeCartStatus(cartID));
+    }
+
 //  Delete product in cart
     @DeleteMapping("/deleteProduct")
     public ResponseEntity<?> deleteProductInCart(@RequestParam String productID, @RequestParam String cartID) throws Exception {
