@@ -41,13 +41,9 @@ public class LoadDatabase {
             categoryRepository.save(new Category("Chairs", "Tong hop cac loai ghe di dong"));
 
 //          Product
-            List<String> list = new ArrayList<>();
-            list.add("url-1");
-            list.add("url-2");
-            list.add("url-3");
 
             Random random = new Random();
-            for (int i = 1; i <= 10 ; i++){
+            for (int i = 1; i <= 5 ; i++){
                 productRepository.save(new Product(
                         "Ghe xoay " + i,
                         "Day la ghe xoay",
@@ -60,67 +56,67 @@ public class LoadDatabase {
                 ));
             }
 
-//            for (int i = 1; i <= 10 ; i++){
-//                productRepository.save(new Product(
-//                        "Ghe nhua " + i,
-//                        "Day la ghe nhua",
-//                        list,
-//                        random.nextInt(100000),
-//                        random.nextInt(100),
-//                        random.nextInt(50),
-//                        new Date(),
-//                        categoryRepository.findByCategoryName("Stools")
-//                ));
-//            }
-//
-//            for (int i = 1; i <= 10 ; i++){
-//                productRepository.save(new Product(
-//                        "Den" + i,
-//                        "Day la den",
-//                        list,
-//                        random.nextInt(100000),
-//                        random.nextInt(100),
-//                        random.nextInt(50),
-//                        new Date(),
-//                        categoryRepository.findByCategoryName("Lamp")
-//                ));
-//            }
-//
-//            for (int i = 1; i <= 10 ; i++){
-//                productRepository.save(new Product(
-//                        "Giuong " + i,
-//                        "Day la giuong",
-//                        list,
-//                        random.nextInt(100000),
-//                        random.nextInt(100),
-//                        random.nextInt(50),
-//                        new Date(),
-//                        categoryRepository.findByCategoryName("Beds")
-//                ));
-//            }
-//
-//            for (int i = 1; i <= 10 ; i++){
-//                productRepository.save(new Product(
-//                        "Den trang tri " + i,
-//                        "Day la den trang tri",
-//                        list,
-//                        random.nextInt(100000),
-//                        random.nextInt(100), random.nextInt(50), new Date(), categoryRepository.findByCategoryName("Lighting")
-//                ));
-//            }
-//
-//            for (int i = 1; i <= 10 ; i++){
-//                productRepository.save(new Product(
-//                        "Sofa " + i,
-//                        "Day la sofa",
-//                        list,
-//                        random.nextInt(100000),
-//                        random.nextInt(100),
-//                        random.nextInt(50),
-//                        new Date(),
-//                        categoryRepository.findByCategoryName("Sofas")
-//                ));
-//            }
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Ghe nhua " + i,
+                        "Day la ghe nhua",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Stools")
+                ));
+            }
+
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Den" + i,
+                        "Day la den",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Lamp")
+                ));
+            }
+
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Giuong " + i,
+                        "Day la giuong",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Beds")
+                ));
+            }
+
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Den trang tri " + i,
+                        "Day la den trang tri",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100), random.nextInt(50), new Date(), categoryRepository.findByCategoryName("Lighting")
+                ));
+            }
+
+            for (int i = 1; i <= 5 ; i++){
+                productRepository.save(new Product(
+                        "Sofa " + i,
+                        "Day la sofa",
+                        new ArrayList<>(),
+                        random.nextInt(100000),
+                        random.nextInt(100),
+                        random.nextInt(50),
+                        new Date(),
+                        categoryRepository.findByCategoryName("Sofas")
+                ));
+            }
 
 //            --------------
 
