@@ -1,5 +1,6 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +56,7 @@ class UserServiceImplTest {
         }
 
         initUsers = new Users(
-                "1","name", "123","email@gmail.com",
+                "1","name", bCryptPasswordEncoder.encode("123"),"email@gmail.com",
                 "123","address","country", true, "ADMIN" );
 
 
@@ -83,6 +84,19 @@ class UserServiceImplTest {
     }
 
     @Test
+    void findById_ShouldThrowNotFoundException_WhenNotFoundById() throws Exception {
+        NotFoundException actualException = assertThrows(NotFoundException.class, () -> userServiceImpl.findById("1"));
+        assertEquals("Can not find user with id: 1", actualException.getMessage());
+    }
+
+    @Test
+    void findById_ShouldThrowNullPointException_WhenIdIsNull() throws Exception {
+        NullPointerException actualException = assertThrows(NullPointerException.class, () -> userServiceImpl.findById(""));
+        assertEquals("ID can not be null or blank", actualException.getMessage());
+    }
+
+
+    @Test
     void findByEmail_ShouldReturnUsers_WhenFoundByEmail() throws Exception {
 
         when(usersRepository.findByUserEmail("admin@gmail.com")).thenReturn(initUsers);
@@ -93,6 +107,19 @@ class UserServiceImplTest {
     }
 
     @Test
+    void findByEmail_ShouldThrowNotFoundException_WhenNotFoundByEmail() throws Exception {
+        NotFoundException actualException = assertThrows(NotFoundException.class, () -> userServiceImpl.findByEmail("ad@gmail.com"));
+        assertEquals("Can not find user with email: ad@gmail.com", actualException.getMessage());
+    }
+
+    @Test
+    void findByEmail_ShouldThrowNullPointException_WhenEmailIsNull() throws Exception {
+        NullPointerException actualException = assertThrows(NullPointerException.class, () -> userServiceImpl.findByEmail(""));
+        assertEquals("Email can not be null or blank", actualException.getMessage());
+    }
+
+
+    @Test
     void save_ShouldReturnUsers_WhenDataValid() throws Exception {
         Users newUser = Users.builder().userId("1").userName("admin").userPassword("123").userEmail("admin@gmail.com").build();
 
@@ -101,6 +128,25 @@ class UserServiceImplTest {
         Users result = userServiceImpl.save(newUser);
         assertEquals(result, initUsers);
     }
+
+    @Test
+    void save_ShouldThrowException_WhenEmailHaveTaken(){
+        when(usersRepository.existsByUserEmail("admin@gmail.com")).thenReturn(true);
+
+        Exception actualException = assertThrows(Exception.class, () ->
+                userServiceImpl.save(new Users("admin", "123", "admin@gmail.com")));
+        assertEquals("Email have been taken", actualException.getMessage());
+    }
+
+    @Test
+    void save_ShouldThrowException_WhenUsernameHaveTaken(){
+        when(usersRepository.existsByUserName("admin")).thenReturn(true);
+
+        Exception actualException = assertThrows(Exception.class, () ->
+                userServiceImpl.save(new Users("admin", "123", "admin@gmail.com")));
+        assertEquals("Username have been taken", actualException.getMessage());
+    }
+
 
     @Test
     void deleteById_ShouldReturnMessageAndCanNotFound_WhenFoundId() throws Exception {
@@ -120,12 +166,25 @@ class UserServiceImplTest {
                 "1","name", "123","email@gmail.com",
                 "123","address","country", true, "ADMIN" );
 
-        when(bCryptPasswordEncoder.matches(anyString(),anyString())).thenReturn(true);
+        when(bCryptPasswordEncoder.matches("123",initUsers.getUserPassword())).thenReturn(true);
 
         when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
 
         Users result = userServiceImpl.updateUserById(newUsers);
         assertEquals(result, expectedUsers);
+    }
+
+    @Test
+    void updateUserById_ShouldThrowException_WhenPasswordNotMatch(){
+        Users newUsers = new Users(
+                "1","name", "12345","email@gmail.com",
+                "123","address","country", true, "ADMIN" );
+
+        when(usersRepository.findByUserId("1")).thenReturn(initUsers);
+        when(bCryptPasswordEncoder.matches("12345",initUsers.getUserPassword())).thenReturn(false);
+
+        Exception exception = assertThrows(Exception.class, () -> userServiceImpl.updateUserById(newUsers));
+        assertEquals("Password invalid", exception.getMessage());
     }
 
     @Test
@@ -144,7 +203,38 @@ class UserServiceImplTest {
     }
 
     @Test
-    void changeRoleByUserEmail() {
+    void changeRoleByUserEmail_ShouldReturnUsers_WhenChangeRoleToAdmin() throws Exception {
+        when(usersRepository.findByUserEmail("ad@gmail.com")).thenReturn(initUsers);
+        initUsers.setUserRole("ADMIN");
+        when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
+
+        Users result = userServiceImpl.changeRoleByUserEmail("ad@gmail.com", "ADMIN");
+        assertEquals(result, expectedUsers);
+    }
+
+    @Test
+    void changePasswordByUserId_ShouldReturnUsers_WhenChangePassword() throws Exception {
+        when(usersRepository.findByUserId("1")).thenReturn(initUsers);
+
+        when(bCryptPasswordEncoder.matches("123",initUsers.getUserPassword())).thenReturn(true);
+
+        initUsers.setUserPassword(bCryptPasswordEncoder.encode("123"));
+        when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
+
+        Users result = userServiceImpl.changePasswordByUserId("1", "123", "123123");
+
+        assertEquals(result, expectedUsers);
+        verify(bCryptPasswordEncoder).matches("123",initUsers.getUserPassword());
+    }
+
+    @Test
+    void changePasswordByUserId_ShouldThrowException_WhenPasswordNotMatch() throws Exception {
+        when(usersRepository.findByUserId("1")).thenReturn(initUsers);
+
+        when(bCryptPasswordEncoder.matches("12345",initUsers.getUserPassword())).thenReturn(false);
+
+        Exception exception = assertThrows(Exception.class, () -> userServiceImpl.changePasswordByUserId("1", "12345", "123456"));
+        assertEquals("Password not match!", exception.getMessage());
 
     }
 }

@@ -1,5 +1,6 @@
 package com.eminimal.backend.services.impl;
 
+import com.eminimal.backend.exceptions.NotFoundException;
 import com.eminimal.backend.models.Category;
 import com.eminimal.backend.models.Product;
 import com.eminimal.backend.models.Rating;
@@ -11,7 +12,6 @@ import com.eminimal.backend.repository.UsersRepository;
 import com.eminimal.backend.services.interfaces.CategoryService;
 import com.eminimal.backend.services.interfaces.UserService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,15 +19,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,6 +101,12 @@ class ProductServiceImplTest {
     }
 
     @Test
+    void findById_ShouldThrowException_WhenNotFound(){
+        NotFoundException actualException = assertThrows(NotFoundException.class, () -> productService.findById("2"));
+        assertEquals("Can't find product with id: 2", actualException.getMessage());
+    }
+
+    @Test
     void findByName() {
         List<Product> initProduct = new ArrayList<>();
 
@@ -179,6 +179,23 @@ class ProductServiceImplTest {
         Product result = productService.ratingProduct("1", new Rating("2", 5));
         assertEquals(result, expectedProduct);
     }
+
+    @Test
+    void ratingProduct_ShouldThrowException_WhenValueRatingLessThan1(){
+        when(productRepository.findByProductID("1")).thenReturn(initProduct);
+        Rating newRating = new Rating("1", 0);
+        Exception actualException = assertThrows(Exception.class, () -> productService.ratingProduct("1", newRating));
+        assertEquals("Rating value not valid", actualException.getMessage());
+    }
+
+    @Test
+    void ratingProduct_ShouldThrowException_WhenValueRatingLangeThan5(){
+        when(productRepository.findByProductID("1")).thenReturn(initProduct);
+        Rating newRating = new Rating("1", 6);
+        Exception actualException = assertThrows(Exception.class, () -> productService.ratingProduct("1", newRating));
+        assertEquals("Rating value not valid", actualException.getMessage());
+    }
+
 
     @Test
     void getProductSale() {

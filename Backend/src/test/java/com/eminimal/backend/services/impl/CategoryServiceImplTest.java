@@ -121,6 +121,28 @@ class CategoryServiceImplTest {
         assertEquals("Name is requirement", actualException.getMessage());
     }
 
+    @Test
+    void findByCategoryName_ShouldReturnCategory_WhenDataValid(){
+        initCategory = new Category("1", "name", "desc");
+        when(categoryRepository.findByCategoryName("name")).thenReturn(initCategory);
+
+        Category result = categoryServiceImpl.findByCategoryName("name");
+        assertEquals(result,initCategory);
+    }
+
+    @Test
+    void findByCategoryName_ShouldThrowValidationException_WhenNameIsNull(){
+        ValidationException actualException = assertThrows(ValidationException.class, () -> categoryServiceImpl.findByCategoryName(""));
+        assertEquals("Name is requirement", actualException.getMessage());
+    }
+
+    @Test
+    void findByCategoryName_ShouldThrowNotFoundException_WhenNotFoundByName(){
+        NotFoundException actualException = assertThrows(NotFoundException.class, () -> categoryServiceImpl.findByCategoryName("name"));
+        assertEquals("Category not found", actualException.getMessage());
+    }
+
+
 //    Save
     @Test
     void save_ShouldReturnCategory_WhenDataValid() throws Exception {
@@ -161,6 +183,15 @@ class CategoryServiceImplTest {
         ValidationException actualException = assertThrows(ValidationException.class, () -> categoryServiceImpl.save(category));
 
         assertEquals("Category name is require", actualException.getMessage());
+    }
+
+    @Test
+    void save_ShouldThrowException_WhenNameHasExist() {
+        when(categoryRepository.existsByCategoryName("name")).thenReturn(true);
+        Category category = Category.builder().categoryName("name").categoryDesc("desc").build();
+        Exception actualException = assertThrows(Exception.class, () -> categoryServiceImpl.save(category));
+
+        assertEquals("Name have been taken", actualException.getMessage());
     }
 
 //    Delete
