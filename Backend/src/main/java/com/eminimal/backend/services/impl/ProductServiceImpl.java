@@ -92,25 +92,16 @@ public class ProductServiceImpl implements ProductService {
         Product product = findById(newProduct.getProductID());
         Category category = categoryService.findByCategoryName(newProduct.getCategories().getCategoryName());
 
-//        TODO: Fix date create - It's create new Date() when update
+        product.setProductName(newProduct.getProductName());
+        product.setProductDesc(newProduct.getProductDesc());
+        product.setProductImage(newProduct.getProductImage());
+        product.setProductCost(newProduct.getProductCost());
+        product.setProductAmount(newProduct.getProductAmount());
+        product.setDateUpdate(new Date());
 
-        product = Product.builder()
-                 .productID(newProduct.getProductID())
-                 .productName(newProduct.getProductName())
-                 .productDesc(newProduct.getProductDesc())
-                 .productImage(newProduct.getProductImage())
-                 .productCost(newProduct.getProductCost())
-                 .productRating(newProduct.getProductRating())
-                 .productAmount(newProduct.getProductAmount())
-
-                 .dateCreate(newProduct.getDateCreate())
-                 .dateUpdate(new Date())
-
-                 .productSale(newProduct.getProductSale())
-                 .dateSale(newProduct.getDateSale())
-
-                 .categories(category)
-                 .build();
+        product.setProductSale(newProduct.getProductSale());
+        product.setDateSale(newProduct.getDateSale());
+        product.setCategories(category);
 
         return productRepository.save(product);
     }
