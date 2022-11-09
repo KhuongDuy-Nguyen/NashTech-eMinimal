@@ -1,16 +1,15 @@
-package com.eminimal.backend.services.impl;
+package com.eminimal.backend.utils;
 
 import com.eminimal.backend.models.CustomUserDetails;
 import com.eminimal.backend.models.Users;
 import com.eminimal.backend.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UsersDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
     private UsersRepository usersRepository;
