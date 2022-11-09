@@ -206,7 +206,7 @@ function ProductItem() {
 
                         <Card.Text className={style.item_info_p}>
                           <div className="text-decoration-line-through">
-                            <p>${price(val.productCost)}</p>
+                            <p>${(val.productCost)}</p>
                           </div>
                           <div
                             style={{
@@ -215,7 +215,7 @@ function ProductItem() {
                             }}
                           >
                             $
-                            {price(
+                            {(
                               Math.round(
                                 val.productCost -
                                   val.productCost * (val.productSale / 100)
@@ -299,7 +299,7 @@ function ProductItem() {
               <div className="col-6">
                 <div className="mb-3">
                   <h4>Price</h4>
-                  <p>${price(data.productCost)}</p>
+                  <p>${(data.productCost)}</p>
                   <h4>Rate</h4>
                   <span>
                     <Rate
