@@ -5,6 +5,7 @@ import {
   TagsOutlined,
   ShoppingCartOutlined,
   UsergroupAddOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 
 import { Layout, Menu} from "antd";
@@ -69,6 +70,14 @@ function App(){
 
             {
               key: "4",
+              icon: <HomeOutlined style={{ fontSize: "20px" }} />,
+              label: "Back to Home",
+              onClick: () => {
+                window.location.href = "/";
+              },
+            },
+            {
+              key: "5",
               icon: <LogoutOutlined style={{ fontSize: "20px" }} />,
               label: "Logout",
               onClick: () => {

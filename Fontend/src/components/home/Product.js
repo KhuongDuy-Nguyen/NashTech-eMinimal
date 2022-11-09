@@ -20,6 +20,7 @@ import AddToCart from "../../services/addToCart";
 import checkLogin from "../../utils/checkLogin";
 import ShowMessage from "../../utils/message";
 import logo from "../../assets/images/logo.jpg";
+import price from "../../utils/priceWithCommas";
 
 function ProductItem() {
   const [product, setProduct] = useState([]);
@@ -205,7 +206,7 @@ function ProductItem() {
 
                         <Card.Text className={style.item_info_p}>
                           <div className="text-decoration-line-through">
-                            <p>${val.productCost}</p>
+                            <p>${price(val.productCost)}</p>
                           </div>
                           <div
                             style={{
@@ -214,9 +215,11 @@ function ProductItem() {
                             }}
                           >
                             $
-                            {Math.round(
-                              val.productCost -
-                                val.productCost * (val.productSale / 100)
+                            {price(
+                              Math.round(
+                                val.productCost -
+                                  val.productCost * (val.productSale / 100)
+                              )
                             )}
                           </div>
                         </Card.Text>
@@ -296,7 +299,7 @@ function ProductItem() {
               <div className="col-6">
                 <div className="mb-3">
                   <h4>Price</h4>
-                  <p>${data.productCost}</p>
+                  <p>${price(data.productCost)}</p>
                   <h4>Rate</h4>
                   <span>
                     <Rate

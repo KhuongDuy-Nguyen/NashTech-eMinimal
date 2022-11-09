@@ -204,8 +204,8 @@ function App() {
         getData();
       })
       .catch((err) => {
-        // console.log(err);
-        error(err.response.data.message);
+        console.log(err);
+        error("Delete failed. Account is using!");
       });
   };
 
@@ -251,6 +251,7 @@ function App() {
         <Space size="middle">
           <Button
             type="primary"
+            disabled
             onClick={() => {
               handleUpdate(value);
             }}
