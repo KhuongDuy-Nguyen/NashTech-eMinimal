@@ -1,3 +1,4 @@
+import logout from "./logout";
 import ShowMessage from "./message";
 
 function ErrorAuth(err) {
@@ -6,7 +7,7 @@ function ErrorAuth(err) {
     ShowMessage("error","You are not authorized to access this page. Try login again.");
     localStorage.removeItem("token");
     setTimeout(() => {
-      window.location.href = "/auth";
+      logout();
     }, 1000);
   } else {
     console.log("Run ErrorAuth");

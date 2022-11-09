@@ -9,11 +9,12 @@ import { useState } from "react";
 import logout from "../../utils/logout";
 import { useEffect } from "react";
 import { LogoutOutlined, HomeOutlined } from "@ant-design/icons";
-import { getCartByCartId, getCartWhenStatusIsFalse } from "../../services/cart";
+import { getCartByCartId, getCartWhenStatusIsFalse, paymentDone } from "../../services/cart";
 import CartProduct from "./CartProduct";
 import convert from "../../utils/groupByCartProduct";
 import logo from "../../assets/images/Logo.png";
 import ShowMessage from "../../utils/message";
+import price from "../../utils/priceWithCommas";
 
 function NavbarMenu() {
   const [showAdmin, setShowAdmin] = useState(false);
@@ -53,13 +54,14 @@ function NavbarMenu() {
           setNumberItem(res.data.cartProducts.length);
 
           // Set data for modal
-          setData(res.data.cartProducts);
+          // setData(res.data.cartProducts);
+          setData(Object.values(convert(res.data.cartProducts)));
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, []);
+  }, [data]);
 
   const menuUser = (
     <Menu
@@ -89,15 +91,21 @@ function NavbarMenu() {
   const handleShow = () => {
     console.log("SHOW");
     // const group = convert(data);
-    var group = convert(data);
-    console.log(Object.values(group));
-    setData(Object.values(group));
-
+    // setData(Object.values(convert(data)));
+    
     setShow(true);
   };
 
   const handlePayment = () => {
-    ShowMessage("success", "Payment successfully");
+    paymentDone(localStorage.getItem("cartId")).then((res) => {
+      ShowMessage("success", "Payment success");
+      localStorage.removeItem("cartId");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+    }).catch((err) => {
+      console.log(err);
+    })
     setShow(false);
   };
 
@@ -164,7 +172,7 @@ function NavbarMenu() {
                 className={style.btn_user}
                 id="cost"
               >
-                $<span id="total_cost">{cost}</span>
+                $<span id="total_cost">{price(cost)}</span>
               </Button>
             </div>
           </Navbar.Collapse>
@@ -180,6 +188,7 @@ function NavbarMenu() {
 
           {data.map((item) => (
             // Count product have same id in cart
+            // reload cart when change quantity
 
             <CartProduct
               key={item.productID}
@@ -187,6 +196,7 @@ function NavbarMenu() {
               name={item.productName}
               price={item.productCost}
               quantity={item.quantity}
+              image={item.productImage}
             />
           ))}
 
@@ -194,7 +204,7 @@ function NavbarMenu() {
         </Modal.Body>
         <Modal.Footer>
           <p>
-            <strong>Total Cost: ${cost}</strong>
+            <strong>Total Cost: ${price(cost)}</strong>
           </p>
 
           <Button type="primary" onClick={handlePayment}>

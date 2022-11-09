@@ -26,10 +26,14 @@ const addProductToCart = async (productId, cartId) => {
   );
 };
 
-
+const paymentDone = async (cartId) => {
+  return await axios.put(
+    `http://localhost:8080/api/cart/paymentDone?cartID=${cartId}`
+  );
+};
 
 const removeProductFromCart = async (productId, cartId) => {
-  return await axios.put(
+  return await axios.delete(
     `http://localhost:8080/api/cart/deleteProduct?productID=${productId}&cartID=${cartId}`
   );
 };
@@ -48,4 +52,5 @@ export {
   deleteCart,
   getCartWhenStatusIsFalse,
   getCartByCartId,
+  paymentDone,
 };
