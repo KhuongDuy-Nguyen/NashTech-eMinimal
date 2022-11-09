@@ -1,0 +1,52 @@
+/* CSS navbar top */
+.name_logo{
+    width: 120px;
+}
+
+.btn_user{
+    margin-right: 10px;
+    border-style: none;
+}
+
+.btn_user:hover{
+    background-color: #f1c40f;
+}
+
+.navbar_info {
+    color: black;
+    font-weight: 600;
+    font-size: medium;
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar_info:hover{
+    color: #f1c40f;
+}
+
+.navbar_info::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background-color: #f1c40f;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.navbar_info:hover::after{
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.user{
+    font-weight: 600;
+    font-size: 20px;
+}

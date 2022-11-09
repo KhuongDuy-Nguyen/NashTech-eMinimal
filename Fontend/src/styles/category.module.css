@@ -1,0 +1,10 @@
+.category_title_h3{
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.card_item_category:hover{
+    transform: scale(1.1);
+}

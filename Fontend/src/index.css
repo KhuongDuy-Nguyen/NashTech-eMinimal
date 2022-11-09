@@ -1,0 +1,49 @@
+@import url('https://fonts.cdnfonts.com/css/greback-grotesque-fat');
+@import url('https://fonts.cdnfonts.com/css/f-feeling-soon');
+
+
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  z-index: 1;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  color: #212121;
+  font-size: 14px;
+  line-height: 1.5;
+
+}
+
+h3 {
+  position: relative;
+}
+h3:before {
+  content: "";
+  display: block;
+  width: 30%;
+  height: 2px;
+  background: #191970;
+  left: 0;
+  top: 50%;
+  position: absolute;
+}
+h3:after {
+  content: "";
+  display: block;
+  width: 30%;
+  height: 2px;
+  background: #191970;
+  right: 0;
+  top: 50%;
+  position: absolute;
+}
+
+h4 {
+  position: relative;
+  font-family: 'f Feeling Soon', sans-serif;
+}
+
+p{
+  font-size: 18px;
+}
