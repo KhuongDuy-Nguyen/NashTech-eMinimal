@@ -7,10 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +31,10 @@ class UserServiceImplTest {
     @Mock
     UsersRepository usersRepository;
 
+    @Mock
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
     @InjectMocks
     UserServiceImpl userServiceImpl;
 
@@ -33,18 +43,24 @@ class UserServiceImplTest {
 
     private final List<Users> mockUsers = new ArrayList<>();
 
+
     @BeforeEach
     void setup(){
-//        initUsers = mock(Users.class);
-//        expectedUsers = mock(Users.class);
-//        userDetails = mock(UserDetails.class);
+
+        initUsers = mock(Users.class);
+        expectedUsers = mock(Users.class);
 
         for(int i = 0; i< 5; i++){
             mockUsers.add(new Users( "admin " + i, "123 ",  "admin@gmail.com"));
         }
 
-//        when(usersRepository.save(initUsers)).thenReturn(initUsers);
+        initUsers = new Users(
+                "1","name", "123","email@gmail.com",
+                "123","address","country", true, "ADMIN" );
+
+
 //        when(usersRepository.findByUserId("1")).thenReturn(initUsers);
+//        when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
     }
 
 //    Valid Data
@@ -78,9 +94,11 @@ class UserServiceImplTest {
 
     @Test
     void save_ShouldReturnUsers_WhenDataValid() throws Exception {
-        initUsers = Users.builder().userId("1").userName("admin").userPassword("123").userEmail("admin@gmail.com").build();
-        when(usersRepository.save(initUsers)).thenReturn(initUsers);
-        Users result = userServiceImpl.save(initUsers);
+        Users newUser = Users.builder().userId("1").userName("admin").userPassword("123").userEmail("admin@gmail.com").build();
+
+        when(usersRepository.save(any(Users.class))).thenReturn(initUsers);
+
+        Users result = userServiceImpl.save(newUser);
         assertEquals(result, initUsers);
     }
 
@@ -96,31 +114,37 @@ class UserServiceImplTest {
 
     @Test
     void updateUserById_ShouldReturnUsers_WhenDataValid() throws Exception {
-//        expectedUsers = mock(Users.class);
-        initUsers = mock(Users.class);
-        expectedUsers = mock(Users.class);
-
         when(usersRepository.findByUserId("1")).thenReturn(initUsers);
+
+        Users newUsers = new Users(
+                "1","name", "123","email@gmail.com",
+                "123","address","country", true, "ADMIN" );
+
+        when(bCryptPasswordEncoder.matches(anyString(),anyString())).thenReturn(true);
+
         when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
 
-        Users result = userServiceImpl.updateUserById(new Users("1",
-                "name", "123",
-                "email@gmail.com", "123",));
-
-        logger.info("User: " + expectedUsers);
-//        verify(initUsers).setUserName("name");
-//        verify(initUsers).setUserEmail("email");
-//        verify(initUsers).setUserPassword("123");
-//        verify(initUsers).setDetails(userDetails);
-//
-//        assertEquals(result, expectedUsers);
+        Users result = userServiceImpl.updateUserById(newUsers);
+        assertEquals(result, expectedUsers);
     }
 
     @Test
-    void activeUserByUserEmail() {
+    void activeUserByUserEmail() throws Exception {
+        when(usersRepository.findByUserEmail("email@gmail.com")).thenReturn(initUsers);
+        initUsers.setUserActive(true);
+        when(usersRepository.save(initUsers)).thenReturn(expectedUsers);
+
+        Users newUsers = new Users(
+                "1","name", "123","email@gmail.com",
+                "123","address","country", false, "ADMIN" );
+
+        Users result = userServiceImpl.activeUserByUserEmail(newUsers.getUserEmail());
+        assertEquals(result.isUserActive(), expectedUsers.isUserActive());
+//        verify(expectedUsers).setUserActive(true);
     }
 
     @Test
     void changeRoleByUserEmail() {
+
     }
 }

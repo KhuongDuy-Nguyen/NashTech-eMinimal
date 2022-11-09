@@ -1,7 +1,7 @@
 package com.eminimal.backend.jwt;
 
 import com.eminimal.backend.exceptions.ResourceFoundException;
-import com.eminimal.backend.services.impl.UserDetailsServiceImpl;
+import com.eminimal.backend.utils.UsersDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private UserDetailsServiceImpl customUserDetailsService;
+    private UsersDetailsService customUserDetailsService;
 
     @Autowired
     private JwtTokenProvider tokenProvider;

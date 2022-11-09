@@ -89,8 +89,12 @@ public class UserServiceImpl implements com.eminimal.backend.services.interfaces
         if(!bCryptPasswordEncoder.matches(newUsers.getUserPassword(), user.getUserPassword()))
             throw new Exception("Password invalid");
 
-        newUsers.setUserPassword(hashPass(newUsers.getUserPassword()));
-        user = modelMapper.map(newUsers, Users.class);
+        user.setUserName(newUsers.getUserName());
+        user.setUserEmail(newUsers.getUserEmail());
+        user.setUserCountry(newUsers.getUserCountry());
+        user.setUserPhone(newUsers.getUserPhone());
+        user.setUserAddress(newUsers.getUserAddress());
+
         return repository.save(user);
     }
 

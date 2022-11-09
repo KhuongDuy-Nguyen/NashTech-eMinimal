@@ -56,4 +56,6 @@ public class Users{
         this.userActive = userActive;
         this.userRole = userRole;
     }
+
+
 }
