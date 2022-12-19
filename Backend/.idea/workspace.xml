@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1f8530ac-9dca-4f38-900c-9396fed2c180" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/utils/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/utils/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/eminimal/backend/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eminimal/backend/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/eminimal/backend/utils/FileService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eminimal/backend/utils/FileService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +61,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Workspace/NASHTECH/nashtech-eMinimal/Backend&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;2e427c268ac1768b9add94b65e2d6c14&quot;
   }
 }</component>
@@ -68,7 +73,22 @@
       <recent name="com.eminimal.backend.services.impl" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BackendApplication">
+  <component name="RunManager" selected="JUnit.BackendApplicationTests">
+    <configuration name="BackendApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.eminimal.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.eminimal.backend" />
+      <option name="MAIN_CLASS_NAME" value="com.eminimal.backend.BackendApplicationTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CartServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
@@ -116,22 +136,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ProductServiceImplTest.ratingProduct_ShouldThrowException_WhenValueRatingLangeThan5" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.eminimal.backend.services.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.eminimal.backend.services.impl" />
-      <option name="MAIN_CLASS_NAME" value="com.eminimal.backend.services.impl.ProductServiceImplTest" />
-      <option name="METHOD_NAME" value="ratingProduct_ShouldThrowException_WhenValueRatingLangeThan5" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="com.eminimal.backend.services.impl in Backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
@@ -155,11 +159,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BackendApplicationTests" />
         <item itemvalue="JUnit.com.eminimal.backend.services.impl in Backend" />
         <item itemvalue="JUnit.CartServiceImplTest.findCartWhenStatusIsFalse_ShouldCreateNewCart_WhenNotFoundCartStatusIsFalse" />
         <item itemvalue="JUnit.CartServiceImplTest" />
         <item itemvalue="JUnit.CartServiceImplTest.findByID_ShouldThrowNotFoundException_WhenNotFoundById" />
-        <item itemvalue="JUnit.ProductServiceImplTest.ratingProduct_ShouldThrowException_WhenValueRatingLangeThan5" />
       </list>
     </recent_temporary>
   </component>
@@ -175,7 +179,29 @@
       <workItem from="1667960002879" duration="30300000" />
       <workItem from="1668001165015" duration="4661000" />
       <workItem from="1668011764371" duration="642000" />
-      <workItem from="1668012590142" duration="327000" />
+      <workItem from="1668012590142" duration="1329000" />
+      <workItem from="1668059235891" duration="1926000" />
+      <workItem from="1668424583126" duration="1338000" />
+      <workItem from="1668564110285" duration="402000" />
+      <workItem from="1668570321187" duration="170000" />
+      <workItem from="1668570600658" duration="8000" />
+      <workItem from="1668570710689" duration="250000" />
+      <workItem from="1668588971866" duration="770000" />
+      <workItem from="1668651075421" duration="1243000" />
+      <workItem from="1668659968679" duration="1335000" />
+      <workItem from="1668669773005" duration="1656000" />
+      <workItem from="1668674235568" duration="2067000" />
+      <workItem from="1668737157921" duration="247000" />
+      <workItem from="1668758132785" duration="257000" />
+      <workItem from="1668759606569" duration="1568000" />
+      <workItem from="1668862486965" duration="131000" />
+      <workItem from="1668863262181" duration="1715000" />
+      <workItem from="1668920592379" duration="167000" />
+      <workItem from="1669028257897" duration="662000" />
+      <workItem from="1669030291547" duration="16000" />
+      <workItem from="1669117256997" duration="15000" />
+      <workItem from="1669130075350" duration="635000" />
+      <workItem from="1669227023096" duration="15000" />
     </task>
     <servers />
   </component>
@@ -189,7 +215,7 @@
     <SUITE FILE_PATH="coverage/Backend$UserServiceImplTest.ic" NAME="UserServiceImplTest Coverage Results" MODIFIED="1667990992984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Backend$com_eminimal_backend_services_impl_in_Backend.ic" NAME="com.eminimal.backend.services.impl in Backend Coverage Results" MODIFIED="1667997795602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Backend$com_eminimal_backend_services_impl_in_Backend.ic" NAME="com.eminimal.backend.services.impl in Backend Coverage Results" MODIFIED="1668014032133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Backend$ProductServiceImplTest.ic" NAME="ProductServiceImplTest Coverage Results" MODIFIED="1667973910295" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
