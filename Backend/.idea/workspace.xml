@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1f8530ac-9dca-4f38-900c-9396fed2c180" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/utils/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/eminimal/backend/utils/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eminimal/backend/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eminimal/backend/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eminimal/backend/utils/FileService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eminimal/backend/utils/FileService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,21 +46,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Workspace/NASHTECH/nashtech-eMinimal/Backend&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;2e427c268ac1768b9add94b65e2d6c14&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Workspace/NASHTECH/nashtech-eMinimal/Backend",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "spring.configuration.checksum": "2e427c268ac1768b9add94b65e2d6c14"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -73,7 +71,7 @@
       <recent name="com.eminimal.backend.services.impl" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BackendApplicationTests">
+  <component name="RunManager" selected="Spring Boot.BackendApplication">
     <configuration name="BackendApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
@@ -215,16 +213,16 @@
     <SUITE FILE_PATH="coverage/Backend$UserServiceImplTest.ic" NAME="UserServiceImplTest Coverage Results" MODIFIED="1667990992984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Backend$com_eminimal_backend_services_impl_in_Backend.ic" NAME="com.eminimal.backend.services.impl in Backend Coverage Results" MODIFIED="1668014032133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Backend$CartServiceImplTest.ic" NAME="CartServiceImplTest Coverage Results" MODIFIED="1667999966620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Backend$ProductServiceImplTest.ic" NAME="ProductServiceImplTest Coverage Results" MODIFIED="1667973910295" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Backend$UserServiceImplTest_changePasswordByUserId_ShouldThrowException_WhenPasswordNotMatch.ic" NAME="UserServiceImplTest.changePasswordByUserId_ShouldThrowException_WhenPasswordNotMatch Coverage Results" MODIFIED="1667990981385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Backend$com_eminimal_backend_services_impl_in_Backend.ic" NAME="com.eminimal.backend.services.impl in Backend Coverage Results" MODIFIED="1668014032133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/Backend$CartServiceImplTest.ic" NAME="CartServiceImplTest Coverage Results" MODIFIED="1667999966620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Backend$UserServiceImplTest_changePasswordByUserId_ShouldThrowException_WhenPasswordNotMatch.ic" NAME="UserServiceImplTest.changePasswordByUserId_ShouldThrowException_WhenPasswordNotMatch Coverage Results" MODIFIED="1667990981385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.eminimal.backend.services.impl.*</FILTER>
     </SUITE>
   </component>
